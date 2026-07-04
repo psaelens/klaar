@@ -1,4 +1,4 @@
-import type { SrsState, SessionRecord } from '../types'
+import type { SrsState, SessionRecord, XpEntry } from '../types'
 
 /**
  * Persistance localStorage (M0). Les clés sont versionnées pour permettre
@@ -8,6 +8,7 @@ import type { SrsState, SessionRecord } from '../types'
 const SRS_KEY = 'klaar.srs.v1'
 const SESSIONS_KEY = 'klaar.sessions.v1'
 const THEME_KEY = 'klaar.theme.v1'
+const XP_KEY = 'klaar.xp.v1'
 
 function readJson<T>(key: string, fallback: T): T {
   try {
@@ -37,6 +38,20 @@ export function appendSessionRecord(record: SessionRecord): void {
   const records = loadSessionRecords()
   records.push(record)
   localStorage.setItem(SESSIONS_KEY, JSON.stringify(records))
+}
+
+export function loadXpLedger(): XpEntry[] {
+  return readJson<XpEntry[]>(XP_KEY, [])
+}
+
+export function appendXpEntry(entry: XpEntry): void {
+  const entries = loadXpLedger()
+  entries.push(entry)
+  localStorage.setItem(XP_KEY, JSON.stringify(entries))
+}
+
+export function totalXp(): number {
+  return loadXpLedger().reduce((sum, entry) => sum + entry.amount, 0)
 }
 
 export type Theme = 'light' | 'dark'

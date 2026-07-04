@@ -45,6 +45,12 @@ export default function Summary() {
         </div>
       </dl>
 
+      {last.xpEarned !== undefined && (
+        <p className="rounded-full bg-amber-100 px-6 py-2 text-lg font-bold text-amber-800 dark:bg-amber-900 dark:text-amber-200">
+          +{last.xpEarned} XP ⭐
+        </p>
+      )}
+
       <p className="text-slate-600 dark:text-slate-300">{encouragement}</p>
 
       <Link

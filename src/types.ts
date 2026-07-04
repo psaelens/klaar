@@ -35,4 +35,15 @@ export interface SessionRecord {
   correctFirstTry: number
   /** Cartes ratées au moins une fois (puis retravaillées dans la session). */
   lapsed: number
+  /** Durée de la session en secondes (absent sur les sessions d'avant M1). */
+  durationSeconds?: number
+  /** XP gagné pendant la session (absent sur les sessions d'avant M1). */
+  xpEarned?: number
+}
+
+/** Entrée du journal d'XP (aligné sur le futur `xp_ledger`, PRD §7). */
+export interface XpEntry {
+  amount: number
+  reason: string
+  createdAt: string
 }
