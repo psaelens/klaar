@@ -1,21 +1,23 @@
 # STATUS — état d'avancement Klaar!
 
-## Étape roadmap en cours : M0 (terminée côté code, déploiement en cours)
+## Étape roadmap en cours : M0 terminée et déployée → prochaine étape M1
 
 ## Dernière action terminée :
 
-M0 complet et vérifié en local : squelette Vite 8 + React 19 + TS strict + Tailwind 4, flashcards vocab NL→FR avec SRS type SM-2 (10 tests unitaires verts), 64 mots de départ en JSON, stockage localStorage, mode sombre, mobile-first. Flux complet vérifié au navigateur via Playwright (session, requeue des cartes ratées, bilan, persistance, thème).
+M0 déployé en production sur **https://klaar-nine.vercel.app** et vérifié au navigateur (Playwright) : flashcards vocab NL→FR avec SRS SM-2 (10 tests unitaires verts), 64 mots de départ en JSON, localStorage, mode sombre, fallback SPA Vercel. Repo GitHub : https://github.com/psaelens/klaar (branche `main`).
 
 ## Prochaine action à faire :
 
-Déployer M0 : créer le repo GitHub privé `klaar` (gh CLI authentifié en tant que psaelens), pousser `main`, puis brancher Vercel dessus (si le CLI Vercel n'est pas authentifié, demander à Pierre de faire le lien Vercel↔GitHub une fois — voir « Décisions en attente »). Ensuite : démarrer M1 (Supabase : projet, migrations CLI avec RLS dès le premier commit, sync SRS, streak, XP, écran d'import de contenu — PRD §11).
+Démarrer M1 (PRD §11) : 1) vérifier si le CLI Supabase est authentifié (`npx supabase projects list`) — sinon demander à Pierre de créer le projet Supabase (gratuit) ; 2) `npx supabase init` + première migration SQL versionnée (tables `users`, `content_items`, `srs_state`, `sessions`, `attempts`, `xp_ledger` du PRD §7) **avec RLS activée dès cette première migration** ; 3) sync de l'état SRS local vers Supabase avec migration transparente des données localStorage existantes ; 4) streak + XP (fonctions pures testées) ; 5) écran d'import de contenu.
 
 ## Décisions en attente de validation par Pierre :
 
-- Faire vérifier l'échantillon des 64 mots de vocabulaire de départ (`src/data/vocab.json`) par un néerlandophone ou via l'import validé (PRD §13) — générés par Claude, non validés par un tiers.
-- Si le déploiement Vercel ne peut pas être fait depuis cette machine : créer un compte Vercel (gratuit) et importer le repo GitHub `klaar` (Framework preset : Vite). Une fois fait, chaque push sur `main` déploiera automatiquement.
+- Faire vérifier les 64 mots de vocabulaire de départ (`src/data/vocab.json`) par un néerlandophone (PRD §13) — générés par Claude, non validés par un tiers.
+- Installer l'app GitHub de Vercel (https://vercel.link/git) pour l'auto-déploiement à chaque push (`vercel git connect` a échoué faute d'app installée). En attendant, le déploiement se fait manuellement via `npx vercel deploy --prod --yes` — le CLI Vercel est authentifié sur cette machine (compte psaelens-8216, projet `klaar`).
+- Le repo GitHub `psaelens/klaar` (créé par Pierre) est **public** — confirmer que c'est voulu pour une app familiale.
 
 ## Points d'attention / bugs connus non résolus :
 
 - Si l'élève quitte/recharge en pleine session, la file est recomposée et les compteurs de session (dont « du 1er coup ») repartent de zéro — l'état SRS par carte est lui bien persisté après chaque réponse. Cosmétique, assumé pour M0 (noté dans DECISIONS.md).
 - Le PRD a été reformaté une fois par Prettier (tables réalignées, contenu inchangé) ; `docs/PRD.md` est désormais dans `.prettierignore`.
+- Recette de vérification runtime documentée dans `.claude/skills/verify/SKILL.md` (preview + Playwright).
