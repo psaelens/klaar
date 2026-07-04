@@ -1,14 +1,14 @@
 # STATUS — état d'avancement Klaar!
 
-## Étape roadmap en cours : M1 (sous-étape 1/5 terminée : XP + streak)
+## Étape roadmap en cours : M1 (sous-étapes 1-2/5 terminées : XP+streak, schéma Supabase+RLS)
 
 ## Dernière action terminée :
 
-XP + streak livrés (M1 sous-étape 1) : fonctions pures `src/lib/xp.ts` (XP pondéré difficulté, raté = 0, bonus complétion +20, plafond anti-farming 300/session) et `src/lib/streak.ts` (jours consécutifs, seuil minutes paramétrable — 0 tant que seul le vocab existe), 14 nouveaux tests (24 au total). Session enregistre durée + XP ; accueil affiche pastilles 🔥 streak / ⭐ XP ; bilan affiche +XP. Vérifié au navigateur (Playwright, recette `.claude/skills/verify/SKILL.md`).
+M1 sous-étape 2 : migration `supabase/migrations/20260704120000_initial_schema.sql` (households, profiles, content_items, srs_state, sessions, xp_ledger — RLS sur toutes les tables, grants explicites, RPC atomique `create_household_with_profile`), seed des 64 items vocab, types générés (`src/lib/database.types.ts`), et **18/18 vérifications RLS vertes** contre le stack local Docker (`node supabase/tests/rls-check.mjs`). `@supabase/supabase-js` installé.
 
 ## Prochaine action à faire :
 
-M1 sous-étape 2 : `npx supabase init` + migration SQL `0001` (households, profiles, content_items, srs_state, sessions, xp_ledger — RLS activée sur TOUTES les tables dès cette migration : enfant lit/écrit ses données, parent lit le foyer) + test du stack local (`npx supabase start`, Docker est dispo et fonctionnel sur cette machine). **Blocage partiel** : le CLI Supabase n'est PAS authentifié (`npx supabase projects list` → LegacyPlatformAuthRequiredError) — Pierre doit taper `! npx supabase login` dans la session (ou fournir SUPABASE_ACCESS_TOKEN) pour créer/lier le projet hébergé. Le développement local (migrations + tests RLS) avance sans ça.
+M1 sous-étape 3 : intégration app — client Supabase derrière variables d'env (`VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, mode local si absentes), écrans d'onboarding (création foyer parent, profil enfant, connexion) et couche de sync : lecture contenu depuis `content_items`, écriture `srs_state`/`sessions`/`xp_ledger`, migration transparente des données localStorage existantes au premier login. **Toujours en attente** : `npx supabase login` par Pierre pour créer le projet hébergé et y pousser la migration (`supabase link` + `supabase db push`) ; le dev/test se fait sur le stack local Docker en attendant.
 
 ## Décisions en attente de validation par Pierre :
 
