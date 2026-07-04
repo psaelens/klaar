@@ -1,12 +1,13 @@
 import { Link } from 'react-router'
-import { vocabItems } from '../data'
+import { getContentItems, getSrsStates } from '../lib/repo'
 import { selectSessionItems } from '../lib/srs'
 import { computeStreak } from '../lib/streak'
-import { loadSessionRecords, loadSrsStates, totalXp } from '../lib/storage'
+import { loadSessionRecords, totalXp } from '../lib/storage'
 
 export default function Home() {
-  const states = loadSrsStates()
-  const { reviews, fresh } = selectSessionItems(vocabItems, states, new Date())
+  const items = getContentItems()
+  const states = getSrsStates()
+  const { reviews, fresh } = selectSessionItems(items, states, new Date())
   const total = reviews.length + fresh.length
   const learnedCount = Object.keys(states).length
   const streak = computeStreak(loadSessionRecords(), new Date())
@@ -75,7 +76,7 @@ export default function Home() {
 
       {learnedCount > 0 && (
         <p className="text-sm text-slate-500 dark:text-slate-400">
-          {learnedCount} mot{learnedCount > 1 ? 's' : ''} en cours d'apprentissage sur {vocabItems.length}
+          {learnedCount} mot{learnedCount > 1 ? 's' : ''} en cours d'apprentissage sur {items.length}
         </p>
       )}
     </div>

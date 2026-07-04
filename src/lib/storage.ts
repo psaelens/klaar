@@ -24,6 +24,10 @@ export function loadSrsStates(): Record<string, SrsState> {
   return readJson<Record<string, SrsState>>(SRS_KEY, {})
 }
 
+export function replaceSrsStates(states: Record<string, SrsState>): void {
+  localStorage.setItem(SRS_KEY, JSON.stringify(states))
+}
+
 export function saveSrsState(state: SrsState): void {
   const states = loadSrsStates()
   states[state.itemId] = state
@@ -40,6 +44,10 @@ export function appendSessionRecord(record: SessionRecord): void {
   localStorage.setItem(SESSIONS_KEY, JSON.stringify(records))
 }
 
+export function replaceSessionRecords(records: SessionRecord[]): void {
+  localStorage.setItem(SESSIONS_KEY, JSON.stringify(records))
+}
+
 export function loadXpLedger(): XpEntry[] {
   return readJson<XpEntry[]>(XP_KEY, [])
 }
@@ -52,6 +60,10 @@ export function appendXpEntry(entry: XpEntry): void {
 
 export function totalXp(): number {
   return loadXpLedger().reduce((sum, entry) => sum + entry.amount, 0)
+}
+
+export function replaceXpLedger(entries: XpEntry[]): void {
+  localStorage.setItem(XP_KEY, JSON.stringify(entries))
 }
 
 export type Theme = 'light' | 'dark'

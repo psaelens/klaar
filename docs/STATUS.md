@@ -1,14 +1,14 @@
 # STATUS — état d'avancement Klaar!
 
-## Étape roadmap en cours : M1 (sous-étapes 1-2/5 terminées : XP+streak, schéma Supabase+RLS)
+## Étape roadmap en cours : M1 (sous-étapes 1-3/5 terminées : XP+streak, schéma+RLS, sync app)
 
 ## Dernière action terminée :
 
-M1 sous-étape 2 : migration `supabase/migrations/20260704120000_initial_schema.sql` (households, profiles, content_items, srs_state, sessions, xp_ledger — RLS sur toutes les tables, grants explicites, RPC atomique `create_household_with_profile`), seed des 64 items vocab, types générés (`src/lib/database.types.ts`), et **18/18 vérifications RLS vertes** contre le stack local Docker (`node supabase/tests/rls-check.mjs`). `@supabase/supabase-js` installé.
+M1 sous-étape 3 : intégration Supabase dans l'app. `src/lib/supabase.ts` (client derrière env, null = mode local), `src/lib/repo.ts` (couche d'accès : write-through localStorage→cloud, file de retry `klaar.pushqueue.v1`, migration unique des données pré-connexion, pull serveur au démarrage), écran `/config` (login + wizard « créer le foyer » : compte parent, compte élève en plus-addressing, l'appareil reste connecté élève). Vérifié E2E au navigateur contre le stack local : migration (8 SRS + session + 100 XP), write-through, pull sur 2e appareil, login parent. `.env.local` (gitignoré) pointe le stack local pour ces tests.
 
 ## Prochaine action à faire :
 
-M1 sous-étape 3 : intégration app — client Supabase derrière variables d'env (`VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, mode local si absentes), écrans d'onboarding (création foyer parent, profil enfant, connexion) et couche de sync : lecture contenu depuis `content_items`, écriture `srs_state`/`sessions`/`xp_ledger`, migration transparente des données localStorage existantes au premier login. **Toujours en attente** : `npx supabase login` par Pierre pour créer le projet hébergé et y pousser la migration (`supabase link` + `supabase db push`) ; le dev/test se fait sur le stack local Docker en attendant.
+M1 sous-étape 4 : écran d'import de contenu (réservé au parent connecté) — coller du texte (une ligne = `mot néerlandais ; traduction`, ou JSON), prévisualisation/validation, insertion dans `content_items` du foyer avec `theme`/`curriculum_unit`. Puis sous-étape 5 : brancher le projet Supabase HÉBERGÉ — **nécessite `npx supabase login` par Pierre** — créer le projet, `supabase link`, `supabase db push`, seed, désactiver la confirmation d'email (Auth > Sign In / Up), mettre `VITE_SUPABASE_URL`/`VITE_SUPABASE_ANON_KEY` dans Vercel (`npx vercel env add`), redéployer, re-vérifier le wizard en prod.
 
 ## Décisions en attente de validation par Pierre :
 

@@ -1,10 +1,9 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import type { ContentItem, Grade, SrsState } from '../types'
-import { vocabItems } from '../data'
+import { getContentItems, getSrsStates, recordSession, saveState } from '../lib/repo'
 import { initialSrsState, review, selectSessionItems } from '../lib/srs'
 import { sessionXp, type AnsweredCard } from '../lib/xp'
-import { appendSessionRecord, appendXpEntry, loadSrsStates, saveSrsState } from '../lib/storage'
 import ProgressBar from '../components/ProgressBar'
 
 interface SessionData {
@@ -14,8 +13,8 @@ interface SessionData {
 }
 
 function buildSession(): SessionData {
-  const states = loadSrsStates()
-  const { reviews, fresh } = selectSessionItems(vocabItems, states, new Date())
+  const states = getSrsStates()
+  const { reviews, fresh } = selectSessionItems(getContentItems(), states, new Date())
   return {
     queue: [...reviews, ...fresh],
     states,
@@ -55,7 +54,7 @@ export default function Session() {
     const previous = session.states[current.id] ?? initialSrsState(current.id, now)
     const updated = review(previous, grade, now)
     session.states[current.id] = updated
-    saveSrsState(updated)
+    saveState(updated)
 
     const allAnswers: AnsweredCard[] = [...answers, { difficulty: current.difficulty, grade }]
     setAnswers(allAnswers)
@@ -80,19 +79,21 @@ export default function Session() {
   function finishSession(done: Set<string>, allAnswers: AnsweredCard[]) {
     const now = new Date()
     const xpEarned = sessionXp(allAnswers, true)
-    appendXpEntry({
-      amount: xpEarned,
-      reason: 'Session vocabulaire terminée',
-      createdAt: now.toISOString(),
-    })
-    appendSessionRecord({
-      finishedAt: now.toISOString(),
-      cardsReviewed: totalUnique,
-      correctFirstTry: [...done].filter((id) => !lapsedIds.has(id)).length,
-      lapsed: lapsedIds.size,
-      durationSeconds: Math.round((now.getTime() - startedAt.getTime()) / 1000),
-      xpEarned,
-    })
+    recordSession(
+      {
+        finishedAt: now.toISOString(),
+        cardsReviewed: totalUnique,
+        correctFirstTry: [...done].filter((id) => !lapsedIds.has(id)).length,
+        lapsed: lapsedIds.size,
+        durationSeconds: Math.round((now.getTime() - startedAt.getTime()) / 1000),
+        xpEarned,
+      },
+      {
+        amount: xpEarned,
+        reason: 'Session vocabulaire terminée',
+        createdAt: now.toISOString(),
+      },
+    )
     navigate('/bilan')
   }
 
