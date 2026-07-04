@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "defaultMode": "acceptEdits",
+    "allow": [
+      "Bash(npm:*)",
+      "Bash(git:*)",
+      "Bash(npx vite*)",
+      "Bash(npx supabase*)",
+      "Edit(src/**)",
+      "Edit(docs/**)",
+      "Write(src/**)",
+      "Write(docs/**)"
+    ],
+    "deny": ["Read(./.env)", "Read(./secrets/**)"]
+  }
+}

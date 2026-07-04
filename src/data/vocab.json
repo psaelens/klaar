@@ -1,0 +1,578 @@
+[
+  {
+    "id": "school-01",
+    "type": "vocab",
+    "theme": "Op school",
+    "front": "de school",
+    "back": "l'école",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "school-02",
+    "type": "vocab",
+    "theme": "Op school",
+    "front": "het huiswerk",
+    "back": "les devoirs",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "school-03",
+    "type": "vocab",
+    "theme": "Op school",
+    "front": "de leraar",
+    "back": "le professeur",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "school-04",
+    "type": "vocab",
+    "theme": "Op school",
+    "front": "de klas",
+    "back": "la classe",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "school-05",
+    "type": "vocab",
+    "theme": "Op school",
+    "front": "het boek",
+    "back": "le livre",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "school-06",
+    "type": "vocab",
+    "theme": "Op school",
+    "front": "de pen",
+    "back": "le stylo",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "school-07",
+    "type": "vocab",
+    "theme": "Op school",
+    "front": "het examen",
+    "back": "l'examen",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "school-08",
+    "type": "vocab",
+    "theme": "Op school",
+    "front": "leren",
+    "back": "apprendre, étudier",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "eten-01",
+    "type": "vocab",
+    "theme": "Eten en drinken",
+    "front": "het brood",
+    "back": "le pain",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "eten-02",
+    "type": "vocab",
+    "theme": "Eten en drinken",
+    "front": "de kaas",
+    "back": "le fromage",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "eten-03",
+    "type": "vocab",
+    "theme": "Eten en drinken",
+    "front": "de appel",
+    "back": "la pomme",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "eten-04",
+    "type": "vocab",
+    "theme": "Eten en drinken",
+    "front": "het water",
+    "back": "l'eau",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "eten-05",
+    "type": "vocab",
+    "theme": "Eten en drinken",
+    "front": "de melk",
+    "back": "le lait",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "eten-06",
+    "type": "vocab",
+    "theme": "Eten en drinken",
+    "front": "het ontbijt",
+    "back": "le petit-déjeuner",
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "eten-07",
+    "type": "vocab",
+    "theme": "Eten en drinken",
+    "front": "eten",
+    "back": "manger",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "eten-08",
+    "type": "vocab",
+    "theme": "Eten en drinken",
+    "front": "drinken",
+    "back": "boire",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "familie-01",
+    "type": "vocab",
+    "theme": "De familie",
+    "front": "de moeder",
+    "back": "la mère",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "familie-02",
+    "type": "vocab",
+    "theme": "De familie",
+    "front": "de vader",
+    "back": "le père",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "familie-03",
+    "type": "vocab",
+    "theme": "De familie",
+    "front": "de broer",
+    "back": "le frère",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "familie-04",
+    "type": "vocab",
+    "theme": "De familie",
+    "front": "de zus",
+    "back": "la sœur",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "familie-05",
+    "type": "vocab",
+    "theme": "De familie",
+    "front": "de grootouders",
+    "back": "les grands-parents",
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "familie-06",
+    "type": "vocab",
+    "theme": "De familie",
+    "front": "het gezin",
+    "back": "la famille (le foyer)",
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "familie-07",
+    "type": "vocab",
+    "theme": "De familie",
+    "front": "de oom",
+    "back": "l'oncle",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "familie-08",
+    "type": "vocab",
+    "theme": "De familie",
+    "front": "de tante",
+    "back": "la tante",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "vrijetijd-01",
+    "type": "vocab",
+    "theme": "Vrije tijd",
+    "front": "het spel",
+    "back": "le jeu",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "vrijetijd-02",
+    "type": "vocab",
+    "theme": "Vrije tijd",
+    "front": "de film",
+    "back": "le film",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "vrijetijd-03",
+    "type": "vocab",
+    "theme": "Vrije tijd",
+    "front": "de muziek",
+    "back": "la musique",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "vrijetijd-04",
+    "type": "vocab",
+    "theme": "Vrije tijd",
+    "front": "voetballen",
+    "back": "jouer au football",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "vrijetijd-05",
+    "type": "vocab",
+    "theme": "Vrije tijd",
+    "front": "zwemmen",
+    "back": "nager",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "vrijetijd-06",
+    "type": "vocab",
+    "theme": "Vrije tijd",
+    "front": "lezen",
+    "back": "lire",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "vrijetijd-07",
+    "type": "vocab",
+    "theme": "Vrije tijd",
+    "front": "de hobby",
+    "back": "le passe-temps",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "vrijetijd-08",
+    "type": "vocab",
+    "theme": "Vrije tijd",
+    "front": "fietsen",
+    "back": "faire du vélo",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "weer-01",
+    "type": "vocab",
+    "theme": "Het weer",
+    "front": "de zon",
+    "back": "le soleil",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "weer-02",
+    "type": "vocab",
+    "theme": "Het weer",
+    "front": "de regen",
+    "back": "la pluie",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "weer-03",
+    "type": "vocab",
+    "theme": "Het weer",
+    "front": "de wind",
+    "back": "le vent",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "weer-04",
+    "type": "vocab",
+    "theme": "Het weer",
+    "front": "de sneeuw",
+    "back": "la neige",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "weer-05",
+    "type": "vocab",
+    "theme": "Het weer",
+    "front": "het onweer",
+    "back": "l'orage",
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "weer-06",
+    "type": "vocab",
+    "theme": "Het weer",
+    "front": "warm",
+    "back": "chaud",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "weer-07",
+    "type": "vocab",
+    "theme": "Het weer",
+    "front": "koud",
+    "back": "froid",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "weer-08",
+    "type": "vocab",
+    "theme": "Het weer",
+    "front": "de wolk",
+    "back": "le nuage",
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "stad-01",
+    "type": "vocab",
+    "theme": "In de stad",
+    "front": "de winkel",
+    "back": "le magasin",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "stad-02",
+    "type": "vocab",
+    "theme": "In de stad",
+    "front": "de straat",
+    "back": "la rue",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "stad-03",
+    "type": "vocab",
+    "theme": "In de stad",
+    "front": "het station",
+    "back": "la gare",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "stad-04",
+    "type": "vocab",
+    "theme": "In de stad",
+    "front": "de bushalte",
+    "back": "l'arrêt de bus",
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "stad-05",
+    "type": "vocab",
+    "theme": "In de stad",
+    "front": "het ziekenhuis",
+    "back": "l'hôpital",
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "stad-06",
+    "type": "vocab",
+    "theme": "In de stad",
+    "front": "de markt",
+    "back": "le marché",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "stad-07",
+    "type": "vocab",
+    "theme": "In de stad",
+    "front": "links",
+    "back": "à gauche",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "stad-08",
+    "type": "vocab",
+    "theme": "In de stad",
+    "front": "rechts",
+    "back": "à droite",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "tijd-01",
+    "type": "vocab",
+    "theme": "De tijd",
+    "front": "vandaag",
+    "back": "aujourd'hui",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "tijd-02",
+    "type": "vocab",
+    "theme": "De tijd",
+    "front": "morgen",
+    "back": "demain",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "tijd-03",
+    "type": "vocab",
+    "theme": "De tijd",
+    "front": "gisteren",
+    "back": "hier",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "tijd-04",
+    "type": "vocab",
+    "theme": "De tijd",
+    "front": "de week",
+    "back": "la semaine",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "tijd-05",
+    "type": "vocab",
+    "theme": "De tijd",
+    "front": "het jaar",
+    "back": "l'année",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "tijd-06",
+    "type": "vocab",
+    "theme": "De tijd",
+    "front": "het uur",
+    "back": "l'heure",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "tijd-07",
+    "type": "vocab",
+    "theme": "De tijd",
+    "front": "de maand",
+    "back": "le mois",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "tijd-08",
+    "type": "vocab",
+    "theme": "De tijd",
+    "front": "altijd",
+    "back": "toujours",
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gevoel-01",
+    "type": "vocab",
+    "theme": "Gevoelens",
+    "front": "blij",
+    "back": "content, heureux",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gevoel-02",
+    "type": "vocab",
+    "theme": "Gevoelens",
+    "front": "verdrietig",
+    "back": "triste",
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gevoel-03",
+    "type": "vocab",
+    "theme": "Gevoelens",
+    "front": "moe",
+    "back": "fatigué",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gevoel-04",
+    "type": "vocab",
+    "theme": "Gevoelens",
+    "front": "bang",
+    "back": "effrayé (avoir peur)",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gevoel-05",
+    "type": "vocab",
+    "theme": "Gevoelens",
+    "front": "boos",
+    "back": "fâché",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gevoel-06",
+    "type": "vocab",
+    "theme": "Gevoelens",
+    "front": "ziek",
+    "back": "malade",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gevoel-07",
+    "type": "vocab",
+    "theme": "Gevoelens",
+    "front": "graag",
+    "back": "volontiers, avec plaisir",
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gevoel-08",
+    "type": "vocab",
+    "theme": "Gevoelens",
+    "front": "leuk",
+    "back": "chouette, amusant",
+    "difficulty": 1,
+    "curriculum_unit": null
+  }
+]
