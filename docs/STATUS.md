@@ -1,14 +1,14 @@
 # STATUS — état d'avancement Klaar!
 
-## Étape roadmap en cours : M1 (sous-étapes 1-3/5 terminées : XP+streak, schéma+RLS, sync app)
+## Étape roadmap en cours : M1 (sous-étapes 1-4/5 terminées ; reste : projet Supabase hébergé)
 
 ## Dernière action terminée :
 
-M1 sous-étape 3 : intégration Supabase dans l'app. `src/lib/supabase.ts` (client derrière env, null = mode local), `src/lib/repo.ts` (couche d'accès : write-through localStorage→cloud, file de retry `klaar.pushqueue.v1`, migration unique des données pré-connexion, pull serveur au démarrage), écran `/config` (login + wizard « créer le foyer » : compte parent, compte élève en plus-addressing, l'appareil reste connecté élève). Vérifié E2E au navigateur contre le stack local : migration (8 SRS + session + 100 XP), write-through, pull sur 2e appareil, login parent. `.env.local` (gitignoré) pointe le stack local pour ces tests.
+M1 sous-étape 4 : écran `/import` (réservé au parent connecté) — collage de texte `mot néerlandais ; traduction` ligne par ligne, parseur pur testé (`src/lib/importParse.ts`, 6 tests — 30 au total), prévisualisation avec erreurs par ligne (séparateur manquant, doublons), champs thème/unité/difficulté, insertion dans `content_items` du foyer. Lien depuis `/config` quand le rôle est parent. Vérifié E2E contre le stack local : import parent OK, élève bloqué, mots visibles côté serveur.
 
 ## Prochaine action à faire :
 
-M1 sous-étape 4 : écran d'import de contenu (réservé au parent connecté) — coller du texte (une ligne = `mot néerlandais ; traduction`, ou JSON), prévisualisation/validation, insertion dans `content_items` du foyer avec `theme`/`curriculum_unit`. Puis sous-étape 5 : brancher le projet Supabase HÉBERGÉ — **nécessite `npx supabase login` par Pierre** — créer le projet, `supabase link`, `supabase db push`, seed, désactiver la confirmation d'email (Auth > Sign In / Up), mettre `VITE_SUPABASE_URL`/`VITE_SUPABASE_ANON_KEY` dans Vercel (`npx vercel env add`), redéployer, re-vérifier le wizard en prod.
+M1 sous-étape 5 (dernière) : brancher le projet Supabase HÉBERGÉ — **nécessite `npx supabase login` par Pierre** (taper `! npx supabase login` dans la session Claude). Ensuite : `npx supabase projects create klaar` (ou choisir un projet existant), `npx supabase link --project-ref <ref>`, `npx supabase db push`, appliquer le seed (`psql` ou copier seed.sql dans le SQL editor), désactiver la confirmation d'email (Dashboard > Auth > Sign In/Up > Email > Confirm email OFF), mettre `VITE_SUPABASE_URL`/`VITE_SUPABASE_ANON_KEY` dans Vercel (`npx vercel env add`), redéployer, vérifier le wizard foyer en prod. Après ça M1 est terminé → M2 (grammaire drills + dashboard parent v1).
 
 ## Décisions en attente de validation par Pierre :
 

@@ -160,6 +160,14 @@ export default function Config() {
           <p className="text-sm text-slate-500 dark:text-slate-400">
             Les révisions se synchronisent automatiquement entre les appareils.
           </p>
+          {profile?.role === 'parent' && (
+            <Link
+              to="/import"
+              className="w-full rounded-2xl border-2 border-teal-600 px-6 py-3 text-center font-bold text-teal-700 transition hover:bg-teal-50 active:scale-95 dark:text-teal-400 dark:hover:bg-slate-800"
+            >
+              Importer du vocabulaire
+            </Link>
+          )}
           <button type="button" onClick={handleLogout} disabled={busy} className={buttonClass}>
             Se déconnecter
           </button>
