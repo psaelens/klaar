@@ -1,20 +1,19 @@
 # STATUS — état d'avancement Klaar!
 
-## Étape roadmap en cours : M1 TERMINÉ et déployé → prochaine étape M2
+## Étape roadmap en cours : M2 (grammaire + dashboard parent v1)
 
 ## Dernière action terminée :
 
-M1 sous-étape 5 : projet Supabase hébergé **klaar** créé (ref `rlpwxnekrgumefkxtuax`, org « SPi Consulting », région eu-west-3, choisie par Pierre), repo lié, migration poussée (`supabase db push`), config auth poussée (confirmation d'email désactivée ; `[storage.vector]` désactivé dans config.toml — plan Pro requis sinon), 64 mots seedés, `VITE_SUPABASE_URL`/`VITE_SUPABASE_ANON_KEY` ajoutées à Vercel (production), redéployé et **vérifié E2E en prod** : wizard foyer, session, write-through (session + 8 états SRS retrouvés sur le serveur), comptes de test supprimés. Le mot de passe DB est dans `.env.local` (gitignoré) sous `SUPABASE_DB_PASSWORD` ; les `VITE_*` de `.env.local` pointent le stack local Docker pour le dev, la prod utilise les env Vercel.
+M2 sous-étape 1 : schéma + contenu grammaire. Migration `20260705090000_m2_grammar_module.sql` (colonne `content_items.choices` jsonb pour les options de QCM, colonne `sessions.module` vocab|grammar) appliquée en local ET sur l'hébergé (`supabase db push` après re-link — le mot de passe DB est lu depuis `SUPABASE_DB_PASSWORD` de `.env.local`, jamais affiché). 41 drills de grammaire A2 dans `src/data/grammar.json` (présent, hebben/zijn, négation, inversion, perfectum, modaux, pronoms, pluriel, interrogatifs), `supabase/generate-seed.mjs` régénère `seed.sql` (upsert), 105 items globaux seedés sur l'hébergé. Types Supabase régénérés (via `--db-url`, le mode `--local` échouait en auth). Repo/pages adaptés (filtre vocab provisoire, l'UI drill arrive en M2.2). RLS 18/18 ✅, 30 tests ✅, build ✅.
 
 ## Prochaine action à faire :
 
-1) **Pierre** : faire l'onboarding réel sur l'appareil de l'élève — https://klaar-nine.vercel.app → ⚙️ → « Première fois : créer le foyer » (email parent réel + mot de passe, prénom + code élève ; noter l'email élève suggéré pour ses autres appareils). 2) **Dev** : démarrer M2 (PRD §11) — module grammaire (drills) : modèle de contenu `grammar` (déjà prévu dans le schéma), écran de drill (texte à trou / choix), sélection SRS commune, puis dashboard parent v1 (calendrier jours travaillés, minutes/jour, taux de réussite — lecture seule via les policies parent déjà en place et testées).
+M2 sous-étape 2 : écran de drill grammaire — Session paramétrée par module (`/session?m=vocab|grammar`), UI QCM (correct = Réussi, faux = À revoir + re-mise en file), accueil à deux modules avec compteurs par modalité, `SessionRecord.module` renseigné, XP inchangé, tests à jour. Puis M2.3 : dashboard parent v1 (`/parent`, calendrier 4 semaines, minutes/jour, taux de réussite global + par module, agrégations pures testées dans `src/lib/dashboard.ts`). Puis M2.4 : vérif E2E Playwright + prod, STATUS/annonce. NB : l'auto-déploiement Vercel au push sur `main` est actif (app GitHub installée par Pierre) — la base hébergée doit toujours être migrée AVANT le push.
 
 ## Décisions en attente de validation par Pierre :
 
-- Faire vérifier les 64 mots de vocabulaire de départ (`src/data/vocab.json`) par un néerlandophone (PRD §13) — générés par Claude, non validés par un tiers.
-- Installer l'app GitHub de Vercel (https://vercel.link/git) pour l'auto-déploiement à chaque push. En attendant, déploiement manuel via `npx vercel deploy --prod --yes` (CLI authentifié, projet `klaar`, prod : https://klaar-nine.vercel.app).
-- Le repo GitHub `psaelens/klaar` est **public** — confirmer que c'est voulu pour une app familiale.
+- Faire vérifier le contenu de départ par un néerlandophone (PRD §13) : les 64 mots (`src/data/vocab.json`) ET les 41 drills de grammaire (`src/data/grammar.json`) — générés par Claude, non validés par un tiers.
+- (Résolu 2026-07-05 : auto-déploiement Vercel au push sur `main` actif ; repo public confirmé par Pierre.)
 
 ## Points d'attention / bugs connus non résolus :
 

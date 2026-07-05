@@ -4,7 +4,15 @@
  * Crée des utilisateurs jetables (préfixe rls-check-) puis les supprime.
  */
 import { execSync } from 'node:child_process'
+import { readFileSync } from 'node:fs'
+import { dirname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { createClient } from '@supabase/supabase-js'
+
+const dataDir = join(dirname(fileURLToPath(import.meta.url)), '../../src/data')
+const seedCount =
+  JSON.parse(readFileSync(join(dataDir, 'vocab.json'), 'utf-8')).length +
+  JSON.parse(readFileSync(join(dataDir, 'grammar.json'), 'utf-8')).length
 
 const status = JSON.parse(execSync('npx supabase status -o json', { encoding: 'utf-8' }))
 const URL = status.API_URL
@@ -84,8 +92,8 @@ try {
   // --- Contenu
   const { data: contentChild } = await child.from('content_items').select('id')
   check(
-    'enfant lit le contenu global de départ (64 items)',
-    contentChild?.length === 64,
+    `enfant lit le contenu global de départ (${seedCount} items)`,
+    contentChild?.length === seedCount,
     `${contentChild?.length} lignes`,
   )
 

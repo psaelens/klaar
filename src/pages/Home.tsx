@@ -5,7 +5,7 @@ import { computeStreak } from '../lib/streak'
 import { loadSessionRecords, totalXp } from '../lib/storage'
 
 export default function Home() {
-  const items = getContentItems()
+  const items = getContentItems().filter((item) => item.type === 'vocab')
   const states = getSrsStates()
   const { reviews, fresh } = selectSessionItems(items, states, new Date())
   const total = reviews.length + fresh.length

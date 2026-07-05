@@ -1,5 +1,5 @@
 import type { ContentItem, SessionRecord, SrsState, XpEntry } from '../types'
-import { vocabItems } from '../data'
+import { seedItems } from '../data'
 import { supabase } from './supabase'
 import {
   appendSessionRecord,
@@ -51,7 +51,7 @@ const cache: {
   states: Record<string, SrsState>
   userId: string | null
 } = {
-  items: vocabItems,
+  items: seedItems,
   states: {},
   userId: null,
 }
@@ -80,6 +80,7 @@ async function pushOp(userId: string, op: PushOp): Promise<boolean> {
       lapsed: op.record.lapsed,
       duration_seconds: op.record.durationSeconds ?? null,
       xp_earned: op.record.xpEarned ?? null,
+      module: op.record.module ?? null,
     })
     return error === null
   }
@@ -141,6 +142,7 @@ async function pullFromCloud(userId: string): Promise<void> {
       theme: row.theme,
       front: row.front,
       back: row.back,
+      choices: (row.choices as string[] | null) ?? null,
       difficulty: row.difficulty as ContentItem['difficulty'],
       curriculum_unit: row.curriculum_unit,
     }))
@@ -172,6 +174,7 @@ async function pullFromCloud(userId: string): Promise<void> {
     replaceSessionRecords(
       sessionRows.map((row) => ({
         finishedAt: row.finished_at,
+        module: (row.module as SessionRecord['module']) ?? undefined,
         cardsReviewed: row.cards_reviewed,
         correctFirstTry: row.correct_first_try,
         lapsed: row.lapsed,
@@ -196,7 +199,7 @@ async function pullFromCloud(userId: string): Promise<void> {
 /** À appeler une fois au démarrage de l'app, avant le premier rendu des pages. */
 export async function initRepo(): Promise<void> {
   cache.states = loadSrsStates()
-  cache.items = vocabItems
+  cache.items = seedItems
   cache.userId = null
   if (supabase === null) return
 

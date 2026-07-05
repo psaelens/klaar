@@ -1,12 +1,17 @@
-/** Item de contenu pédagogique (aligné sur le futur schéma `content_items`, PRD §7). */
+/** Modalité de travail (sous-ensemble des types de contenu déjà jouables). */
+export type Module = 'vocab' | 'grammar'
+
+/** Item de contenu pédagogique (aligné sur le schéma `content_items`, PRD §7). */
 export interface ContentItem {
   id: string
-  type: 'vocab'
+  type: Module
   theme: string
-  /** Face question : le mot en néerlandais. */
+  /** Face question : mot en néerlandais (vocab) ou phrase à trou (grammar). */
   front: string
-  /** Face réponse : la traduction française. */
+  /** Face réponse : traduction française (vocab) ou bonne réponse du drill (grammar). */
   back: string
+  /** Options du drill à choix, bonne réponse incluse (grammar) ; absent pour le vocabulaire. */
+  choices?: string[] | null
   difficulty: 1 | 2 | 3
   /** Unité du programme (null tant que les feuilles scannées ne sont pas importées). */
   curriculum_unit: string | null
@@ -29,6 +34,8 @@ export interface SrsState {
 /** Résumé d'une session de révision terminée. */
 export interface SessionRecord {
   finishedAt: string
+  /** Modalité travaillée (absent sur les sessions d'avant M2 : vocabulaire). */
+  module?: Module
   /** Nombre de cartes distinctes vues. */
   cardsReviewed: number
   /** Cartes réussies du premier coup. */

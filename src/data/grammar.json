@@ -1,0 +1,412 @@
+[
+  {
+    "id": "gram-pres-01",
+    "type": "grammar",
+    "theme": "Le présent",
+    "front": "Hij ___ in Brussel. (wonen)",
+    "back": "woont",
+    "choices": ["woon", "woont", "wonen"],
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-pres-02",
+    "type": "grammar",
+    "theme": "Le présent",
+    "front": "Ik ___ graag naar muziek. (luisteren)",
+    "back": "luister",
+    "choices": ["luister", "luistert", "luisteren"],
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-pres-03",
+    "type": "grammar",
+    "theme": "Le présent",
+    "front": "___ jij morgen naar school? (gaan)",
+    "back": "Ga",
+    "choices": ["Ga", "Gaat", "Gaan"],
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-pres-04",
+    "type": "grammar",
+    "theme": "Le présent",
+    "front": "Wij ___ Nederlands op school. (leren)",
+    "back": "leren",
+    "choices": ["leer", "leert", "leren"],
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-pres-05",
+    "type": "grammar",
+    "theme": "Le présent",
+    "front": "Zij ___ een boek. (lezen — zij = elle)",
+    "back": "leest",
+    "choices": ["lees", "leest", "lezen"],
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-pres-06",
+    "type": "grammar",
+    "theme": "Le présent",
+    "front": "Jij ___ altijd te laat. (komen)",
+    "back": "komt",
+    "choices": ["kom", "komt", "komen"],
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-zijn-01",
+    "type": "grammar",
+    "theme": "Hebben & zijn",
+    "front": "Ik ___ veertien jaar.",
+    "back": "ben",
+    "choices": ["ben", "bent", "is"],
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-zijn-02",
+    "type": "grammar",
+    "theme": "Hebben & zijn",
+    "front": "Hij ___ twee zussen.",
+    "back": "heeft",
+    "choices": ["heb", "hebt", "heeft"],
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-zijn-03",
+    "type": "grammar",
+    "theme": "Hebben & zijn",
+    "front": "Wij ___ moe na de sportles.",
+    "back": "zijn",
+    "choices": ["ben", "is", "zijn"],
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-zijn-04",
+    "type": "grammar",
+    "theme": "Hebben & zijn",
+    "front": "___ je een fiets?",
+    "back": "Heb",
+    "choices": ["Heb", "Hebt", "Heeft"],
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-neg-01",
+    "type": "grammar",
+    "theme": "La négation (niet / geen)",
+    "front": "Ik heb ___ fiets.",
+    "back": "geen",
+    "choices": ["niet", "geen", "nee"],
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-neg-02",
+    "type": "grammar",
+    "theme": "La négation (niet / geen)",
+    "front": "Hij komt ___ naar het feest.",
+    "back": "niet",
+    "choices": ["geen", "niet", "nee"],
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-neg-03",
+    "type": "grammar",
+    "theme": "La négation (niet / geen)",
+    "front": "Zij drinkt ___ koffie.",
+    "back": "geen",
+    "choices": ["niet", "geen", "nee"],
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-neg-04",
+    "type": "grammar",
+    "theme": "La négation (niet / geen)",
+    "front": "Wij hebben vandaag ___ huiswerk.",
+    "back": "geen",
+    "choices": ["niet", "geen", "nee"],
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-neg-05",
+    "type": "grammar",
+    "theme": "La négation (niet / geen)",
+    "front": "Ik begrijp de vraag ___.",
+    "back": "niet",
+    "choices": ["geen", "niet", "nee"],
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-orde-01",
+    "type": "grammar",
+    "theme": "L'ordre des mots (inversion)",
+    "front": "Morgen ___ naar zee.",
+    "back": "gaan wij",
+    "choices": ["wij gaan", "gaan wij", "gaat wij"],
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-orde-02",
+    "type": "grammar",
+    "theme": "L'ordre des mots (inversion)",
+    "front": "Vandaag ___ thuis.",
+    "back": "blijf ik",
+    "choices": ["ik blijf", "blijf ik", "blijft ik"],
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-orde-03",
+    "type": "grammar",
+    "theme": "L'ordre des mots (inversion)",
+    "front": "In de zomer ___ vaak in het meer.",
+    "back": "zwemmen we",
+    "choices": ["we zwemmen", "zwemmen we", "zwemt we"],
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-orde-04",
+    "type": "grammar",
+    "theme": "L'ordre des mots (inversion)",
+    "front": "Na school ___ mijn huiswerk.",
+    "back": "maak ik",
+    "choices": ["ik maak", "maak ik", "maakt ik"],
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-perf-01",
+    "type": "grammar",
+    "theme": "Le perfectum",
+    "front": "Ik ___ gisteren gevoetbald.",
+    "back": "heb",
+    "choices": ["heb", "ben", "hebt"],
+    "difficulty": 3,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-perf-02",
+    "type": "grammar",
+    "theme": "Le perfectum",
+    "front": "Wij ___ naar Antwerpen gefietst.",
+    "back": "zijn",
+    "choices": ["hebben", "zijn", "is"],
+    "difficulty": 3,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-perf-03",
+    "type": "grammar",
+    "theme": "Le perfectum",
+    "front": "Hij heeft een boek ___. (lezen)",
+    "back": "gelezen",
+    "choices": ["gelezen", "geleest", "lezen"],
+    "difficulty": 3,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-perf-04",
+    "type": "grammar",
+    "theme": "Le perfectum",
+    "front": "Zij heeft haar huiswerk ___. (maken)",
+    "back": "gemaakt",
+    "choices": ["gemaakt", "gemaakd", "maken"],
+    "difficulty": 3,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-perf-05",
+    "type": "grammar",
+    "theme": "Le perfectum",
+    "front": "Ik heb gisteravond tv ___. (kijken)",
+    "back": "gekeken",
+    "choices": ["gekeken", "gekijkt", "kijken"],
+    "difficulty": 3,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-perf-06",
+    "type": "grammar",
+    "theme": "Le perfectum",
+    "front": "Wij ___ gisteren thuis gebleven.",
+    "back": "zijn",
+    "choices": ["hebben", "zijn", "heeft"],
+    "difficulty": 3,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-modal-01",
+    "type": "grammar",
+    "theme": "Les verbes modaux",
+    "front": "Ik ___ goed zwemmen. (savoir / pouvoir)",
+    "back": "kan",
+    "choices": ["kan", "kun", "kunt"],
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-modal-02",
+    "type": "grammar",
+    "theme": "Les verbes modaux",
+    "front": "Jij ___ eerst je huiswerk maken. (devoir)",
+    "back": "moet",
+    "choices": ["moet", "mag", "wil"],
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-modal-03",
+    "type": "grammar",
+    "theme": "Les verbes modaux",
+    "front": "___ ik naar het toilet? (demander la permission)",
+    "back": "Mag",
+    "choices": ["Mag", "Moet", "Wil"],
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-modal-04",
+    "type": "grammar",
+    "theme": "Les verbes modaux",
+    "front": "Wij ___ een film kijken. (vouloir)",
+    "back": "willen",
+    "choices": ["wil", "willen", "wilt"],
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-modal-05",
+    "type": "grammar",
+    "theme": "Les verbes modaux",
+    "front": "Hij kan vandaag niet ___. (komen — attention à la place du verbe)",
+    "back": "komen",
+    "choices": ["komt", "komen", "kwam"],
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-pron-01",
+    "type": "grammar",
+    "theme": "Les pronoms",
+    "front": "___ woont in Gent. (il)",
+    "back": "Hij",
+    "choices": ["Hij", "Hem", "Zij"],
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-pron-02",
+    "type": "grammar",
+    "theme": "Les pronoms",
+    "front": "Ik zie ___ morgen. (lui)",
+    "back": "hem",
+    "choices": ["hij", "hem", "zij"],
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-pron-03",
+    "type": "grammar",
+    "theme": "Les pronoms",
+    "front": "Dat is ___ boek. (mon)",
+    "back": "mijn",
+    "choices": ["mijn", "mij", "ik"],
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-pron-04",
+    "type": "grammar",
+    "theme": "Les pronoms",
+    "front": "___ fiets is rood. (sa — à elle)",
+    "back": "Haar",
+    "choices": ["Haar", "Zijn", "Hun"],
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-plur-01",
+    "type": "grammar",
+    "theme": "Le pluriel",
+    "front": "één boek, twee ___",
+    "back": "boeken",
+    "choices": ["boeks", "boeken", "boekken"],
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-plur-02",
+    "type": "grammar",
+    "theme": "Le pluriel",
+    "front": "één tafel, twee ___",
+    "back": "tafels",
+    "choices": ["tafels", "tafelen", "tafells"],
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-plur-03",
+    "type": "grammar",
+    "theme": "Le pluriel",
+    "front": "één kind, twee ___",
+    "back": "kinderen",
+    "choices": ["kinds", "kinden", "kinderen"],
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-vraag-01",
+    "type": "grammar",
+    "theme": "Les mots interrogatifs",
+    "front": "___ woon je? — In Luik.",
+    "back": "Waar",
+    "choices": ["Waar", "Wanneer", "Wie"],
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-vraag-02",
+    "type": "grammar",
+    "theme": "Les mots interrogatifs",
+    "front": "___ oud ben je?",
+    "back": "Hoe",
+    "choices": ["Hoe", "Wat", "Waar"],
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-vraag-03",
+    "type": "grammar",
+    "theme": "Les mots interrogatifs",
+    "front": "___ kom je niet? — Omdat ik ziek ben.",
+    "back": "Waarom",
+    "choices": ["Waarom", "Wanneer", "Waar"],
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "gram-vraag-04",
+    "type": "grammar",
+    "theme": "Les mots interrogatifs",
+    "front": "___ is dat meisje? — Mijn zus.",
+    "back": "Wie",
+    "choices": ["Wie", "Wat", "Waar"],
+    "difficulty": 1,
+    "curriculum_unit": null
+  }
+]

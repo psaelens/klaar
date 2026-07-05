@@ -14,7 +14,8 @@ interface SessionData {
 
 function buildSession(): SessionData {
   const states = getSrsStates()
-  const { reviews, fresh } = selectSessionItems(getContentItems(), states, new Date())
+  const vocabOnly = getContentItems().filter((item) => item.type === 'vocab')
+  const { reviews, fresh } = selectSessionItems(vocabOnly, states, new Date())
   return {
     queue: [...reviews, ...fresh],
     states,
