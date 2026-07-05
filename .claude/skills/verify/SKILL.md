@@ -33,7 +33,12 @@ collecter `pageerror`.
    700 ms puis carte suivante (prévoir `waitForTimeout(900)`) ; mauvaise réponse =
    bouton « Compris, on la retravaillera » + carte re-mise en file. Pour répondre juste,
    mapper `front → back` depuis `src/data/grammar.json`.
-4. Fin de file → `/bilan` (stats + « Session vocabulaire/grammaire terminée » + XP).
+3b. Écoute (`/session?m=listening`) : bouton « 🔊 Écouter » (TTS, silencieux en headless),
+   question FR (`p.text-xl` de la carte) + QCM `button[lang=fr]`, transcript « … » révélé
+   après la réponse. Mapper `question → back` depuis `src/data/listening.json`.
+4. Fin de file → `/bilan` (stats + « Session … terminée » + XP + célébration des nouveaux
+   badges — 1re session d'un contexte vierge : « Premier pas » 🐣 et « Sans faute » 🎯 ;
+   vitrine emoji à l'accueil ensuite ; `localStorage['klaar.badges.v1']`).
 5. Foyer : `/config` → « Première fois : créer le foyer » (l'appareil reste connecté élève).
 6. Parent (2e contexte) : login `/config` → liens « Suivi de l'élève » (`/parent` :
    streak, XP, minutes 7 jours, taux global + par module, calendrier 4 semaines) et
