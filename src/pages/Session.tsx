@@ -1,8 +1,9 @@
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router'
-import type { ContentItem, Grade, SrsState } from '../types'
+import { useMemo, useState } from 'react'
+import { Link, useNavigate, useSearchParams } from 'react-router'
+import type { ContentItem, Grade, Module, SrsState } from '../types'
 import { getContentItems, getSrsStates, recordSession, saveState } from '../lib/repo'
 import { initialSrsState, review, selectSessionItems } from '../lib/srs'
+import { itemsForModule, MODULE_LABELS, shuffle } from '../lib/modules'
 import { sessionXp, type AnsweredCard } from '../lib/xp'
 import ProgressBar from '../components/ProgressBar'
 
@@ -12,10 +13,10 @@ interface SessionData {
   newIds: Set<string>
 }
 
-function buildSession(): SessionData {
+function buildSession(module: Module): SessionData {
   const states = getSrsStates()
-  const vocabOnly = getContentItems().filter((item) => item.type === 'vocab')
-  const { reviews, fresh } = selectSessionItems(vocabOnly, states, new Date())
+  const items = itemsForModule(getContentItems(), module)
+  const { reviews, fresh } = selectSessionItems(items, states, new Date())
   return {
     queue: [...reviews, ...fresh],
     states,
@@ -25,10 +26,14 @@ function buildSession(): SessionData {
 
 export default function Session() {
   const navigate = useNavigate()
-  const [session] = useState(buildSession)
+  const [searchParams] = useSearchParams()
+  const module: Module = searchParams.get('m') === 'grammar' ? 'grammar' : 'vocab'
+  const [session] = useState(() => buildSession(module))
   const [startedAt] = useState(() => new Date())
   const [queue, setQueue] = useState(session.queue)
   const [revealed, setRevealed] = useState(false)
+  // Drill : option choisie (null tant que l'élève n'a pas répondu)
+  const [picked, setPicked] = useState<string | null>(null)
   // Cartes terminées (réussies) / ratées au moins une fois pendant la session
   const [doneIds, setDoneIds] = useState<Set<string>>(new Set())
   const [lapsedIds, setLapsedIds] = useState<Set<string>>(new Set())
@@ -36,6 +41,14 @@ export default function Session() {
 
   const totalUnique = new Set(session.queue.map((item) => item.id)).size
   const current = queue[0]
+  const isDrill = current !== undefined && (current.choices?.length ?? 0) > 0
+
+  // Ordre des options mélangé une fois par présentation de la carte.
+  const options = useMemo(
+    () => (current?.choices !== undefined && current.choices !== null ? shuffle(current.choices) : []),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [current?.id, queue.length],
+  )
 
   if (current === undefined) {
     // File vide dès l'arrivée (rien à réviser) : retour à l'accueil.
@@ -75,6 +88,16 @@ export default function Session() {
       }
     }
     setRevealed(false)
+    setPicked(null)
+  }
+
+  function handlePick(option: string) {
+    if (picked !== null || current === undefined) return
+    setPicked(option)
+    if (option === current.back) {
+      // Bonne réponse : petit feedback visuel puis carte suivante.
+      setTimeout(() => handleGrade('good'), 700)
+    }
   }
 
   function finishSession(done: Set<string>, allAnswers: AnsweredCard[]) {
@@ -83,6 +106,7 @@ export default function Session() {
     recordSession(
       {
         finishedAt: now.toISOString(),
+        module,
         cardsReviewed: totalUnique,
         correctFirstTry: [...done].filter((id) => !lapsedIds.has(id)).length,
         lapsed: lapsedIds.size,
@@ -91,11 +115,21 @@ export default function Session() {
       },
       {
         amount: xpEarned,
-        reason: 'Session vocabulaire terminée',
+        reason: `Session ${MODULE_LABELS[module].toLowerCase()} terminée`,
         createdAt: now.toISOString(),
       },
     )
     navigate('/bilan')
+  }
+
+  const optionClass = (option: string): string => {
+    if (picked === null)
+      return 'border-slate-200 bg-white hover:border-teal-400 dark:border-slate-600 dark:bg-slate-800'
+    if (option === current.back)
+      return 'border-teal-600 bg-teal-50 font-bold text-teal-800 dark:bg-teal-900 dark:text-teal-100'
+    if (option === picked)
+      return 'border-amber-500 bg-amber-50 text-amber-800 dark:bg-amber-900 dark:text-amber-100'
+    return 'border-slate-200 bg-white opacity-50 dark:border-slate-600 dark:bg-slate-800'
   }
 
   return (
@@ -116,13 +150,39 @@ export default function Session() {
             </span>
           )}
         </p>
-        <p lang="nl" className="text-3xl font-bold">
+        <p lang="nl" className={isDrill ? 'text-xl font-bold sm:text-2xl' : 'text-3xl font-bold'}>
           {current.front}
         </p>
-        {revealed && <p className="mt-4 text-xl text-teal-700 dark:text-teal-400">{current.back}</p>}
+        {!isDrill && revealed && (
+          <p className="mt-4 text-xl text-teal-700 dark:text-teal-400">{current.back}</p>
+        )}
       </div>
 
-      {revealed ? (
+      {isDrill ? (
+        <div className="flex flex-col gap-3">
+          {options.map((option) => (
+            <button
+              key={option}
+              type="button"
+              disabled={picked !== null}
+              onClick={() => handlePick(option)}
+              lang="nl"
+              className={`rounded-2xl border-2 px-4 py-4 text-lg font-semibold transition active:scale-95 ${optionClass(option)}`}
+            >
+              {option}
+            </button>
+          ))}
+          {picked !== null && picked !== current.back && (
+            <button
+              type="button"
+              onClick={() => handleGrade('again')}
+              className="rounded-2xl bg-teal-600 py-4 font-bold text-white transition hover:bg-teal-700 active:scale-95"
+            >
+              Compris, on la retravaillera →
+            </button>
+          )}
+        </div>
+      ) : revealed ? (
         <div className="grid grid-cols-3 gap-3">
           <button
             type="button"

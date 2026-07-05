@@ -1,5 +1,6 @@
 import { Link } from 'react-router'
 import { loadSessionRecords } from '../lib/storage'
+import { MODULE_LABELS } from '../lib/modules'
 
 export default function Summary() {
   const records = loadSessionRecords()
@@ -27,7 +28,9 @@ export default function Summary() {
     <div className="flex flex-1 flex-col items-center justify-center gap-8 text-center">
       <div>
         <h1 className="text-2xl font-extrabold text-teal-700 dark:text-teal-400">Sessie klaar ! 🎉</h1>
-        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Session terminée</p>
+        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+          Session {MODULE_LABELS[last.module ?? 'vocab'].toLowerCase()} terminée
+        </p>
       </div>
 
       <dl className="grid w-full grid-cols-3 gap-3">
