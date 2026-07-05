@@ -143,6 +143,7 @@ async function pullFromCloud(userId: string): Promise<void> {
       front: row.front,
       back: row.back,
       choices: (row.choices as string[] | null) ?? null,
+      question: row.question,
       difficulty: row.difficulty as ContentItem['difficulty'],
       curriculum_unit: row.curriculum_unit,
     }))

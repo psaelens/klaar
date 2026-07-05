@@ -4,6 +4,7 @@ import type { ContentItem, Module } from '../types'
 export const MODULE_LABELS: Record<Module, string> = {
   vocab: 'Vocabulaire',
   grammar: 'Grammaire',
+  listening: 'Écoute',
 }
 
 /** Sous-ensemble du contenu jouable dans une modalité donnée. */

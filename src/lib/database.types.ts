@@ -34,6 +34,35 @@ export type Database = {
   }
   public: {
     Tables: {
+      badges: {
+        Row: {
+          badge_code: string
+          earned_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          badge_code: string
+          earned_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          badge_code?: string
+          earned_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "badges_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       content_items: {
         Row: {
           audio_url: string | null
@@ -45,6 +74,7 @@ export type Database = {
           front: string
           household_id: string | null
           id: string
+          question: string | null
           source_ref: string | null
           theme: string
           type: string
@@ -59,6 +89,7 @@ export type Database = {
           front: string
           household_id?: string | null
           id: string
+          question?: string | null
           source_ref?: string | null
           theme: string
           type: string
@@ -73,6 +104,7 @@ export type Database = {
           front?: string
           household_id?: string | null
           id?: string
+          question?: string | null
           source_ref?: string | null
           theme?: string
           type?: string

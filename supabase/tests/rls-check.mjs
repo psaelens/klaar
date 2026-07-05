@@ -12,7 +12,8 @@ import { createClient } from '@supabase/supabase-js'
 const dataDir = join(dirname(fileURLToPath(import.meta.url)), '../../src/data')
 const seedCount =
   JSON.parse(readFileSync(join(dataDir, 'vocab.json'), 'utf-8')).length +
-  JSON.parse(readFileSync(join(dataDir, 'grammar.json'), 'utf-8')).length
+  JSON.parse(readFileSync(join(dataDir, 'grammar.json'), 'utf-8')).length +
+  JSON.parse(readFileSync(join(dataDir, 'listening.json'), 'utf-8')).length
 
 const status = JSON.parse(execSync('npx supabase status -o json', { encoding: 'utf-8' }))
 const URL = status.API_URL
@@ -176,6 +177,37 @@ try {
   check(
     "enfant ne peut PAS créditer de l'XP à quelqu'un d'autre",
     xpSpoofErr !== null || xpSpoof?.length === 0,
+  )
+
+  // --- Badges (append-only)
+  const { error: badgeErr } = await child
+    .from('badges')
+    .insert({ user_id: users.child.id, badge_code: 'first-session' })
+  check('enfant enregistre son badge', !badgeErr, badgeErr?.message)
+
+  const { data: badgeParent } = await parent.from('badges').select('*').eq('user_id', users.child.id)
+  check("parent lit les badges de l'enfant", badgeParent?.length === 1)
+
+  const { data: badgeStranger } = await stranger.from('badges').select('*').eq('user_id', users.child.id)
+  check("l'autre foyer ne lit PAS les badges de l'enfant", badgeStranger?.length === 0)
+
+  const { data: badgeSpoof, error: badgeSpoofErr } = await child
+    .from('badges')
+    .insert({ user_id: users.parent.id, badge_code: 'triche' })
+    .select()
+  check(
+    "enfant ne peut PAS attribuer un badge à quelqu'un d'autre",
+    badgeSpoofErr !== null || badgeSpoof?.length === 0,
+  )
+
+  const { data: badgeUpd, error: badgeUpdErr } = await child
+    .from('badges')
+    .update({ badge_code: 'autre' })
+    .eq('user_id', users.child.id)
+    .select()
+  check(
+    'enfant ne peut PAS modifier un badge gagné (append-only)',
+    badgeUpdErr !== null || badgeUpd?.length === 0,
   )
 } finally {
   // --- Nettoyage

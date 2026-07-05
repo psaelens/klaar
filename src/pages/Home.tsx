@@ -6,7 +6,7 @@ import { itemsForModule, MODULE_LABELS } from '../lib/modules'
 import { computeStreak } from '../lib/streak'
 import { loadSessionRecords, totalXp } from '../lib/storage'
 
-const MODULE_ICONS: Record<Module, string> = { vocab: '📚', grammar: '🧩' }
+const MODULE_ICONS: Record<Module, string> = { vocab: '📚', grammar: '🧩', listening: '🎧' }
 
 function moduleCounts(module: Module) {
   const items = itemsForModule(getContentItems(), module)

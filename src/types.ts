@@ -1,5 +1,5 @@
 /** Modalité de travail (sous-ensemble des types de contenu déjà jouables). */
-export type Module = 'vocab' | 'grammar'
+export type Module = 'vocab' | 'grammar' | 'listening'
 
 /** Item de contenu pédagogique (aligné sur le schéma `content_items`, PRD §7). */
 export interface ContentItem {
@@ -10,8 +10,10 @@ export interface ContentItem {
   front: string
   /** Face réponse : traduction française (vocab) ou bonne réponse du drill (grammar). */
   back: string
-  /** Options du drill à choix, bonne réponse incluse (grammar) ; absent pour le vocabulaire. */
+  /** Options du drill à choix, bonne réponse incluse (grammar, listening) ; absent pour le vocabulaire. */
   choices?: string[] | null
+  /** Question de compréhension en français (listening : front = transcript NL lu en TTS). */
+  question?: string | null
   difficulty: 1 | 2 | 3
   /** Unité du programme (null tant que les feuilles scannées ne sont pas importées). */
   curriculum_unit: string | null
