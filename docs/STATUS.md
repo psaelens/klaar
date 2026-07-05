@@ -1,21 +1,20 @@
 # STATUS — état d'avancement Klaar!
 
-## Étape roadmap en cours : M1 (sous-étapes 1-4/5 terminées ; reste : projet Supabase hébergé)
+## Étape roadmap en cours : M1 TERMINÉ et déployé → prochaine étape M2
 
 ## Dernière action terminée :
 
-M1 sous-étape 4 : écran `/import` (réservé au parent connecté) — collage de texte `mot néerlandais ; traduction` ligne par ligne, parseur pur testé (`src/lib/importParse.ts`, 6 tests — 30 au total), prévisualisation avec erreurs par ligne (séparateur manquant, doublons), champs thème/unité/difficulté, insertion dans `content_items` du foyer. Lien depuis `/config` quand le rôle est parent. Vérifié E2E contre le stack local : import parent OK, élève bloqué, mots visibles côté serveur.
+M1 sous-étape 5 : projet Supabase hébergé **klaar** créé (ref `rlpwxnekrgumefkxtuax`, org « SPi Consulting », région eu-west-3, choisie par Pierre), repo lié, migration poussée (`supabase db push`), config auth poussée (confirmation d'email désactivée ; `[storage.vector]` désactivé dans config.toml — plan Pro requis sinon), 64 mots seedés, `VITE_SUPABASE_URL`/`VITE_SUPABASE_ANON_KEY` ajoutées à Vercel (production), redéployé et **vérifié E2E en prod** : wizard foyer, session, write-through (session + 8 états SRS retrouvés sur le serveur), comptes de test supprimés. Le mot de passe DB est dans `.env.local` (gitignoré) sous `SUPABASE_DB_PASSWORD` ; les `VITE_*` de `.env.local` pointent le stack local Docker pour le dev, la prod utilise les env Vercel.
 
 ## Prochaine action à faire :
 
-M1 sous-étape 5 (dernière) : brancher le projet Supabase HÉBERGÉ — **nécessite `npx supabase login` par Pierre** (taper `! npx supabase login` dans la session Claude). Ensuite : `npx supabase projects create klaar` (ou choisir un projet existant), `npx supabase link --project-ref <ref>`, `npx supabase db push`, appliquer le seed (`psql` ou copier seed.sql dans le SQL editor), désactiver la confirmation d'email (Dashboard > Auth > Sign In/Up > Email > Confirm email OFF), mettre `VITE_SUPABASE_URL`/`VITE_SUPABASE_ANON_KEY` dans Vercel (`npx vercel env add`), redéployer, vérifier le wizard foyer en prod. Après ça M1 est terminé → M2 (grammaire drills + dashboard parent v1).
+1) **Pierre** : faire l'onboarding réel sur l'appareil de l'élève — https://klaar-nine.vercel.app → ⚙️ → « Première fois : créer le foyer » (email parent réel + mot de passe, prénom + code élève ; noter l'email élève suggéré pour ses autres appareils). 2) **Dev** : démarrer M2 (PRD §11) — module grammaire (drills) : modèle de contenu `grammar` (déjà prévu dans le schéma), écran de drill (texte à trou / choix), sélection SRS commune, puis dashboard parent v1 (calendrier jours travaillés, minutes/jour, taux de réussite — lecture seule via les policies parent déjà en place et testées).
 
 ## Décisions en attente de validation par Pierre :
 
-- **Supabase** : lancer `npx supabase login` (interactif, ouvre le navigateur) pour que je puisse créer le projet hébergé et pousser les migrations.
 - Faire vérifier les 64 mots de vocabulaire de départ (`src/data/vocab.json`) par un néerlandophone (PRD §13) — générés par Claude, non validés par un tiers.
-- Installer l'app GitHub de Vercel (https://vercel.link/git) pour l'auto-déploiement à chaque push. En attendant, déploiement manuel via `npx vercel deploy --prod --yes` (CLI authentifié, compte psaelens-8216, projet `klaar`, prod : https://klaar-nine.vercel.app).
-- Le repo GitHub `psaelens/klaar` (créé par Pierre) est **public** — confirmer que c'est voulu pour une app familiale.
+- Installer l'app GitHub de Vercel (https://vercel.link/git) pour l'auto-déploiement à chaque push. En attendant, déploiement manuel via `npx vercel deploy --prod --yes` (CLI authentifié, projet `klaar`, prod : https://klaar-nine.vercel.app).
+- Le repo GitHub `psaelens/klaar` est **public** — confirmer que c'est voulu pour une app familiale.
 
 ## Points d'attention / bugs connus non résolus :
 
