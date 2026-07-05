@@ -1,14 +1,16 @@
 # STATUS — état d'avancement Klaar!
 
-## Étape roadmap en cours : M2 (grammaire + dashboard parent v1)
+## Étape roadmap en cours : M2 TERMINÉ et déployé → prochaine étape M3
 
 ## Dernière action terminée :
 
-M2 sous-étape 3 : dashboard parent v1. Page `/parent` réservée au rôle parent (lien « Suivi de l'élève » dans /config), sélecteur d'enfant si plusieurs : calendrier 4 semaines (intensité = minutes/jour, jour travaillé = ≥ 1 session même courte), streak, XP total, minutes des 7 derniers jours, taux de réussite du 1er coup global + par module (les sessions d'avant M2 comptent comme vocab). Agrégations pures dans `src/lib/dashboard.ts` (dailyActivity, successRate, successRateByModule, minutesInLastDays) testées — 40 tests ✅. Vérifié E2E local (Playwright, stack Docker) : foyer créé, élève fait une session vocab + une grammaire (avec une faute), parent se connecte sur un 2e appareil et voit « Suivi de Théo » (streak 1, ⭐ 210, 94 % global, vocab 100 % / grammaire 88 %) ; l'élève est refusé sur /parent.
+M2 sous-étape 4 : vérification prod + clôture. L'auto-déploiement Vercel au push sur `main` est confirmé (un déploiement Ready par commit M2.1/M2.2/M2.3). **Vérifié E2E en production** (https://klaar-nine.vercel.app) : foyer de test créé, les deux modules visibles à l'accueil, session grammaire complète jouée et synchronisée, dashboard parent avec les vraies données (streak 1, ⭐ 110, grammaire 100 %), puis nettoyage complet (2 comptes de test + foyer orphelin supprimés via service key — les éventuelles données réelles du foyer de Pierre n'ont pas été touchées). `.claude/skills/verify/SKILL.md` à jour (flux drills, dashboard, foyer, pièges, procédure prod).
+
+Récap M2 : drills de grammaire QCM sur le SRS commun (41 items A2 seedés, migration `choices`/`module`), accueil à deux modules, dashboard parent v1 (`/parent` : calendrier 4 semaines, minutes/jour, streak, XP, taux de réussite global + par module). 40 tests unitaires ✅, RLS 18/18 ✅.
 
 ## Prochaine action à faire :
 
-M2 sous-étape 4 (dernière) : pousser le commit M2.3 (auto-déploiement), vérifier le flux complet EN PROD (foyer de test → sessions → dashboard parent → nettoyage des comptes de test ET du foyer orphelin via service key), mettre à jour `.claude/skills/verify/SKILL.md`, puis annonce M2 terminé à Pierre. NB : la base hébergée est déjà migrée + seedée (fait en M2.1, avant tout push).
+Démarrer M3 (PRD §11) : compréhension orale (items `listening` : audio + questions — trancher la source audio : TTS ou enregistrements, voir PRD §13/§16 pour les sources gratuites type Karrewiet/Wablieft) + badges (table `badges` du schéma cible §7, codes de badges + attribution à la fin de session + affichage). Réévaluer aussi le seuil de minutes du streak (toujours 0 ; le PRD vise 1 h/jour — avec vocab + grammaire on peut passer à un seuil intermédiaire, à décider avec Pierre).
 
 ## Décisions en attente de validation par Pierre :
 
