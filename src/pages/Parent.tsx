@@ -11,6 +11,7 @@ import {
   type DayActivity,
 } from '../lib/dashboard'
 import { MODULE_LABELS } from '../lib/modules'
+import { badgeDef } from '../lib/badges'
 
 /**
  * Dashboard parent v1 (PRD §9) — lecture seule, réservé au rôle parent.
@@ -95,6 +96,7 @@ export default function Parent() {
   const [childId, setChildId] = useState<string | null>(null)
   const [records, setRecords] = useState<SessionRecord[]>([])
   const [xp, setXp] = useState(0)
+  const [badgeCodes, setBadgeCodes] = useState<string[]>([])
 
   useEffect(() => {
     const sb = supabase
@@ -142,6 +144,12 @@ export default function Parent() {
       )
       const { data: xpRows } = await sb.from('xp_ledger').select('amount').eq('user_id', childId)
       setXp((xpRows ?? []).reduce((sum, row) => sum + row.amount, 0))
+      const { data: badgeRows } = await sb
+        .from('badges')
+        .select('badge_code')
+        .eq('user_id', childId)
+        .order('earned_at', { ascending: true })
+      setBadgeCodes((badgeRows ?? []).map((row) => row.badge_code))
     })()
   }, [childId])
 
@@ -216,6 +224,24 @@ export default function Parent() {
               </span>
             ))}
           </div>
+
+          {badgeCodes.length > 0 && (
+            <div className="flex flex-wrap gap-2 text-sm">
+              {badgeCodes.map((code) => {
+                const def = badgeDef(code)
+                if (def === undefined) return null
+                return (
+                  <span
+                    key={code}
+                    title={def.description}
+                    className="rounded-full bg-amber-100 px-3 py-1 font-semibold text-amber-800 dark:bg-amber-900 dark:text-amber-200"
+                  >
+                    {def.emoji} {def.label}
+                  </span>
+                )
+              })}
+            </div>
+          )}
 
           <div>
             <h2 className="mb-2 font-bold">4 dernières semaines</h2>

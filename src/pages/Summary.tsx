@@ -1,10 +1,16 @@
-import { Link } from 'react-router'
+import { Link, useLocation } from 'react-router'
 import { loadSessionRecords } from '../lib/storage'
 import { MODULE_LABELS } from '../lib/modules'
+import { badgeDef } from '../lib/badges'
 
 export default function Summary() {
   const records = loadSessionRecords()
   const last = records[records.length - 1]
+  // Badges gagnés à l'instant (état de navigation ; perdu au reload — déjà attribués, pas grave).
+  const location = useLocation()
+  const celebrated = ((location.state as { newBadges?: string[] } | null)?.newBadges ?? [])
+    .map(badgeDef)
+    .filter((def) => def !== undefined)
 
   if (last === undefined) {
     return (
@@ -52,6 +58,27 @@ export default function Summary() {
         <p className="rounded-full bg-amber-100 px-6 py-2 text-lg font-bold text-amber-800 dark:bg-amber-900 dark:text-amber-200">
           +{last.xpEarned} XP ⭐
         </p>
+      )}
+
+      {celebrated.length > 0 && (
+        <div className="flex w-full flex-col gap-2">
+          {celebrated.map((def) => (
+            <div
+              key={def.code}
+              className="flex items-center gap-3 rounded-2xl border-2 border-amber-400 bg-amber-50 p-4 text-left dark:border-amber-500 dark:bg-amber-950"
+            >
+              <span className="text-3xl">{def.emoji}</span>
+              <span>
+                <span className="block font-bold text-amber-800 dark:text-amber-200">
+                  Nouveau badge : {def.label} !
+                </span>
+                <span className="block text-sm text-amber-700 dark:text-amber-300">
+                  {def.description}
+                </span>
+              </span>
+            </div>
+          ))}
+        </div>
       )}
 
       <p className="text-slate-600 dark:text-slate-300">{encouragement}</p>

@@ -1,12 +1,15 @@
-import type { ContentItem, SessionRecord, SrsState, XpEntry } from '../types'
+import type { ContentItem, EarnedBadge, SessionRecord, SrsState, XpEntry } from '../types'
 import { seedItems } from '../data'
 import { supabase } from './supabase'
 import {
+  appendEarnedBadges,
   appendSessionRecord,
   appendXpEntry,
+  loadEarnedBadges,
   loadSessionRecords,
   loadSrsStates,
   loadXpLedger,
+  replaceEarnedBadges,
   replaceSessionRecords,
   replaceSrsStates,
   replaceXpLedger,
@@ -29,6 +32,7 @@ type PushOp =
   | { type: 'srs'; state: SrsState }
   | { type: 'session'; record: SessionRecord }
   | { type: 'xp'; entry: XpEntry }
+  | { type: 'badge'; badge: EarnedBadge }
 
 function loadQueue(): PushOp[] {
   try {
@@ -84,6 +88,14 @@ async function pushOp(userId: string, op: PushOp): Promise<boolean> {
     })
     return error === null
   }
+  if (op.type === 'badge') {
+    // ignoreDuplicates : un badge déjà gagné (autre appareil) n'est pas une erreur.
+    const { error } = await supabase.from('badges').upsert(
+      { user_id: userId, badge_code: op.badge.code, earned_at: op.badge.earnedAt },
+      { onConflict: 'user_id,badge_code', ignoreDuplicates: true },
+    )
+    return error === null
+  }
   const { error } = await supabase.from('xp_ledger').insert({
     user_id: userId,
     amount: op.entry.amount,
@@ -122,6 +134,9 @@ async function migrateLocalData(userId: string): Promise<void> {
     }
     for (const entry of loadXpLedger()) {
       enqueue({ type: 'xp', entry })
+    }
+    for (const badge of loadEarnedBadges()) {
+      enqueue({ type: 'badge', badge })
     }
   } else {
     // Changement d'utilisateur : la file d'attente de l'ancien n'est plus valable.
@@ -195,6 +210,15 @@ async function pullFromCloud(userId: string): Promise<void> {
       xpRows.map((row) => ({ amount: row.amount, reason: row.reason, createdAt: row.created_at })),
     )
   }
+
+  const { data: badgeRows } = await supabase
+    .from('badges')
+    .select('badge_code, earned_at')
+    .eq('user_id', userId)
+    .order('earned_at', { ascending: true })
+  if (badgeRows !== null) {
+    replaceEarnedBadges(badgeRows.map((row) => ({ code: row.badge_code, earnedAt: row.earned_at })))
+  }
 }
 
 /** À appeler une fois au démarrage de l'app, avant le premier rendu des pages. */
@@ -236,6 +260,21 @@ export function saveState(state: SrsState): void {
       if (!ok) enqueue({ type: 'srs', state })
     })
   }
+}
+
+/** Attribue des badges (localStorage + push serveur), retourne les entrées créées. */
+export function awardBadges(codes: string[], now: Date): EarnedBadge[] {
+  const badges = codes.map((code) => ({ code, earnedAt: now.toISOString() }))
+  appendEarnedBadges(badges)
+  if (cache.userId !== null) {
+    const userId = cache.userId
+    for (const badge of badges) {
+      void pushOp(userId, { type: 'badge', badge }).then((ok) => {
+        if (!ok) enqueue({ type: 'badge', badge })
+      })
+    }
+  }
+  return badges
 }
 
 export function recordSession(record: SessionRecord, xpEntry: XpEntry): void {

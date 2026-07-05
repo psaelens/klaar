@@ -56,3 +56,9 @@ export interface XpEntry {
   reason: string
   createdAt: string
 }
+
+/** Badge gagné (aligné sur la table `badges`) — ne se reprend jamais. */
+export interface EarnedBadge {
+  code: string
+  earnedAt: string
+}

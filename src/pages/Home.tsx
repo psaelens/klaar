@@ -4,7 +4,8 @@ import { getContentItems, getSrsStates } from '../lib/repo'
 import { selectSessionItems } from '../lib/srs'
 import { itemsForModule, MODULE_LABELS } from '../lib/modules'
 import { computeStreak } from '../lib/streak'
-import { loadSessionRecords, totalXp } from '../lib/storage'
+import { badgeDef } from '../lib/badges'
+import { loadEarnedBadges, loadSessionRecords, totalXp } from '../lib/storage'
 
 const MODULE_ICONS: Record<Module, string> = { vocab: '📚', grammar: '🧩', listening: '🎧' }
 
@@ -63,6 +64,9 @@ export default function Home() {
   const itemCount = getContentItems().length
   const streak = computeStreak(loadSessionRecords(), new Date())
   const xp = totalXp()
+  const badges = loadEarnedBadges()
+    .map((badge) => badgeDef(badge.code))
+    .filter((def) => def !== undefined)
   const modules = Object.keys(MODULE_LABELS) as Module[]
   const nothingDue = modules.every((module) => moduleCounts(module).total === 0)
 
@@ -103,6 +107,20 @@ export default function Home() {
       {modules.map((module) => (
         <ModuleCard key={module} module={module} />
       ))}
+
+      {badges.length > 0 && (
+        <div className="flex flex-wrap justify-center gap-2" aria-label="Badges gagnés">
+          {badges.map((def) => (
+            <span
+              key={def.code}
+              title={`${def.label} — ${def.description}`}
+              className="rounded-full bg-amber-100 px-3 py-1 text-lg dark:bg-amber-900"
+            >
+              {def.emoji}
+            </span>
+          ))}
+        </div>
+      )}
 
       {learnedCount > 0 && (
         <p className="text-sm text-slate-500 dark:text-slate-400">

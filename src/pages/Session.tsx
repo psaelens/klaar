@@ -1,8 +1,11 @@
 import { useMemo, useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router'
 import type { ContentItem, Grade, Module, SrsState } from '../types'
-import { getContentItems, getSrsStates, recordSession, saveState } from '../lib/repo'
+import { awardBadges, getContentItems, getSrsStates, recordSession, saveState } from '../lib/repo'
 import { initialSrsState, review, selectSessionItems } from '../lib/srs'
+import { newBadges } from '../lib/badges'
+import { computeStreak } from '../lib/streak'
+import { loadEarnedBadges, loadSessionRecords, totalXp } from '../lib/storage'
 import { itemsForModule, MODULE_LABELS, shuffle } from '../lib/modules'
 import { speakDutch, ttsAvailable } from '../lib/tts'
 import { sessionXp, type AnsweredCard } from '../lib/xp'
@@ -124,7 +127,15 @@ export default function Session() {
         createdAt: now.toISOString(),
       },
     )
-    navigate('/bilan')
+
+    // Badges : calculés sur l'état APRÈS enregistrement de cette session.
+    const records = loadSessionRecords()
+    const earned = newBadges(
+      { records, xpTotal: totalXp(), streakDays: computeStreak(records, now).current },
+      loadEarnedBadges().map((badge) => badge.code),
+    )
+    awardBadges(earned, now)
+    navigate('/bilan', { state: { newBadges: earned } })
   }
 
   const optionClass = (option: string): string => {

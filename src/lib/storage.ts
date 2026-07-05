@@ -1,4 +1,4 @@
-import type { SrsState, SessionRecord, XpEntry } from '../types'
+import type { EarnedBadge, SrsState, SessionRecord, XpEntry } from '../types'
 
 /**
  * Persistance localStorage (M0). Les clés sont versionnées pour permettre
@@ -9,6 +9,7 @@ const SRS_KEY = 'klaar.srs.v1'
 const SESSIONS_KEY = 'klaar.sessions.v1'
 const THEME_KEY = 'klaar.theme.v1'
 const XP_KEY = 'klaar.xp.v1'
+const BADGES_KEY = 'klaar.badges.v1'
 
 function readJson<T>(key: string, fallback: T): T {
   try {
@@ -64,6 +65,19 @@ export function totalXp(): number {
 
 export function replaceXpLedger(entries: XpEntry[]): void {
   localStorage.setItem(XP_KEY, JSON.stringify(entries))
+}
+
+export function loadEarnedBadges(): EarnedBadge[] {
+  return readJson<EarnedBadge[]>(BADGES_KEY, [])
+}
+
+export function appendEarnedBadges(badges: EarnedBadge[]): void {
+  if (badges.length === 0) return
+  localStorage.setItem(BADGES_KEY, JSON.stringify([...loadEarnedBadges(), ...badges]))
+}
+
+export function replaceEarnedBadges(badges: EarnedBadge[]): void {
+  localStorage.setItem(BADGES_KEY, JSON.stringify(badges))
 }
 
 export type Theme = 'light' | 'dark'
