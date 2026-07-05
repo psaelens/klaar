@@ -7,6 +7,7 @@ import Session from './pages/Session'
 import Summary from './pages/Summary'
 import Config from './pages/Config'
 import Import from './pages/Import'
+import Parent from './pages/Parent'
 
 export default function App() {
   const { theme, toggle } = useTheme()
@@ -49,6 +50,7 @@ export default function App() {
               <Route path="/bilan" element={<Summary />} />
               <Route path="/config" element={<Config />} />
               <Route path="/import" element={<Import />} />
+              <Route path="/parent" element={<Parent />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           ) : (

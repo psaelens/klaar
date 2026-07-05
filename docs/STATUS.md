@@ -4,11 +4,11 @@
 
 ## Dernière action terminée :
 
-M2 sous-étape 2 : écran de drill grammaire. Session paramétrée par module (`/session?m=vocab|grammar`), UI QCM (options mélangées, bonne réponse = qualité 5 avec feedback 700 ms, faute = surlignage correct/choisi + bouton « Compris, on la retravaillera » qui re-met la carte en fin de file), accueil à deux cartes-modules (📚 Vocabulaire / 🧩 Grammaire) avec compteurs par modalité, `SessionRecord.module` renseigné et poussé/tiré via Supabase, bilan libellé par module. Helpers purs `src/lib/modules.ts` (itemsForModule, shuffle Fisher-Yates injectable) testés. 33 tests ✅, lint/build ✅, vérifié au runtime via Playwright (drill complet avec une faute volontaire + non-régression vocab). (M2.1 : migration choices/module + 41 drills seedés local & hébergé, RLS 18/18 ✅.)
+M2 sous-étape 3 : dashboard parent v1. Page `/parent` réservée au rôle parent (lien « Suivi de l'élève » dans /config), sélecteur d'enfant si plusieurs : calendrier 4 semaines (intensité = minutes/jour, jour travaillé = ≥ 1 session même courte), streak, XP total, minutes des 7 derniers jours, taux de réussite du 1er coup global + par module (les sessions d'avant M2 comptent comme vocab). Agrégations pures dans `src/lib/dashboard.ts` (dailyActivity, successRate, successRateByModule, minutesInLastDays) testées — 40 tests ✅. Vérifié E2E local (Playwright, stack Docker) : foyer créé, élève fait une session vocab + une grammaire (avec une faute), parent se connecte sur un 2e appareil et voit « Suivi de Théo » (streak 1, ⭐ 210, 94 % global, vocab 100 % / grammaire 88 %) ; l'élève est refusé sur /parent.
 
 ## Prochaine action à faire :
 
-M2 sous-étape 3 : dashboard parent v1 — page `/parent` réservée au rôle parent (même garde que /import), lien depuis /config : calendrier 4 semaines des jours travaillés, minutes/jour, taux de réussite global + par module (via `sessions.module`), streak/XP de l'élève ; agrégations pures testées dans `src/lib/dashboard.ts` ; lecture des sessions de l'élève via les policies parent déjà testées (`is_parent_of`). Puis M2.4 : vérif E2E Playwright (drill + dashboard avec données), vérif prod, STATUS/annonce. NB : l'auto-déploiement Vercel au push sur `main` est actif — la base hébergée doit toujours être migrée AVANT le push (fait pour M2).
+M2 sous-étape 4 (dernière) : pousser le commit M2.3 (auto-déploiement), vérifier le flux complet EN PROD (foyer de test → sessions → dashboard parent → nettoyage des comptes de test ET du foyer orphelin via service key), mettre à jour `.claude/skills/verify/SKILL.md`, puis annonce M2 terminé à Pierre. NB : la base hébergée est déjà migrée + seedée (fait en M2.1, avant tout push).
 
 ## Décisions en attente de validation par Pierre :
 
