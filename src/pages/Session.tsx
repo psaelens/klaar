@@ -4,6 +4,7 @@ import type { ContentItem, Grade, Module, SrsState } from '../types'
 import { getContentItems, getSrsStates, recordSession, saveState } from '../lib/repo'
 import { initialSrsState, review, selectSessionItems } from '../lib/srs'
 import { itemsForModule, MODULE_LABELS, shuffle } from '../lib/modules'
+import { speakDutch, ttsAvailable } from '../lib/tts'
 import { sessionXp, type AnsweredCard } from '../lib/xp'
 import ProgressBar from '../components/ProgressBar'
 
@@ -27,7 +28,8 @@ function buildSession(module: Module): SessionData {
 export default function Session() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const module: Module = searchParams.get('m') === 'grammar' ? 'grammar' : 'vocab'
+  const param = searchParams.get('m')
+  const module: Module = param === 'grammar' ? 'grammar' : param === 'listening' ? 'listening' : 'vocab'
   const [session] = useState(() => buildSession(module))
   const [startedAt] = useState(() => new Date())
   const [queue, setQueue] = useState(session.queue)
@@ -42,6 +44,9 @@ export default function Session() {
   const totalUnique = new Set(session.queue.map((item) => item.id)).size
   const current = queue[0]
   const isDrill = current !== undefined && (current.choices?.length ?? 0) > 0
+  const isListening = current !== undefined && current.type === 'listening'
+  // Sans synthèse vocale sur l'appareil, on affiche le transcript (item jouable quand même).
+  const canSpeak = ttsAvailable()
 
   // Ordre des options mélangé une fois par présentation de la carte.
   const options = useMemo(
@@ -150,11 +155,35 @@ export default function Session() {
             </span>
           )}
         </p>
-        <p lang="nl" className={isDrill ? 'text-xl font-bold sm:text-2xl' : 'text-3xl font-bold'}>
-          {current.front}
-        </p>
-        {!isDrill && revealed && (
-          <p className="mt-4 text-xl text-teal-700 dark:text-teal-400">{current.back}</p>
+        {isListening ? (
+          <>
+            {canSpeak && (
+              <button
+                type="button"
+                onClick={() => speakDutch(current.front)}
+                className="rounded-full bg-teal-600 px-8 py-4 text-2xl text-white shadow-lg shadow-teal-600/25 transition hover:bg-teal-700 active:scale-95"
+              >
+                🔊 Écouter
+              </button>
+            )}
+            {(!canSpeak || picked !== null) && (
+              <p lang="nl" className="mt-2 text-lg font-semibold text-slate-500 dark:text-slate-400">
+                « {current.front} »
+              </p>
+            )}
+            {current.question != null && (
+              <p className="mt-3 text-xl font-bold">{current.question}</p>
+            )}
+          </>
+        ) : (
+          <>
+            <p lang="nl" className={isDrill ? 'text-xl font-bold sm:text-2xl' : 'text-3xl font-bold'}>
+              {current.front}
+            </p>
+            {!isDrill && revealed && (
+              <p className="mt-4 text-xl text-teal-700 dark:text-teal-400">{current.back}</p>
+            )}
+          </>
         )}
       </div>
 
@@ -166,7 +195,7 @@ export default function Session() {
               type="button"
               disabled={picked !== null}
               onClick={() => handlePick(option)}
-              lang="nl"
+              lang={isListening ? 'fr' : 'nl'}
               className={`rounded-2xl border-2 px-4 py-4 text-lg font-semibold transition active:scale-95 ${optionClass(option)}`}
             >
               {option}

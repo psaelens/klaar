@@ -63,8 +63,8 @@ export default function Home() {
   const itemCount = getContentItems().length
   const streak = computeStreak(loadSessionRecords(), new Date())
   const xp = totalXp()
-  const nothingDue =
-    moduleCounts('vocab').total === 0 && moduleCounts('grammar').total === 0
+  const modules = Object.keys(MODULE_LABELS) as Module[]
+  const nothingDue = modules.every((module) => moduleCounts(module).total === 0)
 
   return (
     <div className="flex flex-1 flex-col justify-center gap-6 text-center">
@@ -100,8 +100,9 @@ export default function Home() {
         </p>
       )}
 
-      <ModuleCard module="vocab" />
-      <ModuleCard module="grammar" />
+      {modules.map((module) => (
+        <ModuleCard key={module} module={module} />
+      ))}
 
       {learnedCount > 0 && (
         <p className="text-sm text-slate-500 dark:text-slate-400">
