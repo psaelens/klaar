@@ -42,7 +42,11 @@ Contexte mobile `{ width: 390, height: 844 }`, collecter
    masquée sur /session et /examen. Les examens blancs se lancent depuis
    `/examens` (plus depuis l'accueil) ; les badges se voient dans `/progres`.
    ⚠️ Le compteur XP du bilan est ANIMÉ : attendre ~1,3 s après `**/bilan` avant
-   de lire la valeur.
+   de lire la valeur. ⚠️ La chip utilisateur (prénom / « Démo » / « Local ») est
+   dans le HEADER, pas dans `main` — lire `page.locator('body')`. ⚠️ Un parent
+   connecté est redirigé de `/` vers `/parent` (onglets Suivi / Importer /
+   Profil). En mode démo/local, /config propose « Recommencer à zéro » (dialog
+   confirm à accepter).
 2. Vocabulaire (`/session?m=vocab`) : mot NL (`p[lang=nl]`), « Voir la réponse » →
    « À revoir / Difficile / Réussi » ; « À revoir » re-met la carte en fin de file.
 3. Grammaire (`/session?m=grammar`) : QCM `button[lang=nl]` ; bonne réponse = feedback

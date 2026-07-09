@@ -41,6 +41,18 @@ Toutes gratuites, auto-hébergées via Fontsource (compatible PWA/offline —
 aucune requête externe). Chiffres alignés : `tabular-nums` partout où des
 nombres se comparent (compteurs, scores, minutes).
 
+## Logo & favicon
+
+« Klaar » en encre (s'inverse avec le thème), « ! » toujours en oranje —
+partout : header, splash, écran visiteur. Favicon : carré arrondi encre,
+« K » papier + « ! » oranje (`public/favicon.svg`), `theme-color` encre.
+
+## L'en-tête
+
+Logo à gauche ; à droite, la **chip utilisateur** (icône Lucide + prénom du
+connecté, ou « Démo »/« Local », lien vers le profil) puis la bascule de
+thème. Pas de pastille d'état dans le contenu des pages.
+
 ## Iconographie
 
 - **Lucide** (trait 2 px) pour la navigation et les modules — même visage sur
@@ -57,7 +69,9 @@ mieux « app de néerlandais » qu'un mot de néerlandais.
 ## Navigation & responsive
 
 - **Smartphone** : onglets en bas (zone du pouce) — Réviser / Examens /
-  Progrès / Profil. La session et l'examen blanc les masquent (mode focus).
+  Progrès / Profil pour l'élève ; **Suivi / Importer / Profil pour le parent**
+  (pas de révisions : l'accueil le redirige vers le suivi de l'élève). La
+  session et l'examen blanc masquent les onglets (mode focus).
 - **Tablette (≥ md)** : accueil et bilans en grille 2 colonnes ; la session
   reste étroite et centrée — **le focus est une feature**.
 - **PC (≥ lg)** : rail de navigation latéral ; le dashboard parent s'étale
