@@ -8,6 +8,8 @@ import type { Grade } from '../types'
 
 /** XP de base d'une bonne réponse en vocabulaire, multiplié par la difficulté (1-3). */
 export const XP_BASE_VOCAB = 10
+/** XP de base d'une rédaction : la production rapporte plus (PRD §8). */
+export const XP_BASE_WRITING = 25
 /** Bonus quand la session est terminée jusqu'au bout. */
 export const XP_SESSION_COMPLETION_BONUS = 20
 /** Plafond d'XP par session (anti-farming, PRD §8). */
@@ -16,15 +18,18 @@ export const XP_SESSION_CAP = 300
 export interface AnsweredCard {
   difficulty: 1 | 2 | 3
   grade: Grade
+  /** Carte de production (rédaction) : XP de base plus élevé (PRD §8). */
+  production?: boolean
 }
 
 /** XP d'une seule réponse : réussi = plein, difficile = moitié, raté = 0 (jamais négatif). */
 export function xpForAnswer(card: AnsweredCard): number {
+  const base = card.production === true ? XP_BASE_WRITING : XP_BASE_VOCAB
   switch (card.grade) {
     case 'good':
-      return XP_BASE_VOCAB * card.difficulty
+      return base * card.difficulty
     case 'hard':
-      return Math.round((XP_BASE_VOCAB * card.difficulty) / 2)
+      return Math.round((base * card.difficulty) / 2)
     case 'again':
       return 0
   }

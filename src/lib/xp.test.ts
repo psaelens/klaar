@@ -1,5 +1,12 @@
 import { describe, it, expect } from 'vitest'
-import { xpForAnswer, sessionXp, XP_BASE_VOCAB, XP_SESSION_COMPLETION_BONUS, XP_SESSION_CAP } from './xp'
+import {
+  xpForAnswer,
+  sessionXp,
+  XP_BASE_VOCAB,
+  XP_BASE_WRITING,
+  XP_SESSION_COMPLETION_BONUS,
+  XP_SESSION_CAP,
+} from './xp'
 import type { AnsweredCard } from './xp'
 
 describe('xpForAnswer', () => {
@@ -14,6 +21,12 @@ describe('xpForAnswer', () => {
 
   it('ne donne rien sur "again" mais jamais de négatif (non punitif)', () => {
     expect(xpForAnswer({ difficulty: 3, grade: 'again' })).toBe(0)
+  })
+
+  it('la production (rédaction) rapporte plus (PRD §8)', () => {
+    expect(xpForAnswer({ difficulty: 1, grade: 'good', production: true })).toBe(XP_BASE_WRITING)
+    expect(xpForAnswer({ difficulty: 2, grade: 'hard', production: true })).toBe(XP_BASE_WRITING)
+    expect(xpForAnswer({ difficulty: 2, grade: 'again', production: true })).toBe(0)
   })
 })
 

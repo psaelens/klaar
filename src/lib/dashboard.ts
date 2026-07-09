@@ -54,7 +54,7 @@ export function successRate(records: SessionRecord[]): number | null {
 export function successRateByModule(records: SessionRecord[]): Record<Module, number | null> {
   const of = (module: Module) =>
     successRate(records.filter((record) => (record.module ?? 'vocab') === module))
-  return { vocab: of('vocab'), grammar: of('grammar'), listening: of('listening') }
+  return { vocab: of('vocab'), grammar: of('grammar'), listening: of('listening'), writing: of('writing') }
 }
 
 /** Minutes travaillées sur les `days` derniers jours locaux (aujourd'hui inclus). */

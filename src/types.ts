@@ -1,19 +1,21 @@
 /** Modalité de travail (sous-ensemble des types de contenu déjà jouables). */
-export type Module = 'vocab' | 'grammar' | 'listening'
+export type Module = 'vocab' | 'grammar' | 'listening' | 'writing'
 
 /** Item de contenu pédagogique (aligné sur le schéma `content_items`, PRD §7). */
 export interface ContentItem {
   id: string
   type: Module
   theme: string
-  /** Face question : mot en néerlandais (vocab) ou phrase à trou (grammar). */
+  /** Face question : mot NL (vocab), phrase à trou (grammar) ou consigne FR (writing). */
   front: string
-  /** Face réponse : traduction française (vocab) ou bonne réponse du drill (grammar). */
+  /** Face réponse : traduction (vocab), bonne réponse (grammar/listening) ou texte modèle NL (writing). */
   back: string
   /** Options du drill à choix, bonne réponse incluse (grammar, listening) ; absent pour le vocabulaire. */
   choices?: string[] | null
   /** Question de compréhension en français (listening : front = transcript NL lu en TTS). */
   question?: string | null
+  /** Points attendus de la rédaction, en français (writing : auto-évaluation guidée). */
+  checklist?: string[] | null
   difficulty: 1 | 2 | 3
   /** Unité du programme (null tant que les feuilles scannées ne sont pas importées). */
   curriculum_unit: string | null

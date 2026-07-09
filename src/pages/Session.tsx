@@ -2,12 +2,13 @@ import { useMemo, useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router'
 import type { ContentItem, Grade, Module, SrsState } from '../types'
 import { awardBadges, getContentItems, getSrsStates, recordSession, saveState } from '../lib/repo'
-import { initialSrsState, review, selectSessionItems } from '../lib/srs'
+import { initialSrsState, review } from '../lib/srs'
 import { newBadges } from '../lib/badges'
 import { computeStreak } from '../lib/streak'
 import { loadEarnedBadges, loadSessionRecords, totalXp } from '../lib/storage'
-import { itemsForModule, MODULE_LABELS, shuffle } from '../lib/modules'
+import { MODULE_LABELS, selectForModule, shuffle } from '../lib/modules'
 import { speakDutch, ttsAvailable } from '../lib/tts'
+import { countWords, suggestedGrade, WRITING_MIN_WORDS, WRITING_TARGET_WORDS } from '../lib/writing'
 import { sessionXp, type AnsweredCard } from '../lib/xp'
 import ProgressBar from '../components/ProgressBar'
 
@@ -19,8 +20,7 @@ interface SessionData {
 
 function buildSession(module: Module): SessionData {
   const states = getSrsStates()
-  const items = itemsForModule(getContentItems(), module)
-  const { reviews, fresh } = selectSessionItems(items, states, new Date())
+  const { reviews, fresh } = selectForModule(getContentItems(), states, new Date(), module)
   return {
     queue: [...reviews, ...fresh],
     states,
@@ -32,7 +32,8 @@ export default function Session() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const param = searchParams.get('m')
-  const module: Module = param === 'grammar' ? 'grammar' : param === 'listening' ? 'listening' : 'vocab'
+  const module: Module =
+    param === 'grammar' || param === 'listening' || param === 'writing' ? param : 'vocab'
   const [session] = useState(() => buildSession(module))
   const [startedAt] = useState(() => new Date())
   const [queue, setQueue] = useState(session.queue)
@@ -43,11 +44,15 @@ export default function Session() {
   const [doneIds, setDoneIds] = useState<Set<string>>(new Set())
   const [lapsedIds, setLapsedIds] = useState<Set<string>>(new Set())
   const [answers, setAnswers] = useState<AnsweredCard[]>([])
+  // Rédaction : brouillon de l'élève + points de la checklist cochés.
+  const [draft, setDraft] = useState('')
+  const [checkedPoints, setCheckedPoints] = useState<Set<number>>(new Set())
 
   const totalUnique = new Set(session.queue.map((item) => item.id)).size
   const current = queue[0]
   const isDrill = current !== undefined && (current.choices?.length ?? 0) > 0
   const isListening = current !== undefined && current.type === 'listening'
+  const isWriting = current !== undefined && current.type === 'writing'
   // Sans synthèse vocale sur l'appareil, on affiche le transcript (item jouable quand même).
   const canSpeak = ttsAvailable()
 
@@ -78,7 +83,10 @@ export default function Session() {
     session.states[current.id] = updated
     saveState(updated)
 
-    const allAnswers: AnsweredCard[] = [...answers, { difficulty: current.difficulty, grade }]
+    const allAnswers: AnsweredCard[] = [
+      ...answers,
+      { difficulty: current.difficulty, grade, production: current.type === 'writing' },
+    ]
     setAnswers(allAnswers)
 
     const rest = queue.slice(1)
@@ -97,6 +105,17 @@ export default function Session() {
     }
     setRevealed(false)
     setPicked(null)
+    setDraft('')
+    setCheckedPoints(new Set())
+  }
+
+  function togglePoint(index: number) {
+    setCheckedPoints((prev) => {
+      const next = new Set(prev)
+      if (next.has(index)) next.delete(index)
+      else next.add(index)
+      return next
+    })
   }
 
   function handlePick(option: string) {
@@ -148,6 +167,43 @@ export default function Session() {
     return 'border-slate-200 bg-white opacity-50 dark:border-slate-600 dark:bg-slate-800'
   }
 
+  // Auto-évaluation par les 3 boutons SM-2 (vocabulaire et rédaction).
+  const gradeButtons = (
+    <div className="grid grid-cols-3 gap-3">
+      <button
+        type="button"
+        onClick={() => handleGrade('again')}
+        className="rounded-2xl bg-slate-200 py-4 font-semibold text-slate-700 transition hover:bg-slate-300 active:scale-95 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
+      >
+        À revoir
+      </button>
+      <button
+        type="button"
+        onClick={() => handleGrade('hard')}
+        className="rounded-2xl bg-amber-100 py-4 font-semibold text-amber-800 transition hover:bg-amber-200 active:scale-95 dark:bg-amber-900 dark:text-amber-100 dark:hover:bg-amber-800"
+      >
+        Difficile
+      </button>
+      <button
+        type="button"
+        onClick={() => handleGrade('good')}
+        className="rounded-2xl bg-teal-600 py-4 font-semibold text-white transition hover:bg-teal-700 active:scale-95"
+      >
+        Réussi
+      </button>
+    </div>
+  )
+
+  const checklist = current.checklist ?? []
+  const draftWords = countWords(draft)
+  const suggestion = suggestedGrade(checkedPoints.size, checklist.length)
+  const writingHint =
+    suggestion === 'good'
+      ? 'Tous les points y sont — choisis « Réussi » !'
+      : suggestion === 'hard'
+        ? 'Il manque un ou deux points — « Difficile » est un choix honnête.'
+        : 'Plusieurs points manquent — « À revoir » pour la retravailler tout à l’heure.'
+
   return (
     <div className="flex flex-1 flex-col gap-6">
       <div className="flex items-center gap-3">
@@ -166,7 +222,11 @@ export default function Session() {
             </span>
           )}
         </p>
-        {isListening ? (
+        {isWriting ? (
+          <p className="w-full text-left text-lg font-semibold whitespace-pre-line">
+            {current.front}
+          </p>
+        ) : isListening ? (
           <>
             {canSpeak && (
               <button
@@ -198,7 +258,72 @@ export default function Session() {
         )}
       </div>
 
-      {isDrill ? (
+      {isWriting ? (
+        revealed ? (
+          <div className="flex flex-col gap-4">
+            <div className="rounded-2xl border border-slate-200 bg-white p-4 text-left dark:border-slate-700 dark:bg-slate-800">
+              <p className="text-xs font-semibold tracking-wide text-slate-400 uppercase dark:text-slate-500">
+                Ton texte
+              </p>
+              <p lang="nl" className="mt-1 whitespace-pre-line text-slate-700 dark:text-slate-200">
+                {draft}
+              </p>
+            </div>
+            <div className="flex flex-col gap-2 rounded-2xl border-2 border-teal-600 bg-white p-4 text-left dark:bg-slate-800">
+              <p className="font-bold">Vérifie ton texte :</p>
+              {checklist.map((point, index) => (
+                <label key={point} className="flex items-start gap-3">
+                  <input
+                    type="checkbox"
+                    checked={checkedPoints.has(index)}
+                    onChange={() => togglePoint(index)}
+                    className="mt-0.5 size-5 shrink-0 accent-teal-600"
+                  />
+                  <span>{point}</span>
+                </label>
+              ))}
+            </div>
+            <details className="rounded-2xl border border-slate-200 bg-white p-4 text-left dark:border-slate-700 dark:bg-slate-800">
+              <summary className="cursor-pointer font-semibold text-teal-700 dark:text-teal-400">
+                Voir un exemple de réponse
+              </summary>
+              <p lang="nl" className="mt-2 text-slate-700 dark:text-slate-200">
+                {current.back}
+              </p>
+            </details>
+            <p className="text-center text-sm text-slate-500 dark:text-slate-400">{writingHint}</p>
+            {gradeButtons}
+          </div>
+        ) : (
+          <div className="flex flex-col gap-3">
+            <textarea
+              lang="nl"
+              value={draft}
+              onChange={(event) => setDraft(event.target.value)}
+              rows={7}
+              placeholder="Schrijf hier je tekst in het Nederlands…"
+              className="rounded-2xl border-2 border-slate-200 bg-white p-4 text-lg dark:border-slate-600 dark:bg-slate-800"
+            />
+            <p
+              className={`text-center text-sm font-semibold tabular-nums ${
+                draftWords >= WRITING_MIN_WORDS
+                  ? 'text-teal-700 dark:text-teal-400'
+                  : 'text-slate-400 dark:text-slate-500'
+              }`}
+            >
+              {draftWords} mot{draftWords > 1 ? 's' : ''} — objectif ≈ {WRITING_TARGET_WORDS}
+            </p>
+            <button
+              type="button"
+              disabled={draftWords < WRITING_MIN_WORDS}
+              onClick={() => setRevealed(true)}
+              className="rounded-2xl bg-teal-600 py-5 text-lg font-bold text-white shadow-lg shadow-teal-600/25 transition hover:bg-teal-700 active:scale-95 disabled:opacity-40 disabled:hover:bg-teal-600 disabled:active:scale-100"
+            >
+              J'ai terminé →
+            </button>
+          </div>
+        )
+      ) : isDrill ? (
         <div className="flex flex-col gap-3">
           {options.map((option) => (
             <button
@@ -223,29 +348,7 @@ export default function Session() {
           )}
         </div>
       ) : revealed ? (
-        <div className="grid grid-cols-3 gap-3">
-          <button
-            type="button"
-            onClick={() => handleGrade('again')}
-            className="rounded-2xl bg-slate-200 py-4 font-semibold text-slate-700 transition hover:bg-slate-300 active:scale-95 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
-          >
-            À revoir
-          </button>
-          <button
-            type="button"
-            onClick={() => handleGrade('hard')}
-            className="rounded-2xl bg-amber-100 py-4 font-semibold text-amber-800 transition hover:bg-amber-200 active:scale-95 dark:bg-amber-900 dark:text-amber-100 dark:hover:bg-amber-800"
-          >
-            Difficile
-          </button>
-          <button
-            type="button"
-            onClick={() => handleGrade('good')}
-            className="rounded-2xl bg-teal-600 py-4 font-semibold text-white transition hover:bg-teal-700 active:scale-95"
-          >
-            Réussi
-          </button>
-        </div>
+        gradeButtons
       ) : (
         <button
           type="button"

@@ -1,17 +1,20 @@
 import { Link } from 'react-router'
 import type { Module } from '../types'
 import { getContentItems, getSrsStates } from '../lib/repo'
-import { selectSessionItems } from '../lib/srs'
-import { itemsForModule, MODULE_LABELS } from '../lib/modules'
+import { MODULE_LABELS, selectForModule } from '../lib/modules'
 import { computeStreak } from '../lib/streak'
 import { badgeDef } from '../lib/badges'
 import { loadEarnedBadges, loadSessionRecords, totalXp } from '../lib/storage'
 
-const MODULE_ICONS: Record<Module, string> = { vocab: '📚', grammar: '🧩', listening: '🎧' }
+const MODULE_ICONS: Record<Module, string> = {
+  vocab: '📚',
+  grammar: '🧩',
+  listening: '🎧',
+  writing: '✍️',
+}
 
 function moduleCounts(module: Module) {
-  const items = itemsForModule(getContentItems(), module)
-  const { reviews, fresh } = selectSessionItems(items, getSrsStates(), new Date())
+  const { reviews, fresh } = selectForModule(getContentItems(), getSrsStates(), new Date(), module)
   return { reviews: reviews.length, fresh: fresh.length, total: reviews.length + fresh.length }
 }
 

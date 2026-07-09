@@ -26,7 +26,13 @@ export const BADGES: BadgeDef[] = [
     code: 'all-modules-day',
     emoji: '🎒',
     label: 'Menu complet',
-    description: 'Vocabulaire, grammaire et écoute le même jour',
+    description: 'Trois modalités différentes le même jour',
+  },
+  {
+    code: 'first-writing',
+    emoji: '✍️',
+    label: 'Première rédaction',
+    description: 'Un premier texte écrit en néerlandais',
   },
   { code: 'sessions-25', emoji: '🏃', label: 'Marathonien', description: '25 sessions terminées' },
   { code: 'streak-3', emoji: '🔥', label: 'Bien lancé', description: '3 jours de travail d’affilée' },
@@ -64,6 +70,7 @@ export function deservedBadges({ records, xpTotal, streakDays }: BadgeInput): st
     modulesByDay.set(day, set)
   }
   if ([...modulesByDay.values()].some((set) => set.size >= 3)) deserved.push('all-modules-day')
+  if (records.some((record) => record.module === 'writing')) deserved.push('first-writing')
 
   if (streakDays >= 3) deserved.push('streak-3')
   if (streakDays >= 7) deserved.push('streak-7')

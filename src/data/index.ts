@@ -2,6 +2,7 @@ import type { ContentItem } from '../types'
 import vocabRaw from './vocab.json'
 import grammarRaw from './grammar.json'
 import listeningRaw from './listening.json'
+import writingRaw from './writing.json'
 
 /**
  * Contenu de départ générique (PRD §14) en attendant l'import des feuilles
@@ -11,4 +12,5 @@ import listeningRaw from './listening.json'
 export const vocabItems: ContentItem[] = vocabRaw as ContentItem[]
 export const grammarItems: ContentItem[] = grammarRaw as ContentItem[]
 export const listeningItems: ContentItem[] = listeningRaw as ContentItem[]
-export const seedItems: ContentItem[] = [...vocabItems, ...grammarItems, ...listeningItems]
+export const writingItems: ContentItem[] = writingRaw as ContentItem[]
+export const seedItems: ContentItem[] = [...vocabItems, ...grammarItems, ...listeningItems, ...writingItems]

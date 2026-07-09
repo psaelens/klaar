@@ -54,6 +54,13 @@ describe('deservedBadges', () => {
     expect(deservedBadges({ ...base, records })).toContain('all-modules-day')
   })
 
+  it('première rédaction : dès une session d’écriture terminée', () => {
+    expect(deservedBadges(base)).not.toContain('first-writing')
+    expect(
+      deservedBadges({ ...base, records: [record({ module: 'writing' })] }),
+    ).toContain('first-writing')
+  })
+
   it('marathonien à 25 sessions', () => {
     const records = Array.from({ length: 25 }, () => record({}))
     expect(deservedBadges({ ...base, records })).toContain('sessions-25')

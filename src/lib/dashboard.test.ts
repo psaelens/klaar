@@ -69,6 +69,12 @@ describe('successRateByModule', () => {
 
   it('null pour une modalité jamais travaillée', () => {
     expect(successRateByModule([]).grammar).toBeNull()
+    expect(successRateByModule([]).writing).toBeNull()
+  })
+
+  it('couvre la modalité rédaction', () => {
+    const records = [record({ module: 'writing', cardsReviewed: 2, correctFirstTry: 1 })]
+    expect(successRateByModule(records).writing).toBeCloseTo(0.5)
   })
 })
 

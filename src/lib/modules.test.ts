@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import type { ContentItem } from '../types'
-import { itemsForModule, shuffle } from './modules'
+import type { ContentItem, SrsState } from '../types'
+import { itemsForModule, selectForModule, shuffle } from './modules'
+import { WRITING_PROMPTS_PER_SESSION } from './writing'
 
 const item = (id: string, type: ContentItem['type']): ContentItem => ({
   id,
@@ -17,6 +18,38 @@ describe('itemsForModule', () => {
     const items = [item('v1', 'vocab'), item('g1', 'grammar'), item('v2', 'vocab')]
     expect(itemsForModule(items, 'vocab').map((i) => i.id)).toEqual(['v1', 'v2'])
     expect(itemsForModule(items, 'grammar').map((i) => i.id)).toEqual(['g1'])
+  })
+})
+
+describe('selectForModule', () => {
+  const now = new Date(2026, 6, 9, 12, 0)
+  const dueState = (itemId: string): SrsState => ({
+    itemId,
+    easeFactor: 2.5,
+    intervalDays: 1,
+    repetitions: 1,
+    lapses: 0,
+    nextReviewAt: new Date(2026, 6, 8, 12, 0).toISOString(),
+  })
+
+  it('rédaction : 2 textes maximum par session (format examen, PRD §16)', () => {
+    const items = ['w1', 'w2', 'w3', 'w4'].map((id) => item(id, 'writing'))
+    const { reviews, fresh } = selectForModule(items, {}, now, 'writing')
+    expect(reviews).toHaveLength(0)
+    expect(fresh).toHaveLength(WRITING_PROMPTS_PER_SESSION)
+  })
+
+  it('rédaction : les révisions dues passent avant les nouveaux textes', () => {
+    const items = ['w1', 'w2', 'w3'].map((id) => item(id, 'writing'))
+    const { reviews, fresh } = selectForModule(items, { w1: dueState('w1') }, now, 'writing')
+    expect(reviews.map((i) => i.id)).toEqual(['w1'])
+    expect(fresh).toHaveLength(1)
+  })
+
+  it('les autres modalités gardent les plafonds par défaut', () => {
+    const items = Array.from({ length: 12 }, (_, i) => item(`v${i}`, 'vocab'))
+    const { fresh } = selectForModule(items, {}, now, 'vocab')
+    expect(fresh).toHaveLength(8)
   })
 })
 
