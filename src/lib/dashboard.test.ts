@@ -72,9 +72,13 @@ describe('successRateByModule', () => {
     expect(successRateByModule([]).writing).toBeNull()
   })
 
-  it('couvre la modalité rédaction', () => {
-    const records = [record({ module: 'writing', cardsReviewed: 2, correctFirstTry: 1 })]
+  it('couvre les modalités de production', () => {
+    const records = [
+      record({ module: 'writing', cardsReviewed: 2, correctFirstTry: 1 }),
+      record({ module: 'speaking', cardsReviewed: 4, correctFirstTry: 1 }),
+    ]
     expect(successRateByModule(records).writing).toBeCloseTo(0.5)
+    expect(successRateByModule(records).speaking).toBeCloseTo(0.25)
   })
 })
 

@@ -46,6 +46,13 @@ describe('selectForModule', () => {
     expect(fresh).toHaveLength(1)
   })
 
+  it('oral : 2 sujets maximum par session, comme la rédaction', () => {
+    const items = ['s1', 's2', 's3', 's4'].map((id) => item(id, 'speaking'))
+    const { reviews, fresh } = selectForModule(items, {}, now, 'speaking')
+    expect(reviews).toHaveLength(0)
+    expect(fresh).toHaveLength(2)
+  })
+
   it('les autres modalités gardent les plafonds par défaut', () => {
     const items = Array.from({ length: 12 }, (_, i) => item(`v${i}`, 'vocab'))
     const { fresh } = selectForModule(items, {}, now, 'vocab')

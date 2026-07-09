@@ -1,5 +1,5 @@
 /** Modalité de travail (sous-ensemble des types de contenu déjà jouables). */
-export type Module = 'vocab' | 'grammar' | 'listening' | 'writing'
+export type Module = 'vocab' | 'grammar' | 'listening' | 'writing' | 'speaking'
 
 /** Item de contenu pédagogique (aligné sur le schéma `content_items`, PRD §7). */
 export interface ContentItem {
@@ -14,7 +14,7 @@ export interface ContentItem {
   choices?: string[] | null
   /** Question de compréhension en français (listening : front = transcript NL lu en TTS). */
   question?: string | null
-  /** Points attendus de la rédaction, en français (writing : auto-évaluation guidée). */
+  /** Points attendus, en français (writing/speaking : auto-évaluation guidée). */
   checklist?: string[] | null
   difficulty: 1 | 2 | 3
   /** Unité du programme (null tant que les feuilles scannées ne sont pas importées). */

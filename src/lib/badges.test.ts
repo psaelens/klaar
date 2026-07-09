@@ -61,6 +61,13 @@ describe('deservedBadges', () => {
     ).toContain('first-writing')
   })
 
+  it('première prise de parole : dès une session d’oral terminée', () => {
+    expect(deservedBadges(base)).not.toContain('first-speaking')
+    expect(
+      deservedBadges({ ...base, records: [record({ module: 'speaking' })] }),
+    ).toContain('first-speaking')
+  })
+
   it('marathonien à 25 sessions', () => {
     const records = Array.from({ length: 25 }, () => record({}))
     expect(deservedBadges({ ...base, records })).toContain('sessions-25')

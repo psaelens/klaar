@@ -12,6 +12,7 @@ const MODULE_ICONS: Record<Module, string> = {
   grammar: '🧩',
   listening: '🎧',
   writing: '✍️',
+  speaking: '🎤',
 }
 
 function moduleCounts(module: Module) {

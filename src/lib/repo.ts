@@ -1,6 +1,7 @@
 import type { ContentItem, EarnedBadge, SessionRecord, SrsState, XpEntry } from '../types'
 import { seedItems } from '../data'
 import { supabase } from './supabase'
+import { isExpired, recordingPath } from './speaking'
 import {
   appendEarnedBadges,
   appendSessionRecord,
@@ -222,6 +223,36 @@ async function pullFromCloud(userId: string): Promise<void> {
   }
 }
 
+/**
+ * Rétention des enregistrements oraux (voir DECISIONS.md) : au démarrage,
+ * l'élève supprime ses propres fichiers plus vieux que la rétention — pas de
+ * tâche serveur, la policy RLS ne l'autorise que sur son dossier.
+ */
+async function cleanupOldRecordings(userId: string): Promise<void> {
+  if (supabase === null) return
+  const { data: objects } = await supabase.storage.from('recordings').list(userId, { limit: 100 })
+  if (objects === null) return
+  const now = new Date()
+  const expired = objects
+    .filter((object) => object.created_at !== null && isExpired(object.created_at, now))
+    .map((object) => `${userId}/${object.name}`)
+  if (expired.length > 0) await supabase.storage.from('recordings').remove(expired)
+}
+
+/**
+ * Envoie une prise d'oral dans le bucket `recordings` (best-effort : pas de
+ * file de retry pour les blobs — un upload raté ne bloque jamais la session,
+ * le parent manquera juste cette prise).
+ */
+export function uploadRecording(blob: Blob, itemId: string): void {
+  if (supabase === null || cache.userId === null) return
+  const path = recordingPath(cache.userId, itemId, new Date())
+  void supabase.storage
+    .from('recordings')
+    .upload(path, blob, { contentType: blob.type || 'audio/webm' })
+    .catch(() => {})
+}
+
 /** À appeler une fois au démarrage de l'app, avant le premier rendu des pages. */
 export async function initRepo(): Promise<void> {
   cache.states = loadSrsStates()
@@ -239,6 +270,7 @@ export async function initRepo(): Promise<void> {
     await migrateLocalData(session.user.id)
     await flushQueue(session.user.id)
     await pullFromCloud(session.user.id)
+    await cleanupOldRecordings(session.user.id)
   } catch {
     // Hors ligne ou serveur indisponible : l'app continue sur le cache local.
   }

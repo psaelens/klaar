@@ -1,7 +1,14 @@
 import { useMemo, useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router'
 import type { ContentItem, Grade, Module, SrsState } from '../types'
-import { awardBadges, getContentItems, getSrsStates, recordSession, saveState } from '../lib/repo'
+import {
+  awardBadges,
+  getContentItems,
+  getSrsStates,
+  recordSession,
+  saveState,
+  uploadRecording,
+} from '../lib/repo'
 import { initialSrsState, review } from '../lib/srs'
 import { newBadges } from '../lib/badges'
 import { computeStreak } from '../lib/streak'
@@ -9,6 +16,8 @@ import { loadEarnedBadges, loadSessionRecords, totalXp } from '../lib/storage'
 import { MODULE_LABELS, selectForModule, shuffle } from '../lib/modules'
 import { speakDutch, ttsAvailable } from '../lib/tts'
 import { countWords, suggestedGrade, WRITING_MIN_WORDS, WRITING_TARGET_WORDS } from '../lib/writing'
+import { formatSeconds, SPEAKING_MIN_SECONDS } from '../lib/speaking'
+import { useRecorder } from '../hooks/useRecorder'
 import { sessionXp, type AnsweredCard } from '../lib/xp'
 import ProgressBar from '../components/ProgressBar'
 
@@ -33,7 +42,9 @@ export default function Session() {
   const [searchParams] = useSearchParams()
   const param = searchParams.get('m')
   const module: Module =
-    param === 'grammar' || param === 'listening' || param === 'writing' ? param : 'vocab'
+    param === 'grammar' || param === 'listening' || param === 'writing' || param === 'speaking'
+      ? param
+      : 'vocab'
   const [session] = useState(() => buildSession(module))
   const [startedAt] = useState(() => new Date())
   const [queue, setQueue] = useState(session.queue)
@@ -44,15 +55,18 @@ export default function Session() {
   const [doneIds, setDoneIds] = useState<Set<string>>(new Set())
   const [lapsedIds, setLapsedIds] = useState<Set<string>>(new Set())
   const [answers, setAnswers] = useState<AnsweredCard[]>([])
-  // Rédaction : brouillon de l'élève + points de la checklist cochés.
+  // Rédaction : brouillon de l'élève + points de la checklist cochés (oral aussi).
   const [draft, setDraft] = useState('')
   const [checkedPoints, setCheckedPoints] = useState<Set<number>>(new Set())
+  // Oral : prise audio de l'élève.
+  const recorder = useRecorder()
 
   const totalUnique = new Set(session.queue.map((item) => item.id)).size
   const current = queue[0]
   const isDrill = current !== undefined && (current.choices?.length ?? 0) > 0
   const isListening = current !== undefined && current.type === 'listening'
   const isWriting = current !== undefined && current.type === 'writing'
+  const isSpeaking = current !== undefined && current.type === 'speaking'
   // Sans synthèse vocale sur l'appareil, on affiche le transcript (item jouable quand même).
   const canSpeak = ttsAvailable()
 
@@ -83,11 +97,15 @@ export default function Session() {
     session.states[current.id] = updated
     saveState(updated)
 
-    const allAnswers: AnsweredCard[] = [
-      ...answers,
-      { difficulty: current.difficulty, grade, production: current.type === 'writing' },
-    ]
+    const production = current.type === 'writing' || current.type === 'speaking'
+    const allAnswers: AnsweredCard[] = [...answers, { difficulty: current.difficulty, grade, production }]
     setAnswers(allAnswers)
+
+    // Oral : la prise part vers le bucket recordings pour l'écoute hebdo du
+    // parent (PRD §13) — best-effort, ne bloque jamais la session.
+    if (current.type === 'speaking' && recorder.blob !== null) {
+      uploadRecording(recorder.blob, current.id)
+    }
 
     const rest = queue.slice(1)
     if (grade === 'again') {
@@ -107,6 +125,7 @@ export default function Session() {
     setPicked(null)
     setDraft('')
     setCheckedPoints(new Set())
+    recorder.reset()
   }
 
   function togglePoint(index: number) {
@@ -197,12 +216,50 @@ export default function Session() {
   const checklist = current.checklist ?? []
   const draftWords = countWords(draft)
   const suggestion = suggestedGrade(checkedPoints.size, checklist.length)
-  const writingHint =
+  const selfCheckHint =
     suggestion === 'good'
       ? 'Tous les points y sont — choisis « Réussi » !'
       : suggestion === 'hard'
         ? 'Il manque un ou deux points — « Difficile » est un choix honnête.'
-        : 'Plusieurs points manquent — « À revoir » pour la retravailler tout à l’heure.'
+        : 'Plusieurs points manquent — « À revoir » pour retravailler tout à l’heure.'
+
+  // Auto-évaluation guidée, partagée entre rédaction et oral (PRD §13 : pas de juge automatique).
+  const checklistPanel = (
+    <div className="flex flex-col gap-2 rounded-2xl border-2 border-teal-600 bg-white p-4 text-left dark:bg-slate-800">
+      <p className="font-bold">{isSpeaking ? 'Vérifie ta présentation :' : 'Vérifie ton texte :'}</p>
+      {checklist.map((point, index) => (
+        <label key={point} className="flex items-start gap-3">
+          <input
+            type="checkbox"
+            checked={checkedPoints.has(index)}
+            onChange={() => togglePoint(index)}
+            className="mt-0.5 size-5 shrink-0 accent-teal-600"
+          />
+          <span>{point}</span>
+        </label>
+      ))}
+    </div>
+  )
+
+  const examplePanel = (
+    <details className="rounded-2xl border border-slate-200 bg-white p-4 text-left dark:border-slate-700 dark:bg-slate-800">
+      <summary className="cursor-pointer font-semibold text-teal-700 dark:text-teal-400">
+        Voir un exemple de réponse
+      </summary>
+      <p lang="nl" className="mt-2 text-slate-700 dark:text-slate-200">
+        {current.back}
+      </p>
+      {isSpeaking && canSpeak && (
+        <button
+          type="button"
+          onClick={() => speakDutch(current.back)}
+          className="mt-3 rounded-full bg-teal-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-teal-700 active:scale-95"
+        >
+          🔊 Écouter l'exemple
+        </button>
+      )}
+    </details>
+  )
 
   return (
     <div className="flex flex-1 flex-col gap-6">
@@ -222,7 +279,7 @@ export default function Session() {
             </span>
           )}
         </p>
-        {isWriting ? (
+        {isWriting || isSpeaking ? (
           <p className="w-full text-left text-lg font-semibold whitespace-pre-line">
             {current.front}
           </p>
@@ -258,7 +315,102 @@ export default function Session() {
         )}
       </div>
 
-      {isWriting ? (
+      {isSpeaking ? (
+        revealed ? (
+          <div className="flex flex-col gap-4">
+            {recorder.url !== null && (
+              <div className="rounded-2xl border border-slate-200 bg-white p-4 text-left dark:border-slate-700 dark:bg-slate-800">
+                <p className="text-xs font-semibold tracking-wide text-slate-400 uppercase dark:text-slate-500">
+                  Ta prise ({formatSeconds(recorder.seconds)})
+                </p>
+                <audio controls src={recorder.url} className="mt-2 w-full" />
+              </div>
+            )}
+            {checklistPanel}
+            {examplePanel}
+            <p className="text-center text-sm text-slate-500 dark:text-slate-400">{selfCheckHint}</p>
+            {gradeButtons}
+          </div>
+        ) : (
+          <div className="flex flex-col gap-3">
+            {canSpeak && (
+              <button
+                type="button"
+                onClick={() => speakDutch(current.back)}
+                className="rounded-2xl border-2 border-teal-600 bg-white py-3 font-semibold text-teal-700 transition hover:bg-teal-50 active:scale-95 dark:bg-slate-800 dark:text-teal-400 dark:hover:bg-slate-700"
+              >
+                🔊 Écouter un exemple d'abord
+              </button>
+            )}
+            {recorder.status === 'unavailable' ? (
+              <>
+                <p className="text-center text-sm text-slate-500 dark:text-slate-400">
+                  Pas de micro disponible — entraîne-toi à voix haute, puis évalue-toi.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setRevealed(true)}
+                  className="rounded-2xl bg-teal-600 py-5 text-lg font-bold text-white shadow-lg shadow-teal-600/25 transition hover:bg-teal-700 active:scale-95"
+                >
+                  Je me suis entraîné →
+                </button>
+              </>
+            ) : recorder.status === 'recording' ? (
+              <>
+                <p className="animate-pulse text-center text-3xl font-bold text-red-600 tabular-nums dark:text-red-400">
+                  ● {formatSeconds(recorder.seconds)}
+                </p>
+                <button
+                  type="button"
+                  onClick={recorder.stop}
+                  className="rounded-2xl bg-teal-600 py-5 text-lg font-bold text-white shadow-lg shadow-teal-600/25 transition hover:bg-teal-700 active:scale-95"
+                >
+                  ⏹️ Terminer la prise
+                </button>
+              </>
+            ) : recorder.status === 'done' ? (
+              <>
+                <audio controls src={recorder.url ?? undefined} className="w-full" />
+                <p
+                  className={`text-center text-sm font-semibold tabular-nums ${
+                    recorder.seconds >= SPEAKING_MIN_SECONDS
+                      ? 'text-teal-700 dark:text-teal-400'
+                      : 'text-slate-400 dark:text-slate-500'
+                  }`}
+                >
+                  {formatSeconds(recorder.seconds)}
+                  {recorder.seconds < SPEAKING_MIN_SECONDS && ' — un peu court, vise 1 à 2 minutes'}
+                </p>
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    type="button"
+                    onClick={recorder.reset}
+                    className="rounded-2xl bg-slate-200 py-4 font-semibold text-slate-700 transition hover:bg-slate-300 active:scale-95 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
+                  >
+                    🔄 Refaire
+                  </button>
+                  <button
+                    type="button"
+                    disabled={recorder.seconds < SPEAKING_MIN_SECONDS}
+                    onClick={() => setRevealed(true)}
+                    className="rounded-2xl bg-teal-600 py-4 font-bold text-white shadow-lg shadow-teal-600/25 transition hover:bg-teal-700 active:scale-95 disabled:opacity-40 disabled:hover:bg-teal-600 disabled:active:scale-100"
+                  >
+                    J'ai terminé →
+                  </button>
+                </div>
+              </>
+            ) : (
+              <button
+                type="button"
+                onClick={recorder.start}
+                className="rounded-2xl bg-teal-600 py-5 text-lg font-bold text-white shadow-lg shadow-teal-600/25 transition hover:bg-teal-700 active:scale-95"
+              >
+                🎙️ M'enregistrer (1 à 2 min)
+              </button>
+            )}
+          </div>
+        )
+      ) : isWriting ? (
         revealed ? (
           <div className="flex flex-col gap-4">
             <div className="rounded-2xl border border-slate-200 bg-white p-4 text-left dark:border-slate-700 dark:bg-slate-800">
@@ -269,29 +421,9 @@ export default function Session() {
                 {draft}
               </p>
             </div>
-            <div className="flex flex-col gap-2 rounded-2xl border-2 border-teal-600 bg-white p-4 text-left dark:bg-slate-800">
-              <p className="font-bold">Vérifie ton texte :</p>
-              {checklist.map((point, index) => (
-                <label key={point} className="flex items-start gap-3">
-                  <input
-                    type="checkbox"
-                    checked={checkedPoints.has(index)}
-                    onChange={() => togglePoint(index)}
-                    className="mt-0.5 size-5 shrink-0 accent-teal-600"
-                  />
-                  <span>{point}</span>
-                </label>
-              ))}
-            </div>
-            <details className="rounded-2xl border border-slate-200 bg-white p-4 text-left dark:border-slate-700 dark:bg-slate-800">
-              <summary className="cursor-pointer font-semibold text-teal-700 dark:text-teal-400">
-                Voir un exemple de réponse
-              </summary>
-              <p lang="nl" className="mt-2 text-slate-700 dark:text-slate-200">
-                {current.back}
-              </p>
-            </details>
-            <p className="text-center text-sm text-slate-500 dark:text-slate-400">{writingHint}</p>
+            {checklistPanel}
+            {examplePanel}
+            <p className="text-center text-sm text-slate-500 dark:text-slate-400">{selfCheckHint}</p>
             {gradeButtons}
           </div>
         ) : (

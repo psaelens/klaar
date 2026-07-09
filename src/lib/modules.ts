@@ -1,6 +1,7 @@
 import type { ContentItem, Module, SrsState } from '../types'
 import { selectSessionItems, type SessionSelection } from './srs'
 import { WRITING_PROMPTS_PER_SESSION } from './writing'
+import { SPEAKING_PROMPTS_PER_SESSION } from './speaking'
 
 /** Libellés d'affichage des modalités (PRD §5). */
 export const MODULE_LABELS: Record<Module, string> = {
@@ -8,6 +9,13 @@ export const MODULE_LABELS: Record<Module, string> = {
   grammar: 'Grammaire',
   listening: 'Écoute',
   writing: 'Rédaction',
+  speaking: 'Oral',
+}
+
+/** Modalités de production : sessions courtes au format examen (PRD §16). */
+const PRODUCTION_CAP: Partial<Record<Module, number>> = {
+  writing: WRITING_PROMPTS_PER_SESSION,
+  speaking: SPEAKING_PROMPTS_PER_SESSION,
 }
 
 /** Sous-ensemble du contenu jouable dans une modalité donnée. */
@@ -16,8 +24,8 @@ export function itemsForModule(items: ContentItem[], module: Module): ContentIte
 }
 
 /**
- * File d'une session pour une modalité. En rédaction, 2 textes maximum comme
- * les deux rédactions de l'examen (PRD §16) — révisions dues d'abord.
+ * File d'une session pour une modalité. En production (rédaction, oral),
+ * 2 sujets maximum comme à l'examen (PRD §16) — révisions dues d'abord.
  */
 export function selectForModule(
   items: ContentItem[],
@@ -26,12 +34,13 @@ export function selectForModule(
   module: Module,
 ): SessionSelection {
   const pool = itemsForModule(items, module)
-  if (module !== 'writing') return selectSessionItems(pool, states, now)
+  const cap = PRODUCTION_CAP[module]
+  if (cap === undefined) return selectSessionItems(pool, states, now)
   const { reviews, fresh } = selectSessionItems(pool, states, now, {
-    maxReviews: WRITING_PROMPTS_PER_SESSION,
-    maxNew: WRITING_PROMPTS_PER_SESSION,
+    maxReviews: cap,
+    maxNew: cap,
   })
-  return { reviews, fresh: fresh.slice(0, WRITING_PROMPTS_PER_SESSION - reviews.length) }
+  return { reviews, fresh: fresh.slice(0, cap - reviews.length) }
 }
 
 /**
