@@ -4,6 +4,10 @@
 
 ## Dernière action terminée :
 
+**Charte « Oranje Trainer »** (piste A validée par Pierre, 9 juillet) : identité documentée (docs/IDENTITE.md), 4 commits déployés et vérifiés — tokens + typo (Bricolage Grotesque/Instrument Sans/Atkinson Hyperlegible auto-hébergées), navigation onglets bas + rail lg avec pages Examens et Progrès, anneau d'objectif quotidien, icônes Lucide, breakpoints tablette/PC (dashboard parent 2 colonnes), micro-motion (XP animé, flamme, confetti — motion-safe) et panneau Affichage (taille de texte, police lisibilité). Régression Playwright complète verte (welcome, 5 modalités, examen 15/15, co-parent), prod OK. Une bonne partie de M7 (accessibilité, polish) est donc couverte.
+
+## Avant :
+
 **Renommage du parent** (demande Pierre, 9 juillet) : crayon ✏️ dans /config, migration `20260709190000` (grant UPDATE sur la seule colonne `display_name` + policy self/parent) appliquée local + hébergé, RLS 44/44, vérifié E2E local et production (pastille accueil à jour, rôle intact côté serveur).
 
 **Invitation co-parent** (demande Pierre, 9 juillet) : lien d'invitation dans /config (id du foyer = code non devinable), flux `/config?invite=` pour que la maman crée son compte parent et voie le même suivi (dashboard, rapport hebdo, enregistrements). Sans migration, RLS 39/39, vérifié E2E local ET production (papa copie le lien → maman rejoint → dashboard « Suivi de TestProd », nettoyage complet). Également ce jour : accueil visiteur + mode démo, pastille de profil, REX coûts (docs/REX-COUT-IA.md).

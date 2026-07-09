@@ -36,8 +36,13 @@ Contexte mobile `{ width: 390, height: 844 }`, collecter
 
 ## Flux à dérouler
 
-1. `/` : cinq cartes-modules (📚 Vocabulaire, 🧩 Grammaire, 🎧 Écoute, ✍️ Rédaction,
-   🎤 Oral) avec compteurs dus/nouveaux (Rédaction et Oral plafonnés à 2).
+1. `/` (onglet Réviser) : anneau d'objectif du jour + cinq cartes-modules (icônes
+   Lucide, plus d'emojis) avec compteurs dus/nouveaux (Rédaction et Oral plafonnés
+   à 2). Navigation par onglets bas : Réviser / Examens / Progrès / Profil —
+   masquée sur /session et /examen. Les examens blancs se lancent depuis
+   `/examens` (plus depuis l'accueil) ; les badges se voient dans `/progres`.
+   ⚠️ Le compteur XP du bilan est ANIMÉ : attendre ~1,3 s après `**/bilan` avant
+   de lire la valeur.
 2. Vocabulaire (`/session?m=vocab`) : mot NL (`p[lang=nl]`), « Voir la réponse » →
    « À revoir / Difficile / Réussi » ; « À revoir » re-met la carte en fin de file.
 3. Grammaire (`/session?m=grammar`) : QCM `button[lang=nl]` ; bonne réponse = feedback

@@ -32,7 +32,7 @@ Chaque commit sur `main` doit compiler, passer les tests et être déployable. D
 - 153 items de départ dans `src/data/*.json` (64 mots, 41 drills, 24 écoutes, 12 rédactions, 12 sujets d'oral), seedés aussi dans Supabase — enrichis ensuite par l'import (écran parent `/import`).
 - Espace parent : dashboard (calendrier 4 semaines, minutes, taux de réussite par modalité, badges, écoute des derniers enregistrements oraux — conservés 14 jours), réservé au rôle parent. Invitation d'un co-parent par lien depuis `/config` (les deux parents partagent le même suivi).
 - Sync Supabase multi-appareils (facultative) : sans variables d'env l'app reste 100 % locale ; connecté, chaque écriture part au localStorage puis au serveur (file de retry hors ligne), pull au démarrage.
-- Mode sombre, mobile-first.
+- Charte graphique « Oranje Trainer » (`docs/IDENTITE.md`) : tokens sémantiques (action/reward/ink), typo auto-hébergée, navigation par onglets (mobile) / rail (PC), mode sombre, accessibilité (taille de texte, police Atkinson Hyperlegible).
 
 ## Supabase
 
