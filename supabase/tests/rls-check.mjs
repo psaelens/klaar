@@ -98,6 +98,37 @@ try {
   const { data: coHh } = await coparent.from('households').select('id').eq('id', hh.id)
   check('co-parent voit le foyer une fois membre', coHh?.length === 1)
 
+  // --- Renommage : le parent modifie SON nom, colonne display_name seulement
+  const { data: renamed } = await parent
+    .from('profiles')
+    .update({ display_name: 'Papa' })
+    .eq('id', users.parent.id)
+    .select('display_name')
+  check('parent modifie son propre nom', renamed?.[0]?.display_name === 'Papa')
+
+  const { data: renameChild } = await parent
+    .from('profiles')
+    .update({ display_name: 'Piraté' })
+    .eq('id', users.child.id)
+    .select()
+  check("parent ne peut PAS renommer l'enfant", (renameChild?.length ?? 0) === 0)
+
+  const { data: childRename } = await child
+    .from('profiles')
+    .update({ display_name: 'MoiMême' })
+    .eq('id', users.child.id)
+    .select()
+  check('enfant ne peut PAS se renommer (réservé au parent)', (childRename?.length ?? 0) === 0)
+
+  const { error: roleErr } = await parent.from('profiles').update({ role: 'child' }).eq('id', users.parent.id)
+  check('parent ne peut PAS changer son rôle (grant par colonne)', roleErr !== null)
+
+  const { error: hopErr } = await stranger
+    .from('profiles')
+    .update({ household_id: hh.id })
+    .eq('id', users.stranger.id)
+  check('personne ne peut changer de foyer par update (grant par colonne)', hopErr !== null)
+
   await stranger.rpc('create_household_with_profile', {
     household_name: 'Autre foyer',
     my_role: 'child',

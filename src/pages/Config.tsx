@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router'
 import { supabase } from '../lib/supabase'
+import { saveProfile } from '../lib/storage'
 
 /**
  * Configuration de la synchronisation : connexion à un compte existant,
@@ -56,12 +57,18 @@ export default function Config() {
   const [coEmail, setCoEmail] = useState('')
   const [coPassword, setCoPassword] = useState('')
 
+  // Modification du nom du parent connecté
+  const [editingName, setEditingName] = useState(false)
+  const [nameDraft, setNameDraft] = useState('')
+  const [userId, setUserId] = useState<string | null>(null)
+
   useEffect(() => {
     const sb = supabase
     if (sb === null) return
     void sb.auth.getSession().then(async ({ data: { session } }) => {
       if (session === null) return
       setUserEmail(session.user.email ?? session.user.id)
+      setUserId(session.user.id)
       const { data } = await sb
         .from('profiles')
         .select('display_name, role')
@@ -191,6 +198,25 @@ export default function Config() {
     window.location.href = '/'
   }
 
+  /** Le parent modifie son nom d'affichage (colonne display_name seulement, RLS). */
+  async function handleRename() {
+    if (userId === null || profile === null) return
+    const name = nameDraft.trim()
+    if (name === '') return
+    setBusy(true)
+    setMessage(null)
+    const { error } = await client.from('profiles').update({ display_name: name }).eq('id', userId)
+    if (error !== null) {
+      setMessage(`Modification du nom : ${error.message}`)
+    } else {
+      setProfile({ ...profile, display_name: name })
+      // Rafraîchit le cache local pour la pastille de l'accueil.
+      saveProfile({ displayName: name, role: 'parent' })
+      setEditingName(false)
+    }
+    setBusy(false)
+  }
+
   async function handleLogout() {
     setBusy(true)
     await client.auth.signOut()
@@ -216,14 +242,64 @@ export default function Config() {
 
       {userEmail !== null ? (
         <div className="flex flex-col gap-4 rounded-3xl border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-800">
-          <p>
-            Connecté : <span className="font-semibold">{profile?.display_name ?? userEmail}</span>
+          <p className="flex flex-wrap items-center gap-2">
+            <span>
+              Connecté : <span className="font-semibold">{profile?.display_name ?? userEmail}</span>
+            </span>
             {profile !== null && (
-              <span className="ml-2 rounded-full bg-teal-100 px-3 py-0.5 text-sm text-teal-800 dark:bg-teal-900 dark:text-teal-200">
+              <span className="rounded-full bg-teal-100 px-3 py-0.5 text-sm text-teal-800 dark:bg-teal-900 dark:text-teal-200">
                 {profile.role === 'parent' ? 'Parent' : 'Élève'}
               </span>
             )}
+            {profile?.role === 'parent' && !editingName && (
+              <button
+                type="button"
+                onClick={() => {
+                  setNameDraft(profile.display_name)
+                  setEditingName(true)
+                }}
+                aria-label="Modifier mon nom"
+                title="Modifier mon nom"
+                className="rounded-full p-1 text-sm hover:bg-slate-200 dark:hover:bg-slate-700"
+              >
+                ✏️
+              </button>
+            )}
           </p>
+          {editingName && (
+            <form
+              className="flex gap-2"
+              onSubmit={(e) => {
+                e.preventDefault()
+                void handleRename()
+              }}
+            >
+              <input
+                type="text"
+                required
+                maxLength={40}
+                placeholder="Ton prénom"
+                value={nameDraft}
+                onChange={(e) => setNameDraft(e.target.value)}
+                aria-label="Nouveau nom"
+                className={inputClass}
+              />
+              <button
+                type="submit"
+                disabled={busy || nameDraft.trim() === ''}
+                className="rounded-xl bg-teal-600 px-4 font-bold text-white transition hover:bg-teal-700 disabled:opacity-50"
+              >
+                OK
+              </button>
+              <button
+                type="button"
+                onClick={() => setEditingName(false)}
+                className="rounded-xl bg-slate-200 px-3 text-slate-700 dark:bg-slate-700 dark:text-slate-200"
+              >
+                ✕
+              </button>
+            </form>
+          )}
           <p className="text-sm text-slate-500 dark:text-slate-400">
             Les révisions se synchronisent automatiquement entre les appareils.
           </p>
