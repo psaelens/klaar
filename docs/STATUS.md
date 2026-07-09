@@ -1,27 +1,27 @@
 # STATUS — état d'avancement Klaar!
 
-## Étape roadmap en cours : M5 TERMINÉ et déployé → prochaine étape M6
+## Étape roadmap en cours : M6 TERMINÉ et déployé → prochaine étape M7
 
 ## Dernière action terminée :
 
-M5 complet, **vérifié E2E en local ET en production** (https://klaar-nine.vercel.app) : foyer de test, session d'oral complète (2 sujets : consigne FR servie par le serveur, exemple TTS, enregistrement micro factice 21 s, réécoute, auto-évaluation par checklist), 2 prises uploadées dans le bucket privé `recordings` et vérifiées côté serveur, badge « Première prise de parole » 🎤 célébré, dashboard parent : taux Oral + section « Derniers enregistrements » avec lecteurs audio (URL signées téléchargeables) ; nettoyage complet (comptes + foyer + enregistrements). En local en plus : prise trop courte refusée (< 20 s), refaire une prise, fallback affiché sans micro.
+M6 complet, **vérifié E2E en local ET en production** (https://klaar-nine.vercel.app) : examen blanc écrit joué de bout en bout (intro au barème officiel, chrono par partie, CA avec écoutes limitées, auto-correction par corrigé à cocher, résultat 40/70 « réussi » + 200 XP boss battle), résultat dans `mock_exams` (details par section vérifiés côté serveur), dashboard parent avec rapport hebdo et score de l'examen ; nettoyage complet. En local en plus : épreuve orale complète (26/30), plafond < 55 mots en EE, 3 écoutes max épuisées, fin de chrono, record affiché à l'accueil.
 
-Récap M5 : migration `20260709120000` (module `speaking`, bucket Storage privé `recordings` 10 Mo/MIME audio avec policies par dossier — élève écrit/lit/supprime le sien, parent du foyer écoute) appliquée local + hébergé, 153 items seedés (dont 12 sujets d'oral) ; écran d'oral (MediaRecorder via `useRecorder`, min 20 s / max 3 min, exemple TTS en prononciation de référence, checklist partagée avec la rédaction) ; upload best-effort à la notation ; rétention 14 jours nettoyée au démarrage ; XP production ; badge `first-speaking` ; écoute parent au dashboard. 69 tests ✅, RLS 29/29 ✅ (dont 6 sur le Storage). Aussi ce jour : streak passé à 1 h/jour (décision Pierre), tooltip des minutes restantes à l'accueil.
+Récap M6 : calibrage sur les épreuves CE1D officielles 2022-2026 téléchargées par Pierre dans `docs/CE1D/` (ignoré par git) → `docs/CE1D-FORMAT.md` (structure, barème CA /30 + CL /20 + EE /20 + EO /30, grille EE officielle, seuil 50 %) ; migration `20260709150000` (table `mock_exams` append-only + module `exam`) local + hébergé ; 2 épreuves blanches originales (`src/data/exams.json`) ; lecteur `/examen` chronométré avec auto-correction (PRD §13) ; XP boss battle 100/200 hors plafond ; rapport hebdo parent (`src/lib/report.ts`) : jours/minutes/taux vs semaine précédente + point faible. 83 tests ✅, RLS 33/33 ✅. Aussi ce jour : M4 (rédaction), M5 (oral + Storage), streak 1 h.
 
 ## Prochaine action à faire :
 
-Démarrer M6 (PRD §11) : examens blancs chronométrés (écrit + oral) + rapport hebdo parent. Format : épreuves CE1D officielles d'enseignement.be (PRD §16 — Pierre doit télécharger les PDF des sessions passées ; le module se calibre sur le vrai format, PRD §13). Boss battles : bonus XP significatif (PRD §8). Table `mock_exams` déjà prévue au schéma cible (PRD §7). Rapport hebdo : résumé lisible auto-généré côté parent (PRD §9).
+Démarrer M7 (PRD §11, dernière étape) : ciblage des points faibles (le rapport hebdo détecte déjà la modalité faible — ajouter la heatmap par thème PRD §9 et/ou des sessions ciblées sur les thèmes faibles), polish, accessibilité (taille de police ajustable, police dyslexie, contrastes — PRD §12). Aussi en attente : PWA (`vite-plugin-pwa`, reportée depuis M1), pondération des thèmes du vrai manuel quand les scans arriveront, et le portefeuille pièces → minutes d'écran si Pierre le veut toujours.
 
 ## Décisions en attente de validation par Pierre :
 
-- Faire vérifier le contenu de départ par un néerlandophone (PRD §13) : 64 mots, 41 drills, 24 écoutes, 12 rédactions, 12 sujets d'oral — générés par Claude, non validés par un tiers.
-- La voix TTS néerlandaise dépend de l'appareil — à valider à l'oreille sur l'appareil de l'élève ; sinon vrais enregistrements via `audio_url` (déjà dans le schéma).
-- Télécharger les épreuves CE1D officielles (enseignement.be) pour calibrer M6 — action Pierre.
-- Le portefeuille pièces → minutes d'écran (PRD §8/§9, table `screen_time_wallet`) n'est rattaché à aucune étape de la roadmap — à planifier ou à abandonner si la contrainte d'écran se gère autrement.
+- Faire vérifier le contenu par un néerlandophone (PRD §13) : 64 mots, 41 drills, 24 écoutes, 12 rédactions, 12 sujets d'oral + les 2 épreuves blanches (transcripts, corrigés, exemples) — générés par Claude.
+- La voix TTS néerlandaise dépend de l'appareil — à valider à l'oreille (les CA des blancs en dépendent aussi ; sinon utiliser les MP3 officiels de `docs/CE1D/` sur papier).
+- Répétitions papier : les guides de correction officiels ne sont pas dans les zips téléchargés — à récupérer sur enseignement.be pour corriger les épreuves officielles.
+- Portefeuille pièces → minutes d'écran (PRD §8/§9) : toujours pas rattaché à une étape — à planifier ou abandonner.
 
 ## Points d'attention / bugs connus non résolus :
 
-- Si l'élève quitte/recharge en pleine session, la file est recomposée et les compteurs repartent de zéro — l'état SRS par carte est persisté après chaque réponse. Pour la rédaction/l'oral, le brouillon ou la prise en cours est aussi perdu au rechargement (assumé, DECISIONS.md).
-- `npx supabase db push --include-seed` peut mettre à jour le hash du seed SANS l'exécuter (vu au M5 : 141 items au lieu de 153) — toujours vérifier le count après coup et re-seeder via `psql <pooler-url> -f supabase/seed.sql` au besoin (mot de passe : `SUPABASE_DB_PASSWORD` de `.env.local`).
-- Le PRD est dans `.prettierignore` (reformaté une fois par Prettier, contenu inchangé).
-- Recette de vérification runtime documentée dans `.claude/skills/verify/SKILL.md` (preview + Playwright).
+- Si l'élève quitte/recharge en pleine session OU en plein examen blanc, l'état en cours est perdu (file recomposée / examen à recommencer) — l'état SRS et les résultats déjà enregistrés sont sûrs. Assumé (DECISIONS.md).
+- `npx supabase db push --include-seed` peut mettre à jour le hash du seed SANS l'exécuter — vérifier le count de `content_items` et re-seeder via `psql` au besoin (voir `.claude/skills/verify/SKILL.md`).
+- Le PRD est dans `.prettierignore`.
+- Recette de vérification runtime : `.claude/skills/verify/SKILL.md` (preview + Playwright).

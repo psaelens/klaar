@@ -24,10 +24,11 @@ npm run dev        # serveur de dev (http://localhost:5173)
 
 Chaque commit sur `main` doit compiler, passer les tests et être déployable. Déploiement cible : Vercel/Netlify branché sur le repo GitHub (voir `docs/STATUS.md` pour l'état du branchement).
 
-## État actuel (M5 terminé)
+## État actuel (M6 terminé)
 
 - Cinq modalités sur le même moteur SM-2 (3 boutons : À revoir / Difficile / Réussi) : vocabulaire NL→FR, drills de grammaire (QCM), compréhension orale (TTS navigateur + QCM), expression écrite guidée et expression orale (2 sujets par session au format examen CE1D, auto-évaluation par checklist ; l'oral s'enregistre au micro avec exemple TTS en prononciation de référence).
-- Gamification : XP (pondéré difficulté, production ×2,5, plafond anti-farming), streak (≥ 1 h/jour), 11 badges célébrés au bilan.
+- Examens blancs chronométrés (🏆 boss battles) calibrés sur le format officiel CE1D (`docs/CE1D-FORMAT.md`) : écrit /70 (CA + CL + EE) et oral /30, auto-correction par corrigé et grilles officielles simplifiées, résultats dans `mock_exams`.
+- Gamification : XP (pondéré difficulté, production ×2,5, plafond anti-farming, bonus boss battle 100/200), streak (≥ 1 h/jour), 11 badges célébrés au bilan.
 - 153 items de départ dans `src/data/*.json` (64 mots, 41 drills, 24 écoutes, 12 rédactions, 12 sujets d'oral), seedés aussi dans Supabase — enrichis ensuite par l'import (écran parent `/import`).
 - Espace parent : dashboard (calendrier 4 semaines, minutes, taux de réussite par modalité, badges, écoute des derniers enregistrements oraux — conservés 14 jours), réservé au rôle parent.
 - Sync Supabase multi-appareils (facultative) : sans variables d'env l'app reste 100 % locale ; connecté, chaque écriture part au localStorage puis au serveur (file de retry hors ligne), pull au démarrage.
@@ -38,11 +39,11 @@ Chaque commit sur `main` doit compiler, passer les tests et être déployable. D
 ```bash
 npx supabase start                    # stack local (Docker) : applique migrations + seed
 npx supabase db reset                 # ré-applique migrations + seed
-node supabase/tests/rls-check.mjs     # 29 vérifications d'isolation RLS (stack local requis)
+node supabase/tests/rls-check.mjs     # 33 vérifications d'isolation RLS (stack local requis)
 npx supabase gen types typescript --local > src/lib/database.types.ts
 ```
 
-Schéma : `households`, `profiles` (rôle parent/enfant), `content_items` (contenu global ou du foyer ; `choices` pour les QCM, `question` pour l'écoute, `checklist` pour la rédaction et l'oral), `srs_state`, `sessions`, `xp_ledger`, `badges`, + bucket Storage privé `recordings` (enregistrements oraux, un dossier par élève, rétention 14 jours) — RLS sur toutes les tables (l'élève lit/écrit ses données, le parent lit celles du foyer sans pouvoir les modifier). Migrations versionnées dans `supabase/migrations/`, jamais d'édition manuelle du schéma.
+Schéma : `households`, `profiles` (rôle parent/enfant), `content_items` (contenu global ou du foyer ; `choices` pour les QCM, `question` pour l'écoute, `checklist` pour la rédaction et l'oral), `srs_state`, `sessions`, `xp_ledger`, `badges`, `mock_exams` (résultats des examens blancs), + bucket Storage privé `recordings` (enregistrements oraux, un dossier par élève, rétention 14 jours) — RLS sur toutes les tables (l'élève lit/écrit ses données, le parent lit celles du foyer sans pouvoir les modifier). Migrations versionnées dans `supabase/migrations/`, jamais d'édition manuelle du schéma.
 
 Variables d'env (Vercel et `.env.local`, jamais commitées) : `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`. Absentes → mode local sans compte.
 

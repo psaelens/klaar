@@ -22,8 +22,9 @@ Chromium est installé dans `%LOCALAPPDATA%\ms-playwright`. Le package `playwrig
 installé dans le scratchpad `1d7b2eb0-…/scratchpad/verify/` (pas une dépendance du projet),
 avec les scripts existants : `verify-grammar.mjs`, `verify-vocab-regression.mjs`,
 `verify-import.mjs`, `verify-parent-dashboard.mjs`, `verify-writing.mjs`,
-`verify-speaking.mjs`, `verify-speaking-sync.mjs`, `verify-prod-m5.mjs` (modèle de
-vérif prod avec nettoyage). Contexte mobile `{ width: 390, height: 844 }`, collecter
+`verify-speaking.mjs`, `verify-speaking-sync.mjs`, `verify-exam.mjs`,
+`verify-exam-sync.mjs`, `verify-prod-m6.mjs` (modèle de vérif prod avec nettoyage).
+Contexte mobile `{ width: 390, height: 844 }`, collecter
 `pageerror`. Pour l'oral : lancer chromium avec
 `args: ['--use-fake-ui-for-media-stream', '--use-fake-device-for-media-stream']` et
 `permissions: ['microphone']` sur le contexte (micro factice, ~330 Ko pour 21 s).
@@ -53,6 +54,13 @@ vérif prod avec nettoyage). Contexte mobile `{ width: 390, height: 844 }`, coll
    auto-évaluation comme la rédaction (« Vérifie ta présentation »). 2 sujets/session.
    Connecté : chaque prise part dans le bucket `recordings` ({userId}/{stamp}-{item}.webm) ;
    le dashboard parent affiche « 🎤 Derniers enregistrements » (URL signées).
+3e. Examen blanc (`/examen?id=blanc-ecrit-01|blanc-oral-01`, carte 🏆 à l'accueil) :
+   intro → « Commencer l'épreuve » → par partie : répondre sous chrono (CA : bouton
+   « 🔊 Écouter (n/3) », CL : texte NL, EE : textarea + compteur, EO : micro) puis
+   auto-correction (corrigé/grille à cocher, score « x / y pts » mis à jour en direct).
+   Après la carte-titre, attendre 300 ms avant de lire `main` (rendu React). Bilan :
+   score total, chips par partie, +100/+200 XP. Un run écrit express (réponses vides,
+   quelques cases) prend ~30 s ; voir `verify-exam-sync.mjs`.
 4. Fin de file → `/bilan` (stats + « Session … terminée » + XP + célébration des nouveaux
    badges — 1re session d'un contexte vierge : « Premier pas » 🐣 et « Sans faute » 🎯 ;
    vitrine emoji à l'accueil ensuite ; `localStorage['klaar.badges.v1']`).
