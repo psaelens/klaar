@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router'
+import { Link, useSearchParams } from 'react-router'
 import { supabase } from '../lib/supabase'
 
 /**
- * Configuration de la synchronisation : connexion à un compte existant ou
- * création du foyer (compte parent + compte élève) la première fois.
+ * Configuration de la synchronisation : connexion à un compte existant,
+ * création du foyer (compte parent + compte élève) la première fois, ou
+ * — via un lien /config?invite=<id du foyer> — création du compte co-parent
+ * qui rejoint le foyer existant (PRD §3/§9). L'id du foyer, non devinable,
+ * fait office de code d'invitation (DECISIONS.md).
  * En l'absence de variables d'env Supabase, l'app reste en mode local.
  */
 
@@ -26,9 +29,14 @@ interface ProfileInfo {
 }
 
 export default function Config() {
-  const [mode, setMode] = useState<'status' | 'login' | 'setup'>('status')
+  const [searchParams] = useSearchParams()
+  // Lien d'invitation co-parent : /config?invite=<id du foyer>
+  const invite = searchParams.get('invite')
+  const [mode, setMode] = useState<'status' | 'login' | 'setup' | 'join'>(invite !== null ? 'join' : 'status')
   const [userEmail, setUserEmail] = useState<string | null>(null)
   const [profile, setProfile] = useState<ProfileInfo | null>(null)
+  const [householdId, setHouseholdId] = useState<string | null>(null)
+  const [copied, setCopied] = useState(false)
   const [busy, setBusy] = useState(false)
   const [message, setMessage] = useState<string | null>(null)
 
@@ -43,6 +51,11 @@ export default function Config() {
   const [childEmail, setChildEmail] = useState('')
   const [childPin, setChildPin] = useState('')
 
+  // Formulaire co-parent (invitation)
+  const [coName, setCoName] = useState('')
+  const [coEmail, setCoEmail] = useState('')
+  const [coPassword, setCoPassword] = useState('')
+
   useEffect(() => {
     const sb = supabase
     if (sb === null) return
@@ -55,6 +68,11 @@ export default function Config() {
         .eq('id', session.user.id)
         .single()
       if (data !== null) setProfile(data)
+      if (data?.role === 'parent') {
+        // Id du foyer (visible par ses membres seulement) → lien d'invitation.
+        const { data: household } = await sb.from('households').select('id').single()
+        if (household !== null) setHouseholdId(household.id)
+      }
     })
   }, [])
 
@@ -137,10 +155,59 @@ export default function Config() {
     window.location.href = '/'
   }
 
+  /** Le co-parent crée son compte et rejoint le foyer du lien d'invitation. */
+  async function handleJoin() {
+    if (invite === null) return
+    setBusy(true)
+    setMessage(null)
+
+    const { data, error } = await client.auth.signUp({ email: coEmail, password: coPassword })
+    if (error !== null) {
+      setMessage(`Création du compte : ${error.message}`)
+      setBusy(false)
+      return
+    }
+    if (data.session === null || data.user === null) {
+      setMessage(
+        "Création du compte : une confirmation par email est exigée par le serveur — confirme l'email puis rouvre ce lien d'invitation.",
+      )
+      setBusy(false)
+      return
+    }
+
+    const { error: profileErr } = await client.from('profiles').insert({
+      id: data.user.id,
+      household_id: invite,
+      role: 'parent',
+      display_name: coName,
+    })
+    if (profileErr !== null) {
+      setMessage(
+        `Impossible de rejoindre le foyer : ${profileErr.message}. Vérifie que le lien d'invitation est complet.`,
+      )
+      setBusy(false)
+      return
+    }
+    window.location.href = '/'
+  }
+
   async function handleLogout() {
     setBusy(true)
     await client.auth.signOut()
     window.location.href = '/'
+  }
+
+  const inviteLink = householdId !== null ? `${window.location.origin}/config?invite=${householdId}` : null
+
+  async function copyInvite() {
+    if (inviteLink === null) return
+    try {
+      await navigator.clipboard.writeText(inviteLink)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch {
+      // Pas d'accès presse-papiers : le champ reste sélectionnable à la main.
+    }
   }
 
   return (
@@ -180,7 +247,37 @@ export default function Config() {
             Se déconnecter
           </button>
         </div>
-      ) : mode === 'status' ? (
+      ) : null}
+
+      {userEmail !== null && profile?.role === 'parent' && inviteLink !== null && (
+        <div className="flex flex-col gap-3 rounded-3xl border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-800">
+          <h2 className="font-bold">👥 Inviter un co-parent</h2>
+          <p className="text-sm text-slate-500 dark:text-slate-400">
+            Envoie ce lien à l'autre parent : il crée son compte et voit le même suivi de l'élève (dashboard,
+            rapport hebdo, enregistrements). Ne partage ce lien qu'avec lui.
+          </p>
+          <input
+            type="text"
+            readOnly
+            value={inviteLink}
+            onFocus={(e) => e.target.select()}
+            aria-label="Lien d'invitation co-parent"
+            className={`${inputClass} text-xs`}
+          />
+          <button type="button" onClick={copyInvite} className={buttonClass}>
+            {copied ? 'Lien copié ✓' : "Copier le lien d'invitation"}
+          </button>
+        </div>
+      )}
+
+      {userEmail !== null && invite !== null && (
+        <p className="rounded-xl bg-amber-100 p-3 text-sm text-amber-900 dark:bg-amber-900 dark:text-amber-100">
+          Ce lien d'invitation doit être ouvert par le co-parent sur son propre appareil (ou déconnecte-toi
+          d'abord pour créer son compte ici).
+        </p>
+      )}
+
+      {userEmail !== null ? null : mode === 'status' ? (
         <div className="flex flex-col gap-3">
           <p className="text-slate-600 dark:text-slate-400">
             Pas encore connecté : les révisions restent sur cet appareil. Connecte-toi pour les retrouver
@@ -226,6 +323,55 @@ export default function Config() {
           <button type="submit" disabled={busy} className={buttonClass}>
             {busy ? 'Connexion…' : 'Se connecter'}
           </button>
+        </form>
+      ) : mode === 'join' ? (
+        <form
+          className="flex flex-col gap-3"
+          onSubmit={(e) => {
+            e.preventDefault()
+            void handleJoin()
+          }}
+        >
+          <p className="text-slate-600 dark:text-slate-400">
+            👥 Tu as été invité·e à rejoindre le foyer pour suivre les progrès de l'élève. Crée ton compte
+            parent :
+          </p>
+          <input
+            type="text"
+            required
+            placeholder="Ton prénom"
+            value={coName}
+            onChange={(e) => setCoName(e.target.value)}
+            className={inputClass}
+          />
+          <input
+            type="email"
+            required
+            placeholder="Ton email"
+            autoComplete="username"
+            value={coEmail}
+            onChange={(e) => setCoEmail(e.target.value)}
+            className={inputClass}
+          />
+          <input
+            type="password"
+            required
+            minLength={8}
+            placeholder="Mot de passe (8 caractères min)"
+            autoComplete="new-password"
+            value={coPassword}
+            onChange={(e) => setCoPassword(e.target.value)}
+            className={inputClass}
+          />
+          <button type="submit" disabled={busy} className={buttonClass}>
+            {busy ? 'Création…' : 'Rejoindre le foyer'}
+          </button>
+          <p className="text-xs text-slate-400 dark:text-slate-500">
+            Déjà un compte ?{' '}
+            <button type="button" onClick={() => setMode('login')} className="underline">
+              Se connecter
+            </button>
+          </p>
         </form>
       ) : (
         <form

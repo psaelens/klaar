@@ -37,6 +37,7 @@ function client() {
 const suffix = Date.now()
 const users = {
   parent: { email: `rls-check-parent-${suffix}@test.local`, password: 'motdepasse-parent' },
+  coparent: { email: `rls-check-coparent-${suffix}@test.local`, password: 'motdepasse-coparent' },
   child: { email: `rls-check-child-${suffix}@test.local`, password: '123456' },
   stranger: { email: `rls-check-stranger-${suffix}@test.local`, password: 'autre-foyer' },
 }
@@ -54,6 +55,8 @@ for (const u of Object.values(users)) {
 
 const parent = client()
 await parent.auth.signInWithPassword(users.parent)
+const coparent = client()
+await coparent.auth.signInWithPassword(users.coparent)
 const child = client()
 await child.auth.signInWithPassword(users.child)
 const stranger = client()
@@ -85,6 +88,15 @@ try {
     .from('profiles')
     .insert({ id: users.stranger.id, household_id: hh.id, role: 'child', display_name: 'Usurpé' })
   check('enfant ne peut PAS créer un profil pour un autre utilisateur', spoofErr !== null)
+
+  // --- Co-parent : rejoint le foyer via son id (lien d'invitation)
+  const { error: coErr } = await coparent
+    .from('profiles')
+    .insert({ id: users.coparent.id, household_id: hh.id, role: 'parent', display_name: 'Maman' })
+  check("co-parent rejoint le foyer via l'id d'invitation", !coErr, coErr?.message)
+
+  const { data: coHh } = await coparent.from('households').select('id').eq('id', hh.id)
+  check('co-parent voit le foyer une fois membre', coHh?.length === 1)
 
   await stranger.rpc('create_household_with_profile', {
     household_name: 'Autre foyer',
@@ -238,6 +250,24 @@ try {
     examUpdErr !== null || examUpd?.length === 0,
   )
 
+  // --- Lecture du suivi par le co-parent (mêmes droits que le parent)
+  const { data: coSessions } = await coparent.from('sessions').select('*').eq('user_id', users.child.id)
+  check("co-parent lit les sessions de l'enfant", coSessions?.length === 1)
+
+  const { data: coBadges } = await coparent.from('badges').select('*').eq('user_id', users.child.id)
+  check("co-parent lit les badges de l'enfant", coBadges?.length === 1)
+
+  const { data: coExams } = await coparent.from('mock_exams').select('*').eq('user_id', users.child.id)
+  check("co-parent lit les examens blancs de l'enfant", coExams?.length === 1)
+
+  const { error: coSrsErr } = await coparent
+    .from('srs_state')
+    .update({ repetitions: 99 })
+    .eq('user_id', users.child.id)
+    .select()
+    .then(({ data, error }) => ({ error: error ?? (data?.length === 0 ? new Error('0 ligne') : null) }))
+  check("co-parent ne peut PAS modifier l'état SRS de l'enfant", coSrsErr !== null)
+
   // --- Enregistrements oraux (Storage, bucket privé `recordings`)
   const audio = new Blob([new Uint8Array(64)], { type: 'audio/webm' })
   const recPath = `${users.child.id}/rls-check-${suffix}.webm`
@@ -255,6 +285,9 @@ try {
     !recParentErr && recParent !== null,
     recParentErr?.message,
   )
+
+  const { data: recCoparent, error: recCoErr } = await coparent.storage.from('recordings').download(recPath)
+  check("co-parent écoute l'enregistrement de l'enfant", !recCoErr && recCoparent !== null, recCoErr?.message)
 
   const { error: recStrangerErr } = await stranger.storage.from('recordings').download(recPath)
   check("l'autre foyer ne peut PAS écouter l'enregistrement", recStrangerErr !== null)

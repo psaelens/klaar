@@ -23,6 +23,7 @@ Fenêtre disponible : ~8 semaines. L'app doit être **utilisable dès les premie
 
 - **Élève** : utilisateur principal, session de travail quotidienne, sur téléphone/tablette/PC.
 - **Parent** : consulte un tableau de bord, ajuste le taux de conversion points→écran, ajoute du contenu (photos des feuilles scannées), reçoit des alertes.
+- **Co-parent** (ajout juillet 2026) : l'autre parent du foyer, invité par le premier parent via un lien d'invitation. Mêmes droits que le parent (suivi en lecture, import de contenu) — le suivi de l'élève est partagé entre les deux parents.
 
 ## 4. Contraintes clés
 
@@ -88,6 +89,8 @@ Doit répondre à 3 questions sans connaître le néerlandais :
 3. **Où sont ses points faibles ?** → heatmap par thème du programme (issu des unités scannées), pour cibler les révisions ou l'aide d'un tuteur si besoin.
 
 Fonctions additionnelles : rapport hebdomadaire auto-généré (résumé lisible), réglage du taux de change écran, historique des échanges de pièces, alerte si le quota du jour n'est pas atteint en fin de journée.
+
+**Invitation d'un co-parent** (ajout juillet 2026) : depuis son écran de configuration, le parent dispose d'un lien d'invitation à envoyer à l'autre parent (l'identifiant du foyer, non devinable, fait office de code d'invitation). Le co-parent ouvre le lien sur son appareil, crée son compte (prénom, email, mot de passe) et rejoint le foyer avec le rôle parent : il voit le même dashboard, le rapport hebdo et les enregistrements de l'élève. L'app reste sans partage public : seules les personnes disposant du lien peuvent rejoindre.
 
 ## 10. Contenu pédagogique — ingestion & structure
 
