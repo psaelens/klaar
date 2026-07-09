@@ -170,7 +170,9 @@ export default function Exam() {
       {
         finishedAt: endedAt.toISOString(),
         module: 'exam',
-        cardsReviewed: allTasks().length,
+        // 0 carte : l'examen compte pour les minutes (streak) sans fausser
+        // les taux de réussite du 1er coup (seen += 0).
+        cardsReviewed: 0,
         correctFirstTry: 0,
         lapsed: 0,
         durationSeconds,

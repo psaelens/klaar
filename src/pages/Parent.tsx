@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router'
-import type { Module, SessionRecord } from '../types'
+import type { MockExamResult, Module, SessionRecord } from '../types'
 import { supabase } from '../lib/supabase'
 import { computeStreak } from '../lib/streak'
 import {
@@ -13,6 +13,8 @@ import {
 import { MODULE_LABELS } from '../lib/modules'
 import { badgeDef } from '../lib/badges'
 import { RECORDINGS_RETENTION_DAYS } from '../lib/speaking'
+import { weeklyReport } from '../lib/report'
+import { examById, EXAM_PASS_RATIO } from '../lib/exams'
 
 /**
  * Dashboard parent v1 (PRD §9) — lecture seule, réservé au rôle parent.
@@ -105,6 +107,7 @@ export default function Parent() {
   const [xp, setXp] = useState(0)
   const [badgeCodes, setBadgeCodes] = useState<string[]>([])
   const [recordings, setRecordings] = useState<Recording[]>([])
+  const [mockExams, setMockExams] = useState<MockExamResult[]>([])
 
   useEffect(() => {
     const sb = supabase
@@ -159,6 +162,23 @@ export default function Parent() {
         .order('earned_at', { ascending: true })
       setBadgeCodes((badgeRows ?? []).map((row) => row.badge_code))
 
+      const { data: examRows } = await sb
+        .from('mock_exams')
+        .select('*')
+        .eq('user_id', childId)
+        .order('taken_at', { ascending: false })
+      setMockExams(
+        (examRows ?? []).map((row) => ({
+          examId: row.exam_id,
+          examType: row.exam_type as MockExamResult['examType'],
+          score: row.score,
+          maxScore: row.max_score,
+          takenAt: row.taken_at,
+          durationSeconds: row.duration_seconds ?? undefined,
+          details: (row.details as Record<string, number> | null) ?? undefined,
+        })),
+      )
+
       // Enregistrements oraux : les 5 plus récents, URL signée (bucket privé).
       const { data: objects } = await sb.storage
         .from('recordings')
@@ -203,6 +223,7 @@ export default function Parent() {
   const weekMinutes = minutesInLastDays(records, now, 7)
   const overall = successRate(records)
   const byModule = successRateByModule(records)
+  const report = weeklyReport(records, now)
 
   return (
     <div className="flex flex-1 flex-col gap-6">
@@ -225,8 +246,8 @@ export default function Parent() {
 
       {records.length === 0 ? (
         <p className="rounded-2xl border border-slate-200 bg-white p-6 text-center text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400">
-          Pas encore de session synchronisée. Dès que {child?.display_name ?? 'l’élève'} termine une
-          session (connecté), elle apparaîtra ici.
+          Pas encore de session synchronisée. Dès que {child?.display_name ?? 'l’élève'} termine une session
+          (connecté), elle apparaîtra ici.
         </p>
       ) : (
         <>
@@ -263,6 +284,75 @@ export default function Parent() {
                   </span>
                 )
               })}
+            </div>
+          )}
+
+          <div className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-800">
+            <h2 className="mb-2 font-bold">📋 Rapport de la semaine</h2>
+            <ul className="flex list-none flex-col gap-1.5 text-sm text-slate-700 dark:text-slate-300">
+              <li>
+                {report.daysWorked} jour{report.daysWorked > 1 ? 's' : ''} travaillé
+                {report.daysWorked > 1 ? 's' : ''} sur 7, dont {report.daysValidated} avec l'heure complète.
+              </li>
+              <li>
+                {report.minutes} min au total ({report.minutesDelta >= 0 ? '+' : ''}
+                {report.minutesDelta} min vs la semaine précédente).
+              </li>
+              {report.rate !== null && (
+                <li>
+                  Réussite du 1<sup>er</sup> coup : {Math.round(report.rate * 100)} %
+                  {report.rateDeltaPct !== null && (
+                    <>
+                      {' '}
+                      ({report.rateDeltaPct >= 0 ? '+' : ''}
+                      {report.rateDeltaPct} pts)
+                    </>
+                  )}
+                  .
+                </li>
+              )}
+              {report.weakest !== null && (
+                <li>
+                  Point faible à cibler : {MODULE_LABELS[report.weakest.module].toLowerCase()} (
+                  {Math.round(report.weakest.rate * 100)} %).
+                </li>
+              )}
+            </ul>
+          </div>
+
+          {mockExams.length > 0 && (
+            <div>
+              <h2 className="mb-2 font-bold">🏆 Examens blancs</h2>
+              <div className="flex flex-col gap-2">
+                {mockExams.map((exam) => {
+                  const passed = exam.score / exam.maxScore >= EXAM_PASS_RATIO
+                  return (
+                    <div
+                      key={exam.takenAt}
+                      className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-4 text-sm dark:border-slate-700 dark:bg-slate-800"
+                    >
+                      <span>
+                        <span className="font-semibold">{examById(exam.examId)?.title ?? exam.examId}</span>
+                        <span className="block text-xs text-slate-500 dark:text-slate-400">
+                          {new Date(exam.takenAt).toLocaleDateString('fr-BE', {
+                            day: 'numeric',
+                            month: 'short',
+                          })}
+                        </span>
+                      </span>
+                      <span
+                        className={`rounded-full px-3 py-1 font-bold ${
+                          passed
+                            ? 'bg-teal-100 text-teal-800 dark:bg-teal-900 dark:text-teal-200'
+                            : 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200'
+                        }`}
+                      >
+                        {exam.score}/{exam.maxScore}
+                      </span>
+                    </div>
+                  )
+                })}
+              </div>
             </div>
           )}
 
