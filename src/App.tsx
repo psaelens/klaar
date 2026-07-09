@@ -20,14 +20,25 @@ export default function App() {
   const { pathname } = useLocation()
   // Session et examen blanc : mode focus, sans navigation (IDENTITE.md).
   const focusMode = pathname === '/session' || pathname === '/examen'
+  // Largeur par route : la session reste étroite partout (le focus est une
+  // feature) ; le dashboard parent s'étale sur PC ; le reste respire sur md+.
+  const width = focusMode
+    ? 'max-w-md'
+    : pathname === '/parent'
+      ? 'max-w-md md:max-w-2xl lg:max-w-4xl'
+      : 'max-w-md md:max-w-2xl'
 
   useEffect(() => {
     void initRepo().then(() => setReady(true))
   }, [])
 
   return (
-    <div className="min-h-dvh bg-ink-50 text-ink-900 dark:bg-ink-900 dark:text-ink-100">
-      <div className={`mx-auto flex min-h-dvh max-w-md flex-col px-4 py-4 ${focusMode ? '' : 'pb-20'}`}>
+    <div
+      className={`min-h-dvh bg-ink-50 text-ink-900 dark:bg-ink-900 dark:text-ink-100 ${focusMode ? '' : 'lg:pl-44'}`}
+    >
+      <div
+        className={`mx-auto flex min-h-dvh flex-col px-4 py-4 ${width} ${focusMode ? '' : 'pb-20 lg:pb-4'}`}
+      >
         <header className="mb-6 flex items-center justify-between">
           <Link
             to="/"

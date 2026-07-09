@@ -22,7 +22,7 @@ export default function Exams() {
         </p>
       </div>
 
-      <div className="flex flex-col gap-3">
+      <div className="grid gap-3 md:grid-cols-2">
         {exams.map((exam) => {
           const best = attempts
             .filter((r) => r.examId === exam.id)

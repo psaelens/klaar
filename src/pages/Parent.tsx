@@ -226,8 +226,8 @@ export default function Parent() {
   const report = weeklyReport(records, now)
 
   return (
-    <div className="flex flex-1 flex-col gap-6">
-      <div className="flex items-center justify-between">
+    <div className="flex flex-1 flex-col gap-6 lg:grid lg:grid-cols-2 lg:items-start lg:content-start">
+      <div className="flex items-center justify-between lg:col-span-2">
         <h1 className="font-display text-xl font-extrabold">Suivi de {child?.display_name ?? 'l’élève'}</h1>
         {children.length > 1 && (
           <select
@@ -245,7 +245,7 @@ export default function Parent() {
       </div>
 
       {records.length === 0 ? (
-        <p className="rounded-2xl border border-ink-200 bg-white p-6 text-center text-ink-500 dark:border-ink-700 dark:bg-ink-800 dark:text-ink-400">
+        <p className="rounded-2xl border border-ink-200 bg-white p-6 text-center text-ink-500 lg:col-span-2 dark:border-ink-700 dark:bg-ink-800 dark:text-ink-400">
           Pas encore de session synchronisée. Dès que {child?.display_name ?? 'l’élève'} termine une session
           (connecté), elle apparaîtra ici.
         </p>
@@ -393,7 +393,7 @@ export default function Parent() {
         </>
       )}
 
-      <Link to="/" className="text-center text-sm text-ink-400 underline">
+      <Link to="/" className="text-center text-sm text-ink-400 underline lg:col-span-2">
         Retour à l'accueil
       </Link>
     </div>

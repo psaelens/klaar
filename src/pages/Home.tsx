@@ -209,9 +209,11 @@ export default function Home() {
         </p>
       )}
 
-      {modules.map((module) => (
-        <ModuleCard key={module} module={module} />
-      ))}
+      <div className="grid gap-5 md:grid-cols-2">
+        {modules.map((module) => (
+          <ModuleCard key={module} module={module} />
+        ))}
+      </div>
     </div>
   )
 }

@@ -42,7 +42,7 @@ export default function Progress() {
     <div className="flex flex-1 flex-col gap-6">
       <h1 className="font-display text-2xl font-extrabold tracking-tight">Mes progrès</h1>
 
-      <dl className="grid grid-cols-2 gap-3">
+      <dl className="grid grid-cols-2 gap-3 md:grid-cols-4">
         <Stat label="Streak" value={`🔥 ${streak.current} jour${streak.current > 1 ? 's' : ''}`} />
         <Stat label="XP total" value={`${xp}`} accent />
         <Stat label="Aujourd'hui" value={`${todayMinutes} / ${STREAK_MIN_MINUTES_PER_DAY} min`} />
@@ -84,7 +84,7 @@ export default function Progress() {
             {earned.length} / {BADGES.length}
           </span>
         </h2>
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-2 md:grid-cols-3">
           {BADGES.map((def) => {
             const won = earnedCodes.has(def.code)
             return (
