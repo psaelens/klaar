@@ -1,0 +1,182 @@
+[
+  {
+    "id": "spe-01",
+    "type": "speaking",
+    "theme": "Se présenter",
+    "front": "Présente-toi à voix haute (1 à 2 minutes).\n• Dis ton nom, ton âge et où tu habites\n• Parle de ta famille\n• Dis ce que tu aimes faire",
+    "checklist": [
+      "J'ai dit mon nom, mon âge et où j'habite",
+      "J'ai parlé de ma famille",
+      "J'ai dit ce que j'aime faire",
+      "J'ai parlé en phrases complètes, sans lire un texte"
+    ],
+    "back": "Hallo, ik heet Lucas. Ik ben dertien jaar en ik woon in Namen. Wij zijn met vier thuis: mijn ouders, mijn zus en ik. Mijn zus is tien jaar. Ik speel graag voetbal en ik hou van muziek. Na school game ik ook graag met mijn vrienden.",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "spe-02",
+    "type": "speaking",
+    "theme": "La famille",
+    "front": "Parle de ta famille à voix haute (1 à 2 minutes).\n• Dis qui habite avec toi\n• Donne un détail sur chaque personne (âge, métier…)\n• Dis ce que vous faites ensemble",
+    "checklist": [
+      "J'ai dit qui habite avec moi",
+      "J'ai donné un détail sur chaque personne",
+      "J'ai dit ce que nous faisons ensemble",
+      "J'ai parlé en phrases complètes"
+    ],
+    "back": "Wij zijn met vier thuis. Mijn papa heet Marc en hij werkt in een kantoor. Mijn mama heet Sophie en ze is verpleegster. Mijn zus Nora is tien jaar. In het weekend kijken we samen een film of gaan we fietsen. Ik vind mijn familie heel belangrijk.",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "spe-03",
+    "type": "speaking",
+    "theme": "Les loisirs",
+    "front": "Présente tes hobbys à voix haute (1 à 2 minutes).\n• Dis quels sont tes hobbys\n• Dis quand et avec qui tu les pratiques\n• Explique pourquoi tu les aimes",
+    "checklist": [
+      "J'ai dit quels sont mes hobbys",
+      "J'ai dit quand et avec qui",
+      "J'ai expliqué pourquoi je les aime",
+      "J'ai parlé en phrases complètes"
+    ],
+    "back": "Mijn hobby's zijn voetbal en zwemmen. Ik speel voetbal op woensdag en op zaterdag, met mijn team. In de zomer zwem ik vaak met mijn vrienden. Ik hou van sport, want het is gezond en leuk. 's Avonds luister ik ook graag naar muziek.",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "spe-04",
+    "type": "speaking",
+    "theme": "L'école",
+    "front": "Parle de ton école à voix haute (1 à 2 minutes).\n• Dis quand l'école commence et finit\n• Parle de tes cours préférés (et d'un cours que tu aimes moins)\n• Dis ce que tu fais à midi",
+    "checklist": [
+      "J'ai dit quand l'école commence et finit",
+      "J'ai parlé de mes cours préférés et d'un cours que j'aime moins",
+      "J'ai dit ce que je fais à midi",
+      "J'ai parlé en phrases complètes"
+    ],
+    "back": "Mijn school begint om half negen en stopt om vier uur. Mijn lievelingsvakken zijn wiskunde en sport. Nederlands vind ik moeilijk, maar interessant. Om twaalf uur eet ik boterhammen in de refter met mijn vrienden. Daarna spelen we op de speelplaats.",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "spe-05",
+    "type": "speaking",
+    "theme": "La journée type",
+    "front": "Raconte ta journée type à voix haute (1 à 2 minutes), du matin au soir.\n• Dis à quelle heure tu te lèves et ce que tu manges\n• Dis comment tu vas à l'école\n• Raconte ce que tu fais après l'école et le soir",
+    "checklist": [
+      "J'ai dit à quelle heure je me lève et ce que je mange",
+      "J'ai dit comment je vais à l'école",
+      "J'ai raconté l'après-école et le soir",
+      "J'ai utilisé plusieurs heures (om … uur)"
+    ],
+    "back": "Ik sta om zeven uur op. Ik eet boterhammen en ik drink melk. Om acht uur ga ik met de bus naar school. Na school maak ik mijn huiswerk. Dan speel ik buiten of ik game. Om zeven uur eten we warm. Ik ga om tien uur slapen.",
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "spe-06",
+    "type": "speaking",
+    "theme": "La météo",
+    "front": "Parle du temps qu'il fait à voix haute (1 à 2 minutes).\n• Décris le temps aujourd'hui\n• Dis ce que tu portes\n• Dis quelle est ta saison préférée et pourquoi",
+    "checklist": [
+      "J'ai décrit le temps d'aujourd'hui",
+      "J'ai dit ce que je porte",
+      "J'ai dit ma saison préférée et pourquoi",
+      "J'ai parlé en phrases complètes"
+    ],
+    "back": "Vandaag is het mooi weer. De zon schijnt en het is warm, ongeveer twintig graden. Ik draag een T-shirt en een short. Mijn lievelingsseizoen is de zomer, want dan heb ik vakantie en kan ik zwemmen. Ik hou niet van de winter, want het is te koud.",
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "spe-07",
+    "type": "speaking",
+    "theme": "La nourriture",
+    "front": "Parle de ce que tu manges à voix haute (1 à 2 minutes).\n• Dis ce que tu manges le matin, à midi et le soir\n• Dis ce que tu n'aimes pas\n• Parle de ton plat préféré",
+    "checklist": [
+      "J'ai parlé des trois repas de la journée",
+      "J'ai dit ce que je n'aime pas",
+      "J'ai parlé de mon plat préféré",
+      "J'ai parlé en phrases complètes"
+    ],
+    "back": "'s Morgens eet ik boterhammen met choco. Op school eet ik om twaalf uur. 's Avonds eten we warm, vaak vlees met groenten en aardappelen. Mijn lievelingseten is spaghetti. Ik lust geen spruitjes. Frietjes eet ik heel graag, maar niet elke dag!",
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "spe-08",
+    "type": "speaking",
+    "theme": "Les achats",
+    "front": "Parle du shopping à voix haute (1 à 2 minutes).\n• Dis où tu fais les magasins et avec qui\n• Raconte ce que tu as acheté récemment (et le prix)\n• Donne ton avis sur le shopping",
+    "checklist": [
+      "J'ai dit où je fais les magasins et avec qui",
+      "J'ai raconté un achat récent avec le prix",
+      "J'ai donné mon avis",
+      "J'ai parlé en phrases complètes"
+    ],
+    "back": "Ik ga winkelen in het winkelcentrum, meestal met mijn mama. Ik koop graag kleren en games. Vorige week heb ik een blauwe trui gekocht. Hij kostte vijftien euro. Ik betaal met mijn zakgeld. Winkelen op zaterdag vind ik gezellig, maar soms is het te druk.",
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "spe-09",
+    "type": "speaking",
+    "theme": "La santé",
+    "front": "Jeu de rôle : tu es chez le docteur. Explique à voix haute (1 à 2 minutes).\n• Dis ce que tu as (au moins 2 symptômes)\n• Dis depuis quand tu es malade\n• Pose une question au docteur",
+    "checklist": [
+      "J'ai donné au moins 2 symptômes",
+      "J'ai dit depuis quand je suis malade",
+      "J'ai posé une question au docteur",
+      "J'ai été poli (dag dokter, dank u wel…)"
+    ],
+    "back": "Dag dokter. Ik voel me niet goed. Ik heb hoofdpijn en buikpijn. Ik ben al ziek sinds gisteren. Ik heb ook een beetje koorts, achtendertig graden. Ik eet niet veel en ik ben heel moe. Moet ik in bed blijven? Dank u wel, dokter.",
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "spe-10",
+    "type": "speaking",
+    "theme": "L'itinéraire",
+    "front": "Explique à voix haute le chemin de l'école à ta maison (1 à 2 minutes).\n• Donne au moins 3 indications (tout droit, à gauche, à droite…)\n• Dis un point de repère (magasin, parc…)\n• Dis combien de temps ça prend",
+    "checklist": [
+      "J'ai donné au moins 3 indications de chemin",
+      "J'ai cité un point de repère",
+      "J'ai dit combien de temps ça prend",
+      "J'ai parlé en phrases complètes"
+    ],
+    "back": "Van school naar mijn huis is het niet ver. Je gaat eerst rechtdoor tot aan het park. Dan sla je links af. Daarna neem je de eerste straat rechts. Mijn huis staat naast de bakkerij, op nummer acht. Te voet duurt het tien minuten. Met de fiets ga ik sneller!",
+    "difficulty": 3,
+    "curriculum_unit": null
+  },
+  {
+    "id": "spe-11",
+    "type": "speaking",
+    "theme": "Les vacances",
+    "front": "Parle de tes vacances à voix haute (1 à 2 minutes).\n• Dis où tu vas d'habitude et avec qui\n• Raconte ce que tu y fais\n• Dis ce que tu en penses",
+    "checklist": [
+      "J'ai dit où je vais et avec qui",
+      "J'ai raconté ce que j'y fais",
+      "J'ai donné mon avis",
+      "J'ai parlé en phrases complètes"
+    ],
+    "back": "In de zomer ga ik op vakantie met mijn familie. We gaan vaak naar zee, in Oostende. We blijven daar een week. Elke dag zwem ik in de zee en we eten een ijsje op het strand. Soms bezoeken we een stad. Ik hou van de vakantie!",
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "spe-12",
+    "type": "speaking",
+    "theme": "Le week-end",
+    "front": "Raconte ton week-end dernier à voix haute (1 à 2 minutes, au passé composé).\n• Dis ce que tu as fait samedi et dimanche\n• Dis avec qui\n• Donne ton avis sur ce week-end",
+    "checklist": [
+      "J'ai raconté samedi ET dimanche",
+      "J'ai dit avec qui",
+      "J'ai donné mon avis",
+      "J'ai utilisé le passé composé (ik heb… / ik ben…)"
+    ],
+    "back": "Ik heb een leuk weekend gehad. Zaterdag heb ik gevoetbald met mijn team. We hebben gewonnen! Daarna heb ik bij mijn oma gegeten. Zondag ben ik naar de cinema geweest met mijn vader. We hebben een grappige film gezien. Het was een super weekend.",
+    "difficulty": 3,
+    "curriculum_unit": null
+  }
+]

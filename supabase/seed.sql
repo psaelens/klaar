@@ -1,5 +1,5 @@
 -- Contenu de depart global — GENERE par supabase/generate-seed.mjs depuis
--- src/data/vocab.json, grammar.json, listening.json et writing.json. Ne pas editer a la main.
+-- src/data/*.json (vocab, grammar, listening, writing, speaking). Ne pas editer a la main.
 insert into public.content_items (id, household_id, type, theme, front, back, choices, question, checklist, difficulty, curriculum_unit) values
   ('school-01', null, 'vocab', 'Op school', 'de school', 'l''école', null, null, null, 1, null),
   ('school-02', null, 'vocab', 'Op school', 'het huiswerk', 'les devoirs', null, null, null, 1, null),
@@ -184,7 +184,55 @@ insert into public.content_items (id, household_id, type, theme, front, back, ch
   ('wri-12', null, 'writing', 'L''école', 'Décris ta journée d''école à ton correspondant (±60 mots).
 • Dis à quelle heure l''école commence et finit
 • Parle de tes cours préférés
-• Dis ce que tu fais à midi', 'Hallo Roos! Mijn school begint om half negen en stopt om vier uur. Mijn lievelingsvakken zijn sport en wiskunde. Nederlands is moeilijk, maar interessant! Om twaalf uur eet ik boterhammen met mijn vrienden in de refter. Daarna spelen we voetbal op de speelplaats. En jij? Hoe is jouw school? Groetjes, Hugo', null, null, '["J''ai dit quand l''école commence et finit","J''ai parlé de mes cours préférés","J''ai dit ce que je fais à midi"]'::jsonb, 1, null)
+• Dis ce que tu fais à midi', 'Hallo Roos! Mijn school begint om half negen en stopt om vier uur. Mijn lievelingsvakken zijn sport en wiskunde. Nederlands is moeilijk, maar interessant! Om twaalf uur eet ik boterhammen met mijn vrienden in de refter. Daarna spelen we voetbal op de speelplaats. En jij? Hoe is jouw school? Groetjes, Hugo', null, null, '["J''ai dit quand l''école commence et finit","J''ai parlé de mes cours préférés","J''ai dit ce que je fais à midi"]'::jsonb, 1, null),
+  ('spe-01', null, 'speaking', 'Se présenter', 'Présente-toi à voix haute (1 à 2 minutes).
+• Dis ton nom, ton âge et où tu habites
+• Parle de ta famille
+• Dis ce que tu aimes faire', 'Hallo, ik heet Lucas. Ik ben dertien jaar en ik woon in Namen. Wij zijn met vier thuis: mijn ouders, mijn zus en ik. Mijn zus is tien jaar. Ik speel graag voetbal en ik hou van muziek. Na school game ik ook graag met mijn vrienden.', null, null, '["J''ai dit mon nom, mon âge et où j''habite","J''ai parlé de ma famille","J''ai dit ce que j''aime faire","J''ai parlé en phrases complètes, sans lire un texte"]'::jsonb, 1, null),
+  ('spe-02', null, 'speaking', 'La famille', 'Parle de ta famille à voix haute (1 à 2 minutes).
+• Dis qui habite avec toi
+• Donne un détail sur chaque personne (âge, métier…)
+• Dis ce que vous faites ensemble', 'Wij zijn met vier thuis. Mijn papa heet Marc en hij werkt in een kantoor. Mijn mama heet Sophie en ze is verpleegster. Mijn zus Nora is tien jaar. In het weekend kijken we samen een film of gaan we fietsen. Ik vind mijn familie heel belangrijk.', null, null, '["J''ai dit qui habite avec moi","J''ai donné un détail sur chaque personne","J''ai dit ce que nous faisons ensemble","J''ai parlé en phrases complètes"]'::jsonb, 1, null),
+  ('spe-03', null, 'speaking', 'Les loisirs', 'Présente tes hobbys à voix haute (1 à 2 minutes).
+• Dis quels sont tes hobbys
+• Dis quand et avec qui tu les pratiques
+• Explique pourquoi tu les aimes', 'Mijn hobby''s zijn voetbal en zwemmen. Ik speel voetbal op woensdag en op zaterdag, met mijn team. In de zomer zwem ik vaak met mijn vrienden. Ik hou van sport, want het is gezond en leuk. ''s Avonds luister ik ook graag naar muziek.', null, null, '["J''ai dit quels sont mes hobbys","J''ai dit quand et avec qui","J''ai expliqué pourquoi je les aime","J''ai parlé en phrases complètes"]'::jsonb, 1, null),
+  ('spe-04', null, 'speaking', 'L''école', 'Parle de ton école à voix haute (1 à 2 minutes).
+• Dis quand l''école commence et finit
+• Parle de tes cours préférés (et d''un cours que tu aimes moins)
+• Dis ce que tu fais à midi', 'Mijn school begint om half negen en stopt om vier uur. Mijn lievelingsvakken zijn wiskunde en sport. Nederlands vind ik moeilijk, maar interessant. Om twaalf uur eet ik boterhammen in de refter met mijn vrienden. Daarna spelen we op de speelplaats.', null, null, '["J''ai dit quand l''école commence et finit","J''ai parlé de mes cours préférés et d''un cours que j''aime moins","J''ai dit ce que je fais à midi","J''ai parlé en phrases complètes"]'::jsonb, 1, null),
+  ('spe-05', null, 'speaking', 'La journée type', 'Raconte ta journée type à voix haute (1 à 2 minutes), du matin au soir.
+• Dis à quelle heure tu te lèves et ce que tu manges
+• Dis comment tu vas à l''école
+• Raconte ce que tu fais après l''école et le soir', 'Ik sta om zeven uur op. Ik eet boterhammen en ik drink melk. Om acht uur ga ik met de bus naar school. Na school maak ik mijn huiswerk. Dan speel ik buiten of ik game. Om zeven uur eten we warm. Ik ga om tien uur slapen.', null, null, '["J''ai dit à quelle heure je me lève et ce que je mange","J''ai dit comment je vais à l''école","J''ai raconté l''après-école et le soir","J''ai utilisé plusieurs heures (om … uur)"]'::jsonb, 2, null),
+  ('spe-06', null, 'speaking', 'La météo', 'Parle du temps qu''il fait à voix haute (1 à 2 minutes).
+• Décris le temps aujourd''hui
+• Dis ce que tu portes
+• Dis quelle est ta saison préférée et pourquoi', 'Vandaag is het mooi weer. De zon schijnt en het is warm, ongeveer twintig graden. Ik draag een T-shirt en een short. Mijn lievelingsseizoen is de zomer, want dan heb ik vakantie en kan ik zwemmen. Ik hou niet van de winter, want het is te koud.', null, null, '["J''ai décrit le temps d''aujourd''hui","J''ai dit ce que je porte","J''ai dit ma saison préférée et pourquoi","J''ai parlé en phrases complètes"]'::jsonb, 2, null),
+  ('spe-07', null, 'speaking', 'La nourriture', 'Parle de ce que tu manges à voix haute (1 à 2 minutes).
+• Dis ce que tu manges le matin, à midi et le soir
+• Dis ce que tu n''aimes pas
+• Parle de ton plat préféré', '''s Morgens eet ik boterhammen met choco. Op school eet ik om twaalf uur. ''s Avonds eten we warm, vaak vlees met groenten en aardappelen. Mijn lievelingseten is spaghetti. Ik lust geen spruitjes. Frietjes eet ik heel graag, maar niet elke dag!', null, null, '["J''ai parlé des trois repas de la journée","J''ai dit ce que je n''aime pas","J''ai parlé de mon plat préféré","J''ai parlé en phrases complètes"]'::jsonb, 2, null),
+  ('spe-08', null, 'speaking', 'Les achats', 'Parle du shopping à voix haute (1 à 2 minutes).
+• Dis où tu fais les magasins et avec qui
+• Raconte ce que tu as acheté récemment (et le prix)
+• Donne ton avis sur le shopping', 'Ik ga winkelen in het winkelcentrum, meestal met mijn mama. Ik koop graag kleren en games. Vorige week heb ik een blauwe trui gekocht. Hij kostte vijftien euro. Ik betaal met mijn zakgeld. Winkelen op zaterdag vind ik gezellig, maar soms is het te druk.', null, null, '["J''ai dit où je fais les magasins et avec qui","J''ai raconté un achat récent avec le prix","J''ai donné mon avis","J''ai parlé en phrases complètes"]'::jsonb, 2, null),
+  ('spe-09', null, 'speaking', 'La santé', 'Jeu de rôle : tu es chez le docteur. Explique à voix haute (1 à 2 minutes).
+• Dis ce que tu as (au moins 2 symptômes)
+• Dis depuis quand tu es malade
+• Pose une question au docteur', 'Dag dokter. Ik voel me niet goed. Ik heb hoofdpijn en buikpijn. Ik ben al ziek sinds gisteren. Ik heb ook een beetje koorts, achtendertig graden. Ik eet niet veel en ik ben heel moe. Moet ik in bed blijven? Dank u wel, dokter.', null, null, '["J''ai donné au moins 2 symptômes","J''ai dit depuis quand je suis malade","J''ai posé une question au docteur","J''ai été poli (dag dokter, dank u wel…)"]'::jsonb, 2, null),
+  ('spe-10', null, 'speaking', 'L''itinéraire', 'Explique à voix haute le chemin de l''école à ta maison (1 à 2 minutes).
+• Donne au moins 3 indications (tout droit, à gauche, à droite…)
+• Dis un point de repère (magasin, parc…)
+• Dis combien de temps ça prend', 'Van school naar mijn huis is het niet ver. Je gaat eerst rechtdoor tot aan het park. Dan sla je links af. Daarna neem je de eerste straat rechts. Mijn huis staat naast de bakkerij, op nummer acht. Te voet duurt het tien minuten. Met de fiets ga ik sneller!', null, null, '["J''ai donné au moins 3 indications de chemin","J''ai cité un point de repère","J''ai dit combien de temps ça prend","J''ai parlé en phrases complètes"]'::jsonb, 3, null),
+  ('spe-11', null, 'speaking', 'Les vacances', 'Parle de tes vacances à voix haute (1 à 2 minutes).
+• Dis où tu vas d''habitude et avec qui
+• Raconte ce que tu y fais
+• Dis ce que tu en penses', 'In de zomer ga ik op vakantie met mijn familie. We gaan vaak naar zee, in Oostende. We blijven daar een week. Elke dag zwem ik in de zee en we eten een ijsje op het strand. Soms bezoeken we een stad. Ik hou van de vakantie!', null, null, '["J''ai dit où je vais et avec qui","J''ai raconté ce que j''y fais","J''ai donné mon avis","J''ai parlé en phrases complètes"]'::jsonb, 2, null),
+  ('spe-12', null, 'speaking', 'Le week-end', 'Raconte ton week-end dernier à voix haute (1 à 2 minutes, au passé composé).
+• Dis ce que tu as fait samedi et dimanche
+• Dis avec qui
+• Donne ton avis sur ce week-end', 'Ik heb een leuk weekend gehad. Zaterdag heb ik gevoetbald met mijn team. We hebben gewonnen! Daarna heb ik bij mijn oma gegeten. Zondag ben ik naar de cinema geweest met mijn vader. We hebben een grappige film gezien. Het was een super weekend.', null, null, '["J''ai raconté samedi ET dimanche","J''ai dit avec qui","J''ai donné mon avis","J''ai utilisé le passé composé (ik heb… / ik ben…)"]'::jsonb, 3, null)
 on conflict (id) do update set
   type = excluded.type,
   theme = excluded.theme,

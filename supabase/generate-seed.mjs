@@ -10,6 +10,7 @@ const items = [
   ...JSON.parse(readFileSync(join(root, 'src/data/grammar.json'), 'utf-8')),
   ...JSON.parse(readFileSync(join(root, 'src/data/listening.json'), 'utf-8')),
   ...JSON.parse(readFileSync(join(root, 'src/data/writing.json'), 'utf-8')),
+  ...JSON.parse(readFileSync(join(root, 'src/data/speaking.json'), 'utf-8')),
 ]
 
 const q = (s) => (s === null || s === undefined ? 'null' : `'${String(s).replaceAll("'", "''")}'`)
@@ -23,7 +24,7 @@ const rows = items.map(
 )
 
 const sql = `-- Contenu de depart global — GENERE par supabase/generate-seed.mjs depuis
--- src/data/vocab.json, grammar.json, listening.json et writing.json. Ne pas editer a la main.
+-- src/data/*.json (vocab, grammar, listening, writing, speaking). Ne pas editer a la main.
 insert into public.content_items (id, household_id, type, theme, front, back, choices, question, checklist, difficulty, curriculum_unit) values
 ${rows.join(',\n')}
 on conflict (id) do update set

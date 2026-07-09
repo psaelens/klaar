@@ -14,7 +14,8 @@ const seedCount =
   JSON.parse(readFileSync(join(dataDir, 'vocab.json'), 'utf-8')).length +
   JSON.parse(readFileSync(join(dataDir, 'grammar.json'), 'utf-8')).length +
   JSON.parse(readFileSync(join(dataDir, 'listening.json'), 'utf-8')).length +
-  JSON.parse(readFileSync(join(dataDir, 'writing.json'), 'utf-8')).length
+  JSON.parse(readFileSync(join(dataDir, 'writing.json'), 'utf-8')).length +
+  JSON.parse(readFileSync(join(dataDir, 'speaking.json'), 'utf-8')).length
 
 const status = JSON.parse(execSync('npx supabase status -o json', { encoding: 'utf-8' }))
 const URL = status.API_URL
@@ -210,8 +211,42 @@ try {
     'enfant ne peut PAS modifier un badge gagné (append-only)',
     badgeUpdErr !== null || badgeUpd?.length === 0,
   )
+
+  // --- Enregistrements oraux (Storage, bucket privé `recordings`)
+  const audio = new Blob([new Uint8Array(64)], { type: 'audio/webm' })
+  const recPath = `${users.child.id}/rls-check-${suffix}.webm`
+  const { error: recErr } = await child.storage.from('recordings').upload(recPath, audio)
+  check('enfant dépose un enregistrement dans SON dossier', !recErr, recErr?.message)
+
+  const { error: recSpoofErr } = await child.storage
+    .from('recordings')
+    .upload(`${users.parent.id}/rls-check-${suffix}.webm`, audio)
+  check("enfant ne peut PAS déposer dans le dossier d'un autre", recSpoofErr !== null)
+
+  const { data: recParent, error: recParentErr } = await parent.storage.from('recordings').download(recPath)
+  check(
+    "parent écoute l'enregistrement de l'enfant (créneau hebdo)",
+    !recParentErr && recParent !== null,
+    recParentErr?.message,
+  )
+
+  const { error: recStrangerErr } = await stranger.storage.from('recordings').download(recPath)
+  check("l'autre foyer ne peut PAS écouter l'enregistrement", recStrangerErr !== null)
+
+  const { error: recParentDelErr } = await parent.storage.from('recordings').remove([recPath])
+  const { data: stillThere } = await child.storage.from('recordings').download(recPath)
+  check(
+    "parent ne peut PAS supprimer l'enregistrement de l'enfant",
+    (recParentDelErr !== null || stillThere !== null) && stillThere !== null,
+  )
+
+  const { error: recDelErr } = await child.storage.from('recordings').remove([recPath])
+  check('enfant supprime son enregistrement (rétention)', !recDelErr, recDelErr?.message)
 } finally {
   // --- Nettoyage
+  await admin.storage
+    .from('recordings')
+    .remove([`${users.child.id}/rls-check-${suffix}.webm`, `${users.parent.id}/rls-check-${suffix}.webm`])
   for (const u of Object.values(users)) {
     await admin.auth.admin.deleteUser(u.id)
   }
