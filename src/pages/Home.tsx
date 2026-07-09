@@ -1,6 +1,6 @@
 import { useState, type ComponentType } from 'react'
 import { Link, Navigate } from 'react-router'
-import { BookOpen, Headphones, Mic, PenLine, Puzzle } from 'lucide-react'
+import { BookOpen, FlaskConical, Headphones, Mic, PenLine, Puzzle } from 'lucide-react'
 import type { Module } from '../types'
 import { getContentItems, getProfile, getSrsStates, isConnected, syncConfigured } from '../lib/repo'
 import { MODULE_LABELS, selectForModule } from '../lib/modules'
@@ -153,6 +153,18 @@ export default function Home() {
 
   return (
     <div className="flex flex-1 flex-col justify-center gap-5 text-center">
+      {/* Mode démo mis en évidence (accueil uniquement, pas de nag en session) */}
+      {demo && !isConnected() && (
+        <Link
+          to="/config"
+          className="flex items-center justify-center gap-2 rounded-xl border border-dashed border-action-400 bg-action-50 px-4 py-2 text-sm font-semibold text-action-800 transition hover:bg-action-100 dark:border-action-500 dark:bg-action-950 dark:text-action-200 dark:hover:bg-ink-800"
+        >
+          <FlaskConical size={15} aria-hidden />
+          Mode démo : tout reste sur cet appareil.
+          <span className="underline">Se connecter</span>
+        </Link>
+      )}
+
       {/* Objectif du jour : l'heure d'entraînement, à la Strava (IDENTITE.md) */}
       <div className="flex items-center justify-between gap-4 rounded-3xl bg-ink-900 p-5 text-left text-ink-50 dark:bg-ink-800">
         <div>

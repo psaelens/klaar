@@ -14,6 +14,7 @@ import { newBadges } from '../lib/badges'
 import { computeStreak } from '../lib/streak'
 import { loadEarnedBadges, loadSessionRecords, totalXp } from '../lib/storage'
 import { MODULE_LABELS, selectForModule, shuffle } from '../lib/modules'
+import { Mic, RotateCcw, Square, Volume2 } from 'lucide-react'
 import { speakDutch, ttsAvailable } from '../lib/tts'
 import { countWords, suggestedGrade, WRITING_MIN_WORDS, WRITING_TARGET_WORDS } from '../lib/writing'
 import { formatSeconds, SPEAKING_MIN_SECONDS } from '../lib/speaking'
@@ -253,9 +254,9 @@ export default function Session() {
         <button
           type="button"
           onClick={() => speakDutch(current.back)}
-          className="mt-3 rounded-full bg-action-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-action-700 active:scale-95"
+          className="mt-3 inline-flex items-center gap-2 rounded-full bg-action-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-action-700 active:scale-95"
         >
-          🔊 Écouter l'exemple
+          <Volume2 size={16} aria-hidden /> Écouter l'exemple
         </button>
       )}
     </details>
@@ -287,9 +288,9 @@ export default function Session() {
               <button
                 type="button"
                 onClick={() => speakDutch(current.front)}
-                className="rounded-full bg-action-600 px-8 py-4 text-2xl text-white shadow-lg shadow-action-600/25 transition hover:bg-action-700 active:scale-95"
+                className="inline-flex items-center gap-2.5 rounded-full bg-action-600 px-8 py-4 text-xl font-bold text-white shadow-lg shadow-action-600/25 transition hover:bg-action-700 active:scale-95"
               >
-                🔊 Écouter
+                <Volume2 size={22} aria-hidden /> Écouter
               </button>
             )}
             {(!canSpeak || picked !== null) && (
@@ -333,9 +334,9 @@ export default function Session() {
               <button
                 type="button"
                 onClick={() => speakDutch(current.back)}
-                className="rounded-2xl border-2 border-action-600 bg-white py-3 font-semibold text-action-700 transition hover:bg-action-50 active:scale-95 dark:bg-ink-800 dark:text-action-400 dark:hover:bg-ink-700"
+                className="inline-flex items-center justify-center gap-2 rounded-2xl border-2 border-action-600 bg-white py-3 font-semibold text-action-700 transition hover:bg-action-50 active:scale-95 dark:bg-ink-800 dark:text-action-400 dark:hover:bg-ink-700"
               >
-                🔊 Écouter un exemple d'abord
+                <Volume2 size={22} aria-hidden /> Écouter un exemple d'abord
               </button>
             )}
             {recorder.status === 'unavailable' ? (
@@ -361,7 +362,7 @@ export default function Session() {
                   onClick={recorder.stop}
                   className="rounded-2xl bg-action-600 py-5 text-lg font-bold text-white shadow-lg shadow-action-600/25 transition hover:bg-action-700 active:scale-95"
                 >
-                  ⏹️ Terminer la prise
+                  <Square size={18} aria-hidden /> Terminer la prise
                 </button>
               </>
             ) : recorder.status === 'done' ? (
@@ -383,7 +384,7 @@ export default function Session() {
                     onClick={recorder.reset}
                     className="rounded-2xl bg-ink-200 py-4 font-semibold text-ink-700 transition hover:bg-ink-300 active:scale-95 dark:bg-ink-700 dark:text-ink-200 dark:hover:bg-ink-600"
                   >
-                    🔄 Refaire
+                    <RotateCcw size={18} aria-hidden /> Refaire
                   </button>
                   <button
                     type="button"
@@ -401,7 +402,7 @@ export default function Session() {
                 onClick={recorder.start}
                 className="rounded-2xl bg-action-600 py-5 text-lg font-bold text-white shadow-lg shadow-action-600/25 transition hover:bg-action-700 active:scale-95"
               >
-                🎙️ M'enregistrer (1 à 2 min)
+                <Mic size={20} aria-hidden /> M'enregistrer (1 à 2 min)
               </button>
             )}
           </div>

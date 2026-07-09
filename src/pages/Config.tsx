@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router'
+import { Pencil, Users } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import {
   applyDisplayPrefs,
@@ -358,7 +359,7 @@ export default function Config() {
                 title="Modifier mon nom"
                 className="rounded-full p-1 text-sm hover:bg-ink-200 dark:hover:bg-ink-700"
               >
-                ✏️
+                <Pencil size={15} aria-hidden />
               </button>
             )}
           </p>
@@ -423,7 +424,9 @@ export default function Config() {
 
       {userEmail !== null && profile?.role === 'parent' && inviteLink !== null && (
         <div className="flex flex-col gap-3 rounded-3xl border border-ink-200 bg-white p-6 dark:border-ink-700 dark:bg-ink-800">
-          <h2 className="font-bold">👥 Inviter un co-parent</h2>
+          <h2 className="flex items-center gap-2 font-bold">
+            <Users size={18} aria-hidden /> Inviter un co-parent
+          </h2>
           <p className="text-sm text-ink-500 dark:text-ink-400">
             Envoie ce lien à l'autre parent : il crée son compte et voit le même suivi de l'élève (dashboard,
             rapport hebdo, enregistrements). Ne partage ce lien qu'avec lui.
@@ -505,8 +508,8 @@ export default function Config() {
           }}
         >
           <p className="text-ink-600 dark:text-ink-400">
-            👥 Tu as été invité·e à rejoindre le foyer pour suivre les progrès de l'élève. Crée ton compte
-            parent :
+            Tu as été invité·e à rejoindre le foyer pour suivre les progrès de l'élève. Crée ton compte parent
+            :
           </p>
           <input
             type="text"

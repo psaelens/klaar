@@ -13,6 +13,7 @@ import { recordMockExam, uploadRecording } from '../lib/repo'
 import { countWords } from '../lib/writing'
 import { formatSeconds, SPEAKING_MIN_SECONDS } from '../lib/speaking'
 import { speakDutch, ttsAvailable } from '../lib/tts'
+import { Mic, RotateCcw, Square, Timer, Trophy, Volume2 } from 'lucide-react'
 import { useRecorder } from '../hooks/useRecorder'
 
 /**
@@ -205,7 +206,9 @@ export default function Exam() {
   if (phase === 'intro') {
     return (
       <div className="flex flex-1 flex-col justify-center gap-6">
-        <h1 className="font-display text-center text-2xl font-extrabold">🏆 {exam.title}</h1>
+        <h1 className="inline-flex items-center justify-center gap-2.5 self-center font-display text-center text-2xl font-extrabold">
+          <Trophy size={24} className="text-reward-500" aria-hidden /> {exam.title}
+        </h1>
         <p className="text-center text-ink-600 dark:text-ink-400">
           Conditions d'examen : chaque partie est chronométrée, tu corriges toi-même à la fin de chaque
           partie. Bonus d'XP si tu atteins 50 % !
@@ -296,7 +299,7 @@ export default function Exam() {
                 : 'bg-ink-200 text-ink-700 dark:bg-ink-800 dark:text-ink-300'
             }`}
           >
-            ⏱️ {formatSeconds(remaining)}
+            <Timer size={15} aria-hidden /> {formatSeconds(remaining)}
           </span>
         )}
       </div>
@@ -317,7 +320,7 @@ export default function Exam() {
               onClick={() => listen(task)}
               className="rounded-2xl bg-action-600 py-4 text-lg font-bold text-white shadow-lg shadow-action-600/25 transition hover:bg-action-700 active:scale-95 disabled:opacity-40"
             >
-              🔊 Écouter ({listens[task.id] ?? 0}/{MAX_LISTENS})
+              <Volume2 size={20} aria-hidden /> Écouter ({listens[task.id] ?? 0}/{MAX_LISTENS})
             </button>
           )}
           {section.kind === 'cl' && task.source !== undefined && (
@@ -340,7 +343,7 @@ export default function Exam() {
                       onClick={() => speakDutch(question)}
                       className="rounded-2xl border-2 border-action-600 bg-white py-2.5 text-sm font-semibold text-action-700 transition hover:bg-action-50 active:scale-95 disabled:opacity-40 dark:bg-ink-800 dark:text-action-400 dark:hover:bg-ink-700"
                     >
-                      🔊 Question {index + 1}
+                      <Volume2 size={16} aria-hidden /> Question {index + 1}
                     </button>
                   ))}
                 </div>
@@ -355,7 +358,7 @@ export default function Exam() {
                     onClick={recorder.stop}
                     className="rounded-2xl bg-action-600 py-4 font-bold text-white transition hover:bg-action-700 active:scale-95"
                   >
-                    ⏹️ Terminer la prise
+                    <Square size={18} aria-hidden /> Terminer la prise
                   </button>
                 </>
               ) : recorder.status === 'done' ? (
@@ -367,7 +370,7 @@ export default function Exam() {
                       onClick={recorder.reset}
                       className="rounded-2xl bg-ink-200 py-4 font-semibold text-ink-700 transition hover:bg-ink-300 active:scale-95 dark:bg-ink-700 dark:text-ink-200"
                     >
-                      🔄 Refaire
+                      <RotateCcw size={18} aria-hidden /> Refaire
                     </button>
                     <button
                       type="button"
@@ -385,7 +388,7 @@ export default function Exam() {
                   onClick={recorder.start}
                   className="rounded-2xl bg-action-600 py-5 text-lg font-bold text-white shadow-lg shadow-action-600/25 transition hover:bg-action-700 active:scale-95"
                 >
-                  🎙️ M'enregistrer
+                  <Mic size={20} aria-hidden /> M'enregistrer
                 </button>
               )}
               {recorder.status === 'unavailable' && (
@@ -503,7 +506,7 @@ export default function Exam() {
                       onClick={() => speakDutch(task.example ?? '')}
                       className="mt-2 rounded-full bg-action-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-action-700 active:scale-95"
                     >
-                      🔊 Écouter l'exemple
+                      <Volume2 size={16} aria-hidden /> Écouter l'exemple
                     </button>
                   )}
                 </details>

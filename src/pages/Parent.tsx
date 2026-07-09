@@ -13,6 +13,7 @@ import {
 import { MODULE_LABELS } from '../lib/modules'
 import { badgeDef } from '../lib/badges'
 import { RECORDINGS_RETENTION_DAYS } from '../lib/speaking'
+import { ClipboardList, Mic, Trophy } from 'lucide-react'
 import { weeklyReport } from '../lib/report'
 import { examById, EXAM_PASS_RATIO } from '../lib/exams'
 
@@ -253,7 +254,7 @@ export default function Parent() {
         <>
           <dl className="grid grid-cols-2 gap-3">
             <Stat label="Streak" value={`🔥 ${streak.current} jour${streak.current > 1 ? 's' : ''}`} />
-            <Stat label="XP total" value={`⭐ ${xp}`} />
+            <Stat label="XP total" value={`${xp}`} />
             <Stat label="Minutes (7 derniers jours)" value={`${weekMinutes} min`} />
             <Stat label="Réussite du 1er coup" value={pct(overall)} />
           </dl>
@@ -288,7 +289,9 @@ export default function Parent() {
           )}
 
           <div className="rounded-2xl border border-ink-200 bg-white p-4 dark:border-ink-700 dark:bg-ink-800">
-            <h2 className="mb-2 font-bold">📋 Rapport de la semaine</h2>
+            <h2 className="mb-2 flex items-center gap-2 font-bold">
+              <ClipboardList size={18} aria-hidden /> Rapport de la semaine
+            </h2>
             <ul className="flex list-none flex-col gap-1.5 text-sm text-ink-700 dark:text-ink-300">
               <li>
                 {report.daysWorked} jour{report.daysWorked > 1 ? 's' : ''} travaillé
@@ -322,7 +325,9 @@ export default function Parent() {
 
           {mockExams.length > 0 && (
             <div>
-              <h2 className="mb-2 font-bold">🏆 Examens blancs</h2>
+              <h2 className="mb-2 flex items-center gap-2 font-bold">
+                <Trophy size={18} aria-hidden /> Examens blancs
+              </h2>
               <div className="flex flex-col gap-2">
                 {mockExams.map((exam) => {
                   const passed = exam.score / exam.maxScore >= EXAM_PASS_RATIO
@@ -363,7 +368,9 @@ export default function Parent() {
 
           {recordings.length > 0 && (
             <div>
-              <h2 className="mb-2 font-bold">🎤 Derniers enregistrements</h2>
+              <h2 className="mb-2 flex items-center gap-2 font-bold">
+                <Mic size={18} aria-hidden /> Derniers enregistrements
+              </h2>
               <p className="mb-3 text-sm text-ink-500 dark:text-ink-400">
                 Écoute la fluidité et l'aisance, même sans comprendre le fond (PRD). Conservés{' '}
                 {RECORDINGS_RETENTION_DAYS} jours.

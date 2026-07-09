@@ -40,8 +40,13 @@ function UserChip() {
     )
   }
   if (loadDemoMode()) {
+    // Mode démo mis en évidence : chip orange en pointillés (IDENTITE.md).
     return (
-      <Link to="/config" className={chipClass} title="Mode démo — se connecter">
+      <Link
+        to="/config"
+        className="flex items-center gap-1.5 rounded-full border-2 border-dashed border-action-400 bg-action-50 px-3 py-1 text-sm font-bold text-action-700 transition hover:bg-action-100 dark:border-action-500 dark:bg-action-950 dark:text-action-300 dark:hover:bg-ink-800"
+        title="Mode démo — se connecter"
+      >
         <FlaskConical size={15} aria-hidden />
         Démo
       </Link>
