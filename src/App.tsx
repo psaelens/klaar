@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react'
-import { Link, Navigate, Route, Routes } from 'react-router'
+import { Link, Navigate, Route, Routes, useLocation } from 'react-router'
+import { Moon, Sun } from 'lucide-react'
 import { useTheme } from './hooks/useTheme'
 import { initRepo } from './lib/repo'
+import TabBar from './components/TabBar'
 import Home from './pages/Home'
 import Session from './pages/Session'
 import Exam from './pages/Exam'
+import Exams from './pages/Exams'
+import Progress from './pages/Progress'
 import Summary from './pages/Summary'
 import Config from './pages/Config'
 import Import from './pages/Import'
@@ -13,6 +17,9 @@ import Parent from './pages/Parent'
 export default function App() {
   const { theme, toggle } = useTheme()
   const [ready, setReady] = useState(false)
+  const { pathname } = useLocation()
+  // Session et examen blanc : mode focus, sans navigation (IDENTITE.md).
+  const focusMode = pathname === '/session' || pathname === '/examen'
 
   useEffect(() => {
     void initRepo().then(() => setReady(true))
@@ -20,7 +27,7 @@ export default function App() {
 
   return (
     <div className="min-h-dvh bg-ink-50 text-ink-900 dark:bg-ink-900 dark:text-ink-100">
-      <div className="mx-auto flex min-h-dvh max-w-md flex-col px-4 py-4">
+      <div className={`mx-auto flex min-h-dvh max-w-md flex-col px-4 py-4 ${focusMode ? '' : 'pb-20'}`}>
         <header className="mb-6 flex items-center justify-between">
           <Link
             to="/"
@@ -28,23 +35,14 @@ export default function App() {
           >
             Klaar!
           </Link>
-          <div className="flex items-center gap-1">
-            <Link
-              to="/config"
-              aria-label="Synchronisation et compte"
-              className="rounded-full p-2 text-xl hover:bg-ink-200 dark:hover:bg-ink-800"
-            >
-              ⚙️
-            </Link>
-            <button
-              type="button"
-              onClick={toggle}
-              aria-label={theme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'}
-              className="rounded-full p-2 text-xl hover:bg-ink-200 dark:hover:bg-ink-800"
-            >
-              {theme === 'dark' ? '☀️' : '🌙'}
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={toggle}
+            aria-label={theme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'}
+            className="rounded-full p-2 text-ink-500 hover:bg-ink-200 hover:text-ink-700 dark:text-ink-400 dark:hover:bg-ink-800 dark:hover:text-ink-200"
+          >
+            {theme === 'dark' ? <Sun size={20} aria-hidden /> : <Moon size={20} aria-hidden />}
+          </button>
         </header>
         <main className="flex flex-1 flex-col">
           {ready ? (
@@ -52,6 +50,8 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/session" element={<Session />} />
               <Route path="/examen" element={<Exam />} />
+              <Route path="/examens" element={<Exams />} />
+              <Route path="/progres" element={<Progress />} />
               <Route path="/bilan" element={<Summary />} />
               <Route path="/config" element={<Config />} />
               <Route path="/import" element={<Import />} />
@@ -67,6 +67,7 @@ export default function App() {
           )}
         </main>
       </div>
+      {ready && !focusMode && <TabBar />}
     </div>
   )
 }
