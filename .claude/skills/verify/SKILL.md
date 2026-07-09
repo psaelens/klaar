@@ -21,12 +21,14 @@ synchronisés, `npx supabase start` (Docker) doit tourner ; les clés se lisent 
 Chromium est installé dans `%LOCALAPPDATA%\ms-playwright`. Le package `playwright` est
 installé dans le scratchpad `1d7b2eb0-…/scratchpad/verify/` (pas une dépendance du projet),
 avec les scripts existants : `verify-grammar.mjs`, `verify-vocab-regression.mjs`,
-`verify-import.mjs`, `verify-parent-dashboard.mjs`. Contexte mobile `{ width: 390, height: 844 }`,
-collecter `pageerror`.
+`verify-import.mjs`, `verify-parent-dashboard.mjs`, `verify-writing.mjs`,
+`verify-prod-m4.mjs` (modèle de vérif prod avec nettoyage). Contexte mobile
+`{ width: 390, height: 844 }`, collecter `pageerror`.
 
 ## Flux à dérouler
 
-1. `/` : deux cartes-modules (📚 Vocabulaire, 🧩 Grammaire) avec compteurs dus/nouveaux.
+1. `/` : quatre cartes-modules (📚 Vocabulaire, 🧩 Grammaire, 🎧 Écoute, ✍️ Rédaction)
+   avec compteurs dus/nouveaux (Rédaction plafonnée à 2).
 2. Vocabulaire (`/session?m=vocab`) : mot NL (`p[lang=nl]`), « Voir la réponse » →
    « À revoir / Difficile / Réussi » ; « À revoir » re-met la carte en fin de file.
 3. Grammaire (`/session?m=grammar`) : QCM `button[lang=nl]` ; bonne réponse = feedback
@@ -36,6 +38,12 @@ collecter `pageerror`.
 3b. Écoute (`/session?m=listening`) : bouton « 🔊 Écouter » (TTS, silencieux en headless),
    question FR (`p.text-xl` de la carte) + QCM `button[lang=fr]`, transcript « … » révélé
    après la réponse. Mapper `question → back` depuis `src/data/listening.json`.
+3c. Rédaction (`/session?m=writing`) : consigne FR avec puces, `textarea` + compteur
+   (« X mots — objectif ≈ 60 », bouton « J'ai terminé » actif à 40 mots), puis
+   auto-évaluation : brouillon repris (label CSS uppercase → tester en case-insensitive),
+   checklist `input[type=checkbox]`, `<details>` « Voir un exemple de réponse », hint de
+   note suggérée, 3 boutons SM-2. 2 textes par session. Attendre ~500 ms après
+   `waitForURL('**/bilan')` avant de lire `main`.
 4. Fin de file → `/bilan` (stats + « Session … terminée » + XP + célébration des nouveaux
    badges — 1re session d'un contexte vierge : « Premier pas » 🐣 et « Sans faute » 🎯 ;
    vitrine emoji à l'accueil ensuite ; `localStorage['klaar.badges.v1']`).

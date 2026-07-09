@@ -13,7 +13,8 @@ const dataDir = join(dirname(fileURLToPath(import.meta.url)), '../../src/data')
 const seedCount =
   JSON.parse(readFileSync(join(dataDir, 'vocab.json'), 'utf-8')).length +
   JSON.parse(readFileSync(join(dataDir, 'grammar.json'), 'utf-8')).length +
-  JSON.parse(readFileSync(join(dataDir, 'listening.json'), 'utf-8')).length
+  JSON.parse(readFileSync(join(dataDir, 'listening.json'), 'utf-8')).length +
+  JSON.parse(readFileSync(join(dataDir, 'writing.json'), 'utf-8')).length
 
 const status = JSON.parse(execSync('npx supabase status -o json', { encoding: 'utf-8' }))
 const URL = status.API_URL
