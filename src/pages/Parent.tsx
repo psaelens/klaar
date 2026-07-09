@@ -12,6 +12,7 @@ import {
 } from '../lib/dashboard'
 import { MODULE_LABELS } from '../lib/modules'
 import { badgeDef } from '../lib/badges'
+import { RECORDINGS_RETENTION_DAYS } from '../lib/speaking'
 
 /**
  * Dashboard parent v1 (PRD §9) — lecture seule, réservé au rôle parent.
@@ -23,6 +24,12 @@ import { badgeDef } from '../lib/badges'
 interface Child {
   id: string
   display_name: string
+}
+
+interface Recording {
+  name: string
+  createdAt: string | null
+  url: string
 }
 
 type Gate = 'loading' | 'not-configured' | 'not-parent' | 'ready'
@@ -97,6 +104,7 @@ export default function Parent() {
   const [records, setRecords] = useState<SessionRecord[]>([])
   const [xp, setXp] = useState(0)
   const [badgeCodes, setBadgeCodes] = useState<string[]>([])
+  const [recordings, setRecordings] = useState<Recording[]>([])
 
   useEffect(() => {
     const sb = supabase
@@ -150,6 +158,21 @@ export default function Parent() {
         .eq('user_id', childId)
         .order('earned_at', { ascending: true })
       setBadgeCodes((badgeRows ?? []).map((row) => row.badge_code))
+
+      // Enregistrements oraux : les 5 plus récents, URL signée (bucket privé).
+      const { data: objects } = await sb.storage
+        .from('recordings')
+        .list(childId, { limit: 5, sortBy: { column: 'created_at', order: 'desc' } })
+      const entries: Recording[] = []
+      for (const object of objects ?? []) {
+        const { data: signed } = await sb.storage
+          .from('recordings')
+          .createSignedUrl(`${childId}/${object.name}`, 3600)
+        if (signed !== null) {
+          entries.push({ name: object.name, createdAt: object.created_at, url: signed.signedUrl })
+        }
+      }
+      setRecordings(entries)
     })()
   }, [childId])
 
@@ -247,6 +270,36 @@ export default function Parent() {
             <h2 className="mb-2 font-bold">4 dernières semaines</h2>
             <Calendar days={days} />
           </div>
+
+          {recordings.length > 0 && (
+            <div>
+              <h2 className="mb-2 font-bold">🎤 Derniers enregistrements</h2>
+              <p className="mb-3 text-sm text-slate-500 dark:text-slate-400">
+                Écoute la fluidité et l'aisance, même sans comprendre le fond (PRD). Conservés{' '}
+                {RECORDINGS_RETENTION_DAYS} jours.
+              </p>
+              <div className="flex flex-col gap-3">
+                {recordings.map((recording) => (
+                  <div
+                    key={recording.name}
+                    className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-800"
+                  >
+                    <p className="mb-2 text-xs text-slate-500 dark:text-slate-400">
+                      {recording.createdAt !== null
+                        ? new Date(recording.createdAt).toLocaleString('fr-BE', {
+                            day: 'numeric',
+                            month: 'short',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                          })
+                        : recording.name}
+                    </p>
+                    <audio controls preload="none" src={recording.url} className="w-full" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </>
       )}
 
