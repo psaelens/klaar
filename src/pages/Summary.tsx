@@ -1,7 +1,64 @@
+import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router'
 import { loadSessionRecords } from '../lib/storage'
 import { MODULE_LABELS } from '../lib/modules'
 import { badgeDef } from '../lib/badges'
+
+/** Compteur animé (IDENTITE.md : « le compteur d'XP qui monte au bilan »). */
+function useCountUp(target: number): number {
+  const [value, setValue] = useState(() =>
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches ? target : 0,
+  )
+  useEffect(() => {
+    if (value >= target) return
+    const start = performance.now()
+    const duration = 800
+    let raf = 0
+    const tick = (t: number) => {
+      const p = Math.min(1, (t - start) / duration)
+      setValue(Math.round(target * (1 - Math.pow(1 - p, 3))))
+      if (p < 1) raf = requestAnimationFrame(tick)
+    }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [target])
+  return value
+}
+
+/** Confetti bref à la célébration d'un badge (motion-safe uniquement). */
+function Confetti() {
+  const colors = [
+    'var(--color-action-500)',
+    'var(--color-reward-400)',
+    'var(--color-zee-600)',
+    'var(--color-action-300)',
+  ]
+  return (
+    <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 hidden motion-safe:block">
+      {Array.from({ length: 14 }, (_, i) => (
+        <span
+          key={i}
+          className="absolute h-2.5 w-1.5 animate-confetti rounded-xs"
+          style={{
+            left: `${(i * 37 + 7) % 100}%`,
+            background: colors[i % colors.length],
+            animationDelay: `${(i % 5) * 90}ms`,
+          }}
+        />
+      ))}
+    </div>
+  )
+}
+
+function XpPill({ amount }: { amount: number }) {
+  const animated = useCountUp(amount)
+  return (
+    <p className="rounded-full bg-reward-100 px-6 py-2 font-display text-lg font-extrabold text-reward-800 tabular-nums dark:bg-reward-900 dark:text-reward-200">
+      +{animated} XP ⭐
+    </p>
+  )
+}
 
 export default function Summary() {
   const records = loadSessionRecords()
@@ -62,14 +119,11 @@ export default function Summary() {
         </div>
       </dl>
 
-      {last.xpEarned !== undefined && (
-        <p className="rounded-full bg-reward-100 px-6 py-2 text-lg font-bold text-reward-800 dark:bg-reward-900 dark:text-reward-200">
-          +{last.xpEarned} XP ⭐
-        </p>
-      )}
+      {last.xpEarned !== undefined && <XpPill amount={last.xpEarned} />}
 
       {celebrated.length > 0 && (
-        <div className="flex w-full flex-col gap-2">
+        <div className="relative flex w-full flex-col gap-2">
+          <Confetti />
           {celebrated.map((def) => (
             <div
               key={def.code}

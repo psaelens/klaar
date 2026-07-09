@@ -188,7 +188,12 @@ export default function Home() {
               <>
                 {' · '}
                 <span className={streak.todayDone ? 'text-reward-300' : ''}>
-                  🔥 {streak.current} jour{streak.current > 1 ? 's' : ''}
+                  <span
+                    className={streak.todayDone ? 'inline-block motion-safe:animate-flame' : 'inline-block'}
+                  >
+                    🔥
+                  </span>{' '}
+                  {streak.current} jour{streak.current > 1 ? 's' : ''}
                 </span>
               </>
             )}

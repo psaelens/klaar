@@ -1,7 +1,13 @@
 import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router'
 import { supabase } from '../lib/supabase'
-import { saveProfile } from '../lib/storage'
+import {
+  applyDisplayPrefs,
+  loadDisplayPrefs,
+  saveDisplayPrefs,
+  saveProfile,
+  type DisplayPrefs,
+} from '../lib/storage'
 
 /**
  * Configuration de la synchronisation : connexion à un compte existant,
@@ -27,6 +33,66 @@ function suggestChildEmail(parentEmail: string): string {
 interface ProfileInfo {
   display_name: string
   role: string
+}
+
+/** Préférences d'affichage (accessibilité, PRD §12/§17) — locales à l'appareil. */
+function DisplaySettings() {
+  const [prefs, setPrefs] = useState(loadDisplayPrefs)
+  const update = (next: DisplayPrefs) => {
+    setPrefs(next)
+    saveDisplayPrefs(next)
+    applyDisplayPrefs(next)
+  }
+  const sizes: { value: DisplayPrefs['fontSize']; label: string }[] = [
+    { value: 'md', label: 'Normal' },
+    { value: 'lg', label: 'Grand' },
+    { value: 'xl', label: 'Très grand' },
+  ]
+
+  return (
+    <div className="flex flex-col gap-3 rounded-3xl border border-ink-200 bg-white p-6 dark:border-ink-700 dark:bg-ink-800">
+      <h2 className="font-bold">Affichage</h2>
+      <div>
+        <p className="mb-1.5 text-sm text-ink-500 dark:text-ink-400">Taille du texte</p>
+        <div
+          role="radiogroup"
+          aria-label="Taille du texte"
+          className="grid grid-cols-3 gap-1 rounded-xl bg-ink-100 p-1 dark:bg-ink-700"
+        >
+          {sizes.map(({ value, label }) => (
+            <button
+              key={value}
+              type="button"
+              role="radio"
+              aria-checked={prefs.fontSize === value}
+              onClick={() => update({ ...prefs, fontSize: value })}
+              className={`rounded-lg py-2 text-sm font-semibold transition ${
+                prefs.fontSize === value
+                  ? 'bg-white text-ink-900 shadow dark:bg-ink-800 dark:text-ink-100'
+                  : 'text-ink-500 dark:text-ink-300'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      </div>
+      <label className="flex items-start gap-3 text-sm">
+        <input
+          type="checkbox"
+          checked={prefs.hyperlegible}
+          onChange={(e) => update({ ...prefs, hyperlegible: e.target.checked })}
+          className="mt-0.5 size-5 shrink-0 accent-action-600"
+        />
+        <span>
+          Police très lisible (Atkinson Hyperlegible)
+          <span className="block text-xs text-ink-500 dark:text-ink-400">
+            Conçue pour la basse vision et utile en cas de dyslexie.
+          </span>
+        </span>
+      </label>
+    </div>
+  )
 }
 
 export default function Config() {
@@ -85,13 +151,14 @@ export default function Config() {
 
   if (supabase === null) {
     return (
-      <div className="flex flex-1 flex-col items-center justify-center gap-4 text-center">
-        <h1 className="text-xl font-bold">Synchronisation</h1>
-        <p className="text-ink-600 dark:text-ink-400">
+      <div className="flex flex-1 flex-col justify-center gap-4">
+        <h1 className="text-center text-xl font-bold">Synchronisation</h1>
+        <p className="text-center text-ink-600 dark:text-ink-400">
           Ce déploiement n'a pas de synchronisation configurée : tes révisions sont enregistrées sur cet
           appareil uniquement (mode local).
         </p>
-        <Link to="/" className="font-semibold text-action-700 underline dark:text-action-400">
+        <DisplaySettings />
+        <Link to="/" className="text-center font-semibold text-action-700 underline dark:text-action-400">
           Retour à l'accueil
         </Link>
       </div>
@@ -535,6 +602,8 @@ export default function Config() {
           Retour
         </button>
       )}
+
+      <DisplaySettings />
 
       <Link to="/" className="text-center text-sm text-ink-400 underline">
         Retour à l'accueil

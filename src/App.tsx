@@ -3,6 +3,7 @@ import { Link, Navigate, Route, Routes, useLocation } from 'react-router'
 import { Moon, Sun } from 'lucide-react'
 import { useTheme } from './hooks/useTheme'
 import { initRepo } from './lib/repo'
+import { applyDisplayPrefs, loadDisplayPrefs } from './lib/storage'
 import TabBar from './components/TabBar'
 import Home from './pages/Home'
 import Session from './pages/Session'
@@ -29,6 +30,7 @@ export default function App() {
       : 'max-w-md md:max-w-2xl'
 
   useEffect(() => {
+    applyDisplayPrefs(loadDisplayPrefs())
     void initRepo().then(() => setReady(true))
   }, [])
 

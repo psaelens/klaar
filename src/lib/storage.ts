@@ -119,6 +119,31 @@ export function saveProfile(profile: StoredProfile | null): void {
   else localStorage.setItem(PROFILE_KEY, JSON.stringify(profile))
 }
 
+/** Préférences d'affichage (accessibilité M7, PRD §12/§17). */
+export interface DisplayPrefs {
+  /** Taille de police globale. */
+  fontSize: 'md' | 'lg' | 'xl'
+  /** Police Atkinson Hyperlegible (option dyslexie/lisibilité). */
+  hyperlegible: boolean
+}
+
+const DISPLAY_KEY = 'klaar.display.v1'
+
+export function loadDisplayPrefs(): DisplayPrefs {
+  return readJson<DisplayPrefs>(DISPLAY_KEY, { fontSize: 'md', hyperlegible: false })
+}
+
+export function saveDisplayPrefs(prefs: DisplayPrefs): void {
+  localStorage.setItem(DISPLAY_KEY, JSON.stringify(prefs))
+}
+
+/** Applique les préférences au document (taille rem globale + police). */
+export function applyDisplayPrefs(prefs: DisplayPrefs): void {
+  const sizes = { md: '100%', lg: '112.5%', xl: '125%' }
+  document.documentElement.style.fontSize = sizes[prefs.fontSize]
+  document.documentElement.classList.toggle('hyperlegible', prefs.hyperlegible)
+}
+
 export type Theme = 'light' | 'dark'
 
 export function loadTheme(): Theme {
