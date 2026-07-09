@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 
 .vercel
+
+# Épreuves CE1D officielles téléchargées (volumineuses, repo public — ne pas redistribuer)
+docs/CE1D/
