@@ -53,12 +53,21 @@ Logo à gauche ; à droite, la **chip utilisateur** (icône Lucide + prénom du
 connecté, ou « Démo »/« Local », lien vers le profil) puis la bascule de
 thème. Pas de pastille d'état dans le contenu des pages.
 
+**Mode démo mis en évidence** : la chip « Démo » passe en orange à bordure
+pointillée (exception assumée : l'orange y signale « une action attendue » —
+se connecter), et l'accueil affiche un bandeau fin cliquable du même style
+(« tout reste sur cet appareil — Se connecter »). Jamais de rappel démo en
+session ou en examen.
+
 ## Iconographie
 
-- **Lucide** (trait 2 px) pour la navigation et les modules — même visage sur
-  Android, iOS et Windows. Plus d'emojis système pour l'UI structurelle.
-- Les emojis restent là où ils sont un contenu émotionnel : célébration de
-  badge, encouragements du bilan.
+- **Lucide** (trait 2 px) pour tout l'UI structurel : navigation, modules,
+  boutons d'action (Volume2 = écouter, Mic = s'enregistrer, Square = stop,
+  RotateCcw = refaire, Timer = chrono, Pencil = éditer, Users = co-parent,
+  ClipboardList/Trophy = sections) — même visage sur Android, iOS et Windows.
+- Les emojis restent là où ils sont un contenu émotionnel : 🔥 flamme du
+  streak, 🎉 célébrations, ⭐ XP gagné, encouragements du bilan, emojis des
+  badges.
 
 ## Le néerlandais dans l'interface
 
