@@ -39,7 +39,7 @@ Chaque commit sur `main` doit compiler, passer les tests et être déployable. D
 ```bash
 npx supabase start                    # stack local (Docker) : applique migrations + seed
 npx supabase db reset                 # ré-applique migrations + seed
-node supabase/tests/rls-check.mjs     # 39 vérifications d'isolation RLS (stack local requis)
+node supabase/tests/rls-check.mjs     # 44 vérifications d'isolation RLS (stack local requis)
 npx supabase gen types typescript --local > src/lib/database.types.ts
 ```
 

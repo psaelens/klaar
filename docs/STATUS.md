@@ -4,6 +4,8 @@
 
 ## Dernière action terminée :
 
+**Renommage du parent** (demande Pierre, 9 juillet) : crayon ✏️ dans /config, migration `20260709190000` (grant UPDATE sur la seule colonne `display_name` + policy self/parent) appliquée local + hébergé, RLS 44/44, vérifié E2E local et production (pastille accueil à jour, rôle intact côté serveur).
+
 **Invitation co-parent** (demande Pierre, 9 juillet) : lien d'invitation dans /config (id du foyer = code non devinable), flux `/config?invite=` pour que la maman crée son compte parent et voie le même suivi (dashboard, rapport hebdo, enregistrements). Sans migration, RLS 39/39, vérifié E2E local ET production (papa copie le lien → maman rejoint → dashboard « Suivi de TestProd », nettoyage complet). Également ce jour : accueil visiteur + mode démo, pastille de profil, REX coûts (docs/REX-COUT-IA.md).
 
 ## Avant (M6) :
