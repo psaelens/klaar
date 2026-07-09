@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabase'
 import {
   applyDisplayPrefs,
   loadDisplayPrefs,
+  resetLocalData,
   saveDisplayPrefs,
   saveProfile,
   type DisplayPrefs,
@@ -33,6 +34,33 @@ function suggestChildEmail(parentEmail: string): string {
 interface ProfileInfo {
   display_name: string
   role: string
+}
+
+/** Mode démo/local uniquement : efface les données d'apprentissage de l'appareil. */
+function ResetCard() {
+  function handleReset() {
+    const ok = window.confirm(
+      'Tout effacer sur cet appareil (révisions, XP, badges, examens) et recommencer à zéro ?',
+    )
+    if (!ok) return
+    resetLocalData()
+    window.location.href = '/'
+  }
+  return (
+    <div className="flex flex-col gap-2 rounded-3xl border border-ink-200 bg-white p-6 dark:border-ink-700 dark:bg-ink-800">
+      <h2 className="font-bold">Données de démo</h2>
+      <p className="text-sm text-ink-500 dark:text-ink-400">
+        Les révisions de ce mode restent sur cet appareil. Tu peux tout effacer pour repartir de zéro.
+      </p>
+      <button
+        type="button"
+        onClick={handleReset}
+        className="w-full rounded-2xl border-2 border-red-700 px-6 py-3 font-bold text-red-700 transition hover:bg-red-50 active:scale-95 dark:border-red-400 dark:text-red-400 dark:hover:bg-ink-700"
+      >
+        Recommencer à zéro
+      </button>
+    </div>
+  )
 }
 
 /** Préférences d'affichage (accessibilité, PRD §12/§17) — locales à l'appareil. */
@@ -158,6 +186,7 @@ export default function Config() {
           appareil uniquement (mode local).
         </p>
         <DisplaySettings />
+        <ResetCard />
         <Link to="/" className="text-center font-semibold text-action-700 underline dark:text-action-400">
           Retour à l'accueil
         </Link>
@@ -604,6 +633,8 @@ export default function Config() {
       )}
 
       <DisplaySettings />
+
+      {userEmail === null && <ResetCard />}
 
       <Link to="/" className="text-center text-sm text-ink-400 underline">
         Retour à l'accueil

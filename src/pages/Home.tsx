@@ -1,5 +1,5 @@
 import { useState, type ComponentType } from 'react'
-import { Link } from 'react-router'
+import { Link, Navigate } from 'react-router'
 import { BookOpen, Headphones, Mic, PenLine, Puzzle } from 'lucide-react'
 import type { Module } from '../types'
 import { getContentItems, getProfile, getSrsStates, isConnected, syncConfigured } from '../lib/repo'
@@ -92,37 +92,12 @@ function GoalRing({ minutes }: { minutes: number }) {
   )
 }
 
-/** Pastille d'état de connexion, toujours visible en haut de l'accueil (PRD §17). */
-function StatusChip() {
-  const profile = getProfile()
-  if (isConnected()) {
-    return (
-      <Link
-        to="/config"
-        className="mx-auto rounded-full bg-white px-4 py-1.5 text-sm font-semibold text-ink-700 ring-1 ring-ink-200 hover:bg-ink-100 dark:bg-ink-800 dark:text-ink-200 dark:ring-ink-700 dark:hover:bg-ink-700"
-      >
-        👤 {profile?.displayName ?? 'Connecté'}
-        {profile !== null && ` · ${profile.role === 'parent' ? 'Parent' : 'Élève'}`}
-      </Link>
-    )
-  }
-  return (
-    <Link
-      to="/config"
-      title="Tes données restent sur cet appareil — connecte-toi pour les retrouver partout"
-      className="mx-auto rounded-full bg-ink-200 px-4 py-1.5 text-sm font-semibold text-ink-600 hover:bg-ink-300 dark:bg-ink-800 dark:text-ink-400 dark:hover:bg-ink-700"
-    >
-      {syncConfigured() ? '🧪 Mode démo — se connecter' : '📱 Mode local'}
-    </Link>
-  )
-}
-
 /** Accueil visiteur : personne n'est connecté et le mode démo n'a pas été choisi. */
 function Welcome({ onDemo }: { onDemo: () => void }) {
   return (
     <div className="flex flex-1 flex-col justify-center gap-6 text-center">
-      <h1 className="font-display text-4xl font-extrabold tracking-tight text-action-700 dark:text-action-400">
-        Klaar&nbsp;!
+      <h1 className="font-display text-4xl font-extrabold tracking-tight">
+        Klaar<span className="text-action-600 dark:text-action-400">&nbsp;!</span>
       </h1>
       <p className="text-ink-600 dark:text-ink-400">
         Révision du néerlandais pour le CE1D : vocabulaire, grammaire, écoute, rédaction, oral et examens
@@ -156,6 +131,11 @@ export default function Home() {
   // Données locales antérieures à l'écran visiteur : on considère le mode démo déjà choisi.
   const usedBefore = records.length > 0 || Object.keys(getSrsStates()).length > 0
 
+  // Un parent n'a pas de révisions à faire : direction le suivi de l'élève.
+  if (isConnected() && getProfile()?.role === 'parent') {
+    return <Navigate to="/parent" replace />
+  }
+
   if (syncConfigured() && !isConnected() && !demo && !usedBefore) {
     return (
       <Welcome
@@ -173,8 +153,6 @@ export default function Home() {
 
   return (
     <div className="flex flex-1 flex-col justify-center gap-5 text-center">
-      <StatusChip />
-
       {/* Objectif du jour : l'heure d'entraînement, à la Strava (IDENTITE.md) */}
       <div className="flex items-center justify-between gap-4 rounded-3xl bg-ink-900 p-5 text-left text-ink-50 dark:bg-ink-800">
         <div>

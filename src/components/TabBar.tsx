@@ -1,22 +1,31 @@
 import { Link, useLocation } from 'react-router'
-import { ChartLine, Dumbbell, Trophy, UserRound } from 'lucide-react'
+import { ChartLine, Dumbbell, Import, Trophy, UserRound, Users } from 'lucide-react'
+import { getProfile, isConnected } from '../lib/repo'
 
 /**
  * Navigation principale (charte docs/IDENTITE.md) : onglets en bas sur mobile
  * (zone du pouce), rail latéral à partir de lg. Masquée pendant une session ou
  * un examen (mode focus) — géré par App. Icônes Lucide : même visage sur
- * Android, iOS et Windows.
+ * Android, iOS et Windows. Le parent n'a pas de révisions : ses onglets vont
+ * droit au suivi de l'élève et à l'import.
  */
 
-const TABS = [
+const STUDENT_TABS = [
   { to: '/', label: 'Réviser', icon: Dumbbell },
   { to: '/examens', label: 'Examens', icon: Trophy },
   { to: '/progres', label: 'Progrès', icon: ChartLine },
   { to: '/config', label: 'Profil', icon: UserRound },
 ] as const
 
+const PARENT_TABS = [
+  { to: '/parent', label: 'Suivi', icon: Users },
+  { to: '/import', label: 'Importer', icon: Import },
+  { to: '/config', label: 'Profil', icon: UserRound },
+] as const
+
 export default function TabBar() {
   const { pathname } = useLocation()
+  const TABS = isConnected() && getProfile()?.role === 'parent' ? PARENT_TABS : STUDENT_TABS
 
   return (
     <nav

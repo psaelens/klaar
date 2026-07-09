@@ -102,6 +102,28 @@ export function loadDemoMode(): boolean {
 
 export function saveDemoMode(enabled: boolean): void {
   localStorage.setItem(DEMO_KEY, JSON.stringify(enabled))
+  // Prévient l'en-tête (pastille utilisateur) sans recharger la page.
+  window.dispatchEvent(new Event('klaar:identity'))
+}
+
+/**
+ * Remise à zéro du mode démo/local : efface les données d'apprentissage de
+ * l'appareil (SRS, sessions, XP, badges, examens, files de sync, choix démo).
+ * Conserve le thème et les préférences d'affichage (réglages de l'appareil).
+ */
+export function resetLocalData(): void {
+  const keys = [
+    SRS_KEY,
+    SESSIONS_KEY,
+    XP_KEY,
+    BADGES_KEY,
+    EXAMS_KEY,
+    DEMO_KEY,
+    PROFILE_KEY,
+    'klaar.pushqueue.v1',
+    'klaar.synced.v1',
+  ]
+  for (const key of keys) localStorage.removeItem(key)
 }
 
 /** Profil connecté (affichage accueil), gardé en cache pour les démarrages hors ligne. */
