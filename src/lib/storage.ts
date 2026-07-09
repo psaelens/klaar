@@ -11,6 +11,8 @@ const THEME_KEY = 'klaar.theme.v1'
 const XP_KEY = 'klaar.xp.v1'
 const BADGES_KEY = 'klaar.badges.v1'
 const EXAMS_KEY = 'klaar.exams.v1'
+const DEMO_KEY = 'klaar.demo.v1'
+const PROFILE_KEY = 'klaar.profile.v1'
 
 function readJson<T>(key: string, fallback: T): T {
   try {
@@ -91,6 +93,30 @@ export function appendMockExam(result: MockExamResult): void {
 
 export function replaceMockExams(results: MockExamResult[]): void {
   localStorage.setItem(EXAMS_KEY, JSON.stringify(results))
+}
+
+/** L'utilisateur a explicitement choisi le mode démo (visiteur, données locales). */
+export function loadDemoMode(): boolean {
+  return readJson<boolean>(DEMO_KEY, false)
+}
+
+export function saveDemoMode(enabled: boolean): void {
+  localStorage.setItem(DEMO_KEY, JSON.stringify(enabled))
+}
+
+/** Profil connecté (affichage accueil), gardé en cache pour les démarrages hors ligne. */
+export interface StoredProfile {
+  displayName: string
+  role: 'parent' | 'child'
+}
+
+export function loadProfile(): StoredProfile | null {
+  return readJson<StoredProfile | null>(PROFILE_KEY, null)
+}
+
+export function saveProfile(profile: StoredProfile | null): void {
+  if (profile === null) localStorage.removeItem(PROFILE_KEY)
+  else localStorage.setItem(PROFILE_KEY, JSON.stringify(profile))
 }
 
 export type Theme = 'light' | 'dark'

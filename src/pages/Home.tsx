@@ -1,11 +1,19 @@
+import { useState } from 'react'
 import { Link } from 'react-router'
 import type { Module } from '../types'
-import { getContentItems, getSrsStates } from '../lib/repo'
+import { getContentItems, getProfile, getSrsStates, isConnected, syncConfigured } from '../lib/repo'
 import { MODULE_LABELS, selectForModule } from '../lib/modules'
 import { computeStreak, STREAK_MIN_MINUTES_PER_DAY } from '../lib/streak'
 import { minutesInLastDays } from '../lib/dashboard'
 import { badgeDef } from '../lib/badges'
-import { loadEarnedBadges, loadMockExams, loadSessionRecords, totalXp } from '../lib/storage'
+import {
+  loadDemoMode,
+  loadEarnedBadges,
+  loadMockExams,
+  loadSessionRecords,
+  saveDemoMode,
+  totalXp,
+} from '../lib/storage'
 import { exams } from '../lib/exams'
 
 const MODULE_ICONS: Record<Module, string> = {
@@ -63,12 +71,81 @@ function ModuleCard({ module }: { module: Module }) {
   )
 }
 
+/** Pastille d'état de connexion, toujours visible en haut de l'accueil (PRD §17). */
+function StatusChip() {
+  const profile = getProfile()
+  if (isConnected()) {
+    return (
+      <Link
+        to="/config"
+        className="mx-auto rounded-full bg-teal-100 px-4 py-1.5 text-sm font-semibold text-teal-800 hover:bg-teal-200 dark:bg-teal-900 dark:text-teal-200 dark:hover:bg-teal-800"
+      >
+        👤 {profile?.displayName ?? 'Connecté'}
+        {profile !== null && ` · ${profile.role === 'parent' ? 'Parent' : 'Élève'}`}
+      </Link>
+    )
+  }
+  return (
+    <Link
+      to="/config"
+      title="Tes données restent sur cet appareil — connecte-toi pour les retrouver partout"
+      className="mx-auto rounded-full bg-slate-200 px-4 py-1.5 text-sm font-semibold text-slate-600 hover:bg-slate-300 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700"
+    >
+      {syncConfigured() ? '🧪 Mode démo — se connecter' : '📱 Mode local'}
+    </Link>
+  )
+}
+
+/** Accueil visiteur : personne n'est connecté et le mode démo n'a pas été choisi. */
+function Welcome({ onDemo }: { onDemo: () => void }) {
+  return (
+    <div className="flex flex-1 flex-col justify-center gap-6 text-center">
+      <h1 className="text-3xl font-extrabold text-teal-700 dark:text-teal-400">Klaar&nbsp;!</h1>
+      <p className="text-slate-600 dark:text-slate-400">
+        Révision du néerlandais pour le CE1D : vocabulaire, grammaire, écoute, rédaction, oral et examens
+        blancs — avec suivi pour le parent.
+      </p>
+      <Link
+        to="/config"
+        className="rounded-2xl bg-teal-600 px-6 py-4 text-lg font-bold text-white shadow-lg shadow-teal-600/25 transition hover:bg-teal-700 active:scale-95"
+      >
+        Se connecter
+      </Link>
+      <button
+        type="button"
+        onClick={onDemo}
+        className="rounded-2xl border-2 border-teal-600 px-6 py-4 text-lg font-bold text-teal-700 transition hover:bg-teal-50 active:scale-95 dark:text-teal-400 dark:hover:bg-slate-800"
+      >
+        Essayer en mode démo
+      </button>
+      <p className="text-sm text-slate-500 dark:text-slate-400">
+        En mode démo, tout reste sur cet appareil. Si tu te connectes plus tard, tes révisions sont reprises
+        dans ton compte.
+      </p>
+    </div>
+  )
+}
+
 export default function Home() {
   const states = getSrsStates()
   const learnedCount = Object.keys(states).length
   const itemCount = getContentItems().length
   const records = loadSessionRecords()
   const now = new Date()
+  const [demo, setDemo] = useState(loadDemoMode)
+  // Données locales antérieures à l'écran visiteur : on considère le mode démo déjà choisi.
+  const usedBefore = records.length > 0 || learnedCount > 0
+
+  if (syncConfigured() && !isConnected() && !demo && !usedBefore) {
+    return (
+      <Welcome
+        onDemo={() => {
+          saveDemoMode(true)
+          setDemo(true)
+        }}
+      />
+    )
+  }
   const streak = computeStreak(records, now)
   const remainingToday = Math.max(0, STREAK_MIN_MINUTES_PER_DAY - minutesInLastDays(records, now, 1))
   const xp = totalXp()
@@ -80,6 +157,8 @@ export default function Home() {
 
   return (
     <div className="flex flex-1 flex-col justify-center gap-6 text-center">
+      <StatusChip />
+
       {(streak.current > 0 || xp > 0) && (
         <div className="flex justify-center gap-3">
           <span

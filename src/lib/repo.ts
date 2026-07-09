@@ -17,7 +17,10 @@ import {
   replaceSessionRecords,
   replaceSrsStates,
   replaceXpLedger,
+  saveProfile,
   saveSrsState,
+  loadProfile,
+  type StoredProfile,
 } from './storage'
 
 /**
@@ -59,10 +62,12 @@ const cache: {
   items: ContentItem[]
   states: Record<string, SrsState>
   userId: string | null
+  profile: StoredProfile | null
 } = {
   items: seedItems,
   states: {},
   userId: null,
+  profile: null,
 }
 
 async function pushOp(userId: string, op: PushOp): Promise<boolean> {
@@ -299,22 +304,54 @@ export async function initRepo(): Promise<void> {
   cache.states = loadSrsStates()
   cache.items = seedItems
   cache.userId = null
+  cache.profile = null
   if (supabase === null) return
 
   const {
     data: { session },
   } = await supabase.auth.getSession()
-  if (session === null) return
+  if (session === null) {
+    saveProfile(null)
+    return
+  }
 
   cache.userId = session.user.id
+  // Profil pour l'affichage de l'accueil ; cache localStorage pour le hors ligne.
+  cache.profile = loadProfile()
   try {
     await migrateLocalData(session.user.id)
     await flushQueue(session.user.id)
     await pullFromCloud(session.user.id)
     await cleanupOldRecordings(session.user.id)
+    const { data: profileRow } = await supabase
+      .from('profiles')
+      .select('display_name, role')
+      .eq('id', session.user.id)
+      .single()
+    if (profileRow !== null) {
+      cache.profile = {
+        displayName: profileRow.display_name,
+        role: profileRow.role as StoredProfile['role'],
+      }
+      saveProfile(cache.profile)
+    }
   } catch {
     // Hors ligne ou serveur indisponible : l'app continue sur le cache local.
   }
+}
+
+/** La synchronisation est-elle configurée sur ce déploiement ? */
+export function syncConfigured(): boolean {
+  return supabase !== null
+}
+
+/** Utilisateur connecté (null = mode local/démo). */
+export function getProfile(): StoredProfile | null {
+  return cache.userId !== null ? cache.profile : null
+}
+
+export function isConnected(): boolean {
+  return cache.userId !== null
 }
 
 export function getContentItems(): ContentItem[] {

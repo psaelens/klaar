@@ -187,6 +187,7 @@ Principes clés pour un ado de 13-14 ans en échec scolaire, donc probablement d
 - **Feedback d'erreur non punitif** : pas de croix rouge agressive ni de son négatif — une erreur montre la bonne réponse et propose de réessayer, sans décompte de vie ni pénalité écrasante. L'objectif est qu'il continue, pas qu'il évite l'app après un échec.
 - **Progression très visible** : barre de progression par session courte (2-3 min par bloc), pour des sentiments de complétion fréquents plutôt qu'un seul objectif lointain d'1h.
 - **Mode sombre** disponible.
+- **État de connexion visible dès l'accueil** (ajout juillet 2026) : l'accueil affiche clairement qui est connecté (prénom + rôle élève/parent, accès direct à la configuration). Si personne n'est connecté, l'app ne démarre pas silencieusement en mode local : elle propose explicitement **« Se connecter »** ou **« Essayer en mode démo »** (visiteur : données stockées sur l'appareil uniquement, reprises dans le compte à la première connexion). Le mode démo est signalé en permanence par une pastille à l'accueil.
 - **Accessibilité dès le départ** : police lisible réglable, option police adaptée dyslexie, contrastes AA minimum, pas de texte dans des images.
 - **Dashboard parent visuellement distinct** : palette différente de l'espace élève, pour signaler clairement "ceci n'est pas l'espace de jeu", avec des graphiques simples plutôt que des tableaux bruts.
 
