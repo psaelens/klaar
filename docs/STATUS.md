@@ -1,25 +1,27 @@
 # STATUS — état d'avancement Klaar!
 
-## Étape roadmap en cours : M4 TERMINÉ et déployé → prochaine étape M5
+## Étape roadmap en cours : M5 TERMINÉ et déployé → prochaine étape M6
 
 ## Dernière action terminée :
 
-M4 complet, **vérifié E2E en local ET en production** (https://klaar-nine.vercel.app) : foyer de test, session rédaction complète (2 textes comme à l'examen : consigne FR servie par le serveur, compteur de mots avec objectif 60, auto-évaluation par checklist — 5 puis 4 points —, exemple de réponse repliable), badge « Première rédaction » ✍️ célébré au bilan et vérifié côté serveur, dashboard parent avec taux Rédaction ; nettoyage complet des données de test (2 comptes + foyer). En local en plus : bouton désactivé sous 40 mots, hints de note suggérée (À revoir → Réussi selon les points cochés), XP production 58 = 25 + 13 + 20, régression vocab/grammaire/écoute.
+M5 complet, **vérifié E2E en local ET en production** (https://klaar-nine.vercel.app) : foyer de test, session d'oral complète (2 sujets : consigne FR servie par le serveur, exemple TTS, enregistrement micro factice 21 s, réécoute, auto-évaluation par checklist), 2 prises uploadées dans le bucket privé `recordings` et vérifiées côté serveur, badge « Première prise de parole » 🎤 célébré, dashboard parent : taux Oral + section « Derniers enregistrements » avec lecteurs audio (URL signées téléchargeables) ; nettoyage complet (comptes + foyer + enregistrements). En local en plus : prise trop courte refusée (< 20 s), refaire une prise, fallback affiché sans micro.
 
-Récap M4 : migration `20260709100000` (type `writing` dans content_items — remplace `writing_prompt` du PRD, invariant type = modalité —, colonne `checklist` jsonb, `sessions.module` étendu) appliquée local + hébergé, 141 items globaux seedés (dont 12 rédactions A2- format examen PRD §16) ; écran de rédaction sur le SRS commun (2 textes/session, textarea + compteur, auto-évaluation guidée sans juge automatique PRD §13) ; XP production 25 × difficulté (PRD §8) ; badge `first-writing` ; taux Rédaction au dashboard parent. 60 tests ✅, RLS 23/23 ✅ (compte seed dérivé des 4 JSON).
+Récap M5 : migration `20260709120000` (module `speaking`, bucket Storage privé `recordings` 10 Mo/MIME audio avec policies par dossier — élève écrit/lit/supprime le sien, parent du foyer écoute) appliquée local + hébergé, 153 items seedés (dont 12 sujets d'oral) ; écran d'oral (MediaRecorder via `useRecorder`, min 20 s / max 3 min, exemple TTS en prononciation de référence, checklist partagée avec la rédaction) ; upload best-effort à la notation ; rétention 14 jours nettoyée au démarrage ; XP production ; badge `first-speaking` ; écoute parent au dashboard. 69 tests ✅, RLS 29/29 ✅ (dont 6 sur le Storage). Aussi ce jour : streak passé à 1 h/jour (décision Pierre), tooltip des minutes restantes à l'accueil.
 
 ## Prochaine action à faire :
 
-Démarrer M5 (PRD §11) : module expression orale — enregistrement (MediaRecorder), prononciation de référence (TTS `speakDutch` déjà en place), checklist type examen. PRD §13 : la reconnaissance vocale reste une aide indicative, pas un juge ; prévoir le créneau hebdomadaire où le parent écoute un enregistrement de 2 min. Type de contenu à utiliser : `speaking` (déjà dans la contrainte du schéma). À concevoir : stockage des enregistrements (local seulement ? Supabase Storage ?) — trancher avec Pierre.
+Démarrer M6 (PRD §11) : examens blancs chronométrés (écrit + oral) + rapport hebdo parent. Format : épreuves CE1D officielles d'enseignement.be (PRD §16 — Pierre doit télécharger les PDF des sessions passées ; le module se calibre sur le vrai format, PRD §13). Boss battles : bonus XP significatif (PRD §8). Table `mock_exams` déjà prévue au schéma cible (PRD §7). Rapport hebdo : résumé lisible auto-généré côté parent (PRD §9).
 
 ## Décisions en attente de validation par Pierre :
 
-- Faire vérifier le contenu de départ par un néerlandophone (PRD §13) : 64 mots (`vocab.json`), 41 drills (`grammar.json`), 24 items d'écoute (`listening.json`) et 12 rédactions dont les textes modèles NL (`writing.json`) — générés par Claude, non validés par un tiers.
+- Faire vérifier le contenu de départ par un néerlandophone (PRD §13) : 64 mots, 41 drills, 24 écoutes, 12 rédactions, 12 sujets d'oral — générés par Claude, non validés par un tiers.
 - La voix TTS néerlandaise dépend de l'appareil — à valider à l'oreille sur l'appareil de l'élève ; sinon vrais enregistrements via `audio_url` (déjà dans le schéma).
-- Stockage des futurs enregistrements oraux M5 (local vs Supabase Storage, rétention).
+- Télécharger les épreuves CE1D officielles (enseignement.be) pour calibrer M6 — action Pierre.
+- Le portefeuille pièces → minutes d'écran (PRD §8/§9, table `screen_time_wallet`) n'est rattaché à aucune étape de la roadmap — à planifier ou à abandonner si la contrainte d'écran se gère autrement.
 
 ## Points d'attention / bugs connus non résolus :
 
-- Si l'élève quitte/recharge en pleine session, la file est recomposée et les compteurs de session repartent de zéro — l'état SRS par carte est bien persisté après chaque réponse. Cosmétique, assumé (DECISIONS.md). Pour la rédaction, le brouillon en cours est aussi perdu au rechargement (même statut).
+- Si l'élève quitte/recharge en pleine session, la file est recomposée et les compteurs repartent de zéro — l'état SRS par carte est persisté après chaque réponse. Pour la rédaction/l'oral, le brouillon ou la prise en cours est aussi perdu au rechargement (assumé, DECISIONS.md).
+- `npx supabase db push --include-seed` peut mettre à jour le hash du seed SANS l'exécuter (vu au M5 : 141 items au lieu de 153) — toujours vérifier le count après coup et re-seeder via `psql <pooler-url> -f supabase/seed.sql` au besoin (mot de passe : `SUPABASE_DB_PASSWORD` de `.env.local`).
 - Le PRD est dans `.prettierignore` (reformaté une fois par Prettier, contenu inchangé).
 - Recette de vérification runtime documentée dans `.claude/skills/verify/SKILL.md` (preview + Playwright).

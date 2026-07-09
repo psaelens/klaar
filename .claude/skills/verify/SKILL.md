@@ -22,13 +22,16 @@ Chromium est installé dans `%LOCALAPPDATA%\ms-playwright`. Le package `playwrig
 installé dans le scratchpad `1d7b2eb0-…/scratchpad/verify/` (pas une dépendance du projet),
 avec les scripts existants : `verify-grammar.mjs`, `verify-vocab-regression.mjs`,
 `verify-import.mjs`, `verify-parent-dashboard.mjs`, `verify-writing.mjs`,
-`verify-prod-m4.mjs` (modèle de vérif prod avec nettoyage). Contexte mobile
-`{ width: 390, height: 844 }`, collecter `pageerror`.
+`verify-speaking.mjs`, `verify-speaking-sync.mjs`, `verify-prod-m5.mjs` (modèle de
+vérif prod avec nettoyage). Contexte mobile `{ width: 390, height: 844 }`, collecter
+`pageerror`. Pour l'oral : lancer chromium avec
+`args: ['--use-fake-ui-for-media-stream', '--use-fake-device-for-media-stream']` et
+`permissions: ['microphone']` sur le contexte (micro factice, ~330 Ko pour 21 s).
 
 ## Flux à dérouler
 
-1. `/` : quatre cartes-modules (📚 Vocabulaire, 🧩 Grammaire, 🎧 Écoute, ✍️ Rédaction)
-   avec compteurs dus/nouveaux (Rédaction plafonnée à 2).
+1. `/` : cinq cartes-modules (📚 Vocabulaire, 🧩 Grammaire, 🎧 Écoute, ✍️ Rédaction,
+   🎤 Oral) avec compteurs dus/nouveaux (Rédaction et Oral plafonnés à 2).
 2. Vocabulaire (`/session?m=vocab`) : mot NL (`p[lang=nl]`), « Voir la réponse » →
    « À revoir / Difficile / Réussi » ; « À revoir » re-met la carte en fin de file.
 3. Grammaire (`/session?m=grammar`) : QCM `button[lang=nl]` ; bonne réponse = feedback
@@ -44,6 +47,12 @@ avec les scripts existants : `verify-grammar.mjs`, `verify-vocab-regression.mjs`
    checklist `input[type=checkbox]`, `<details>` « Voir un exemple de réponse », hint de
    note suggérée, 3 boutons SM-2. 2 textes par session. Attendre ~500 ms après
    `waitForURL('**/bilan')` avant de lire `main`.
+3d. Oral (`/session?m=speaking`) : consigne FR, « 🔊 Écouter un exemple d'abord » (TTS),
+   « 🎙️ M'enregistrer » → timer ● m:ss → « Terminer la prise » → lecteur audio ;
+   « J'ai terminé » désactivé sous 20 s (hint « un peu court », « 🔄 Refaire ») ;
+   auto-évaluation comme la rédaction (« Vérifie ta présentation »). 2 sujets/session.
+   Connecté : chaque prise part dans le bucket `recordings` ({userId}/{stamp}-{item}.webm) ;
+   le dashboard parent affiche « 🎤 Derniers enregistrements » (URL signées).
 4. Fin de file → `/bilan` (stats + « Session … terminée » + XP + célébration des nouveaux
    badges — 1re session d'un contexte vierge : « Premier pas » 🐣 et « Sans faute » 🎯 ;
    vitrine emoji à l'accueil ensuite ; `localStorage['klaar.badges.v1']`).
@@ -63,3 +72,8 @@ avec les scripts existants : `verify-grammar.mjs`, `verify-vocab-regression.mjs`
 - Prod : https://klaar-nine.vercel.app — auto-déployée à chaque push sur `main` (app GitHub
   Vercel). La base hébergée doit être migrée/seedée AVANT le push (`npx supabase db push`,
   mot de passe DB : env `SUPABASE_DB_PASSWORD` depuis `.env.local`, ne jamais l'afficher).
+- ⚠️ `db push --include-seed` peut mettre à jour le hash du seed sans l'exécuter :
+  vérifier le count de `content_items` après coup, sinon `psql <supabase/.temp/pooler-url>
+  -f supabase/seed.sql` (PGPASSWORD = `SUPABASE_DB_PASSWORD`).
+- Nettoyage prod/local : comptes + foyer + objets Storage `recordings/{userId}/…` (voir
+  le bloc `finally` de `verify-prod-m5.mjs`).
