@@ -15,7 +15,6 @@ Démarrer M5 (PRD §11) : module expression orale — enregistrement (MediaRecor
 ## Décisions en attente de validation par Pierre :
 
 - Faire vérifier le contenu de départ par un néerlandophone (PRD §13) : 64 mots (`vocab.json`), 41 drills (`grammar.json`), 24 items d'écoute (`listening.json`) et 12 rédactions dont les textes modèles NL (`writing.json`) — générés par Claude, non validés par un tiers.
-- Seuil de minutes du streak : toujours 0 (≥ 1 session/jour suffit). Avec 4 modalités dont la rédaction (~10 min/texte), le PRD (1 h/jour) devient atteignable — Pierre décide du seuil.
 - La voix TTS néerlandaise dépend de l'appareil — à valider à l'oreille sur l'appareil de l'élève ; sinon vrais enregistrements via `audio_url` (déjà dans le schéma).
 - Stockage des futurs enregistrements oraux M5 (local vs Supabase Storage, rétention).
 

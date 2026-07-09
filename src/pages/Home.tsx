@@ -2,7 +2,8 @@ import { Link } from 'react-router'
 import type { Module } from '../types'
 import { getContentItems, getSrsStates } from '../lib/repo'
 import { MODULE_LABELS, selectForModule } from '../lib/modules'
-import { computeStreak } from '../lib/streak'
+import { computeStreak, STREAK_MIN_MINUTES_PER_DAY } from '../lib/streak'
+import { minutesInLastDays } from '../lib/dashboard'
 import { badgeDef } from '../lib/badges'
 import { loadEarnedBadges, loadSessionRecords, totalXp } from '../lib/storage'
 
@@ -65,7 +66,10 @@ export default function Home() {
   const states = getSrsStates()
   const learnedCount = Object.keys(states).length
   const itemCount = getContentItems().length
-  const streak = computeStreak(loadSessionRecords(), new Date())
+  const records = loadSessionRecords()
+  const now = new Date()
+  const streak = computeStreak(records, now)
+  const remainingToday = Math.max(0, STREAK_MIN_MINUTES_PER_DAY - minutesInLastDays(records, now, 1))
   const xp = totalXp()
   const badges = loadEarnedBadges()
     .map((badge) => badgeDef(badge.code))
@@ -84,7 +88,9 @@ export default function Home() {
                 : 'bg-slate-200 text-slate-600 dark:bg-slate-800 dark:text-slate-400'
             }`}
             title={
-              streak.todayDone ? 'Streak validé aujourd’hui' : 'Fais une session pour garder ton streak !'
+              streak.todayDone
+                ? 'Journée validée (≥ 1 h de travail) !'
+                : `Encore ~${remainingToday} min aujourd’hui pour valider la journée`
             }
           >
             🔥 {streak.current} jour{streak.current > 1 ? 's' : ''}

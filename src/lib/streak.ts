@@ -2,10 +2,13 @@ import type { SessionRecord } from '../types'
 
 /**
  * Streak (PRD §8) : jours consécutifs travaillés, un jour manqué casse le
- * compteur, pas de rattrapage. Le seuil de minutes par jour est paramétrable :
- * 0 tant que seul le vocabulaire existe (voir DECISIONS.md), il passera à 60
- * quand les autres modalités permettront réellement 1 h/jour.
+ * compteur, pas de rattrapage. Seuil : 1 h/jour (décision Pierre 2026-07-09,
+ * les 4 modalités rendent l'heure du PRD atteignable) ; il était à 0 tant que
+ * seul le vocabulaire existait (voir DECISIONS.md).
  */
+
+/** Minutes de travail par jour pour valider le streak (PRD §8 : ≥ 1 h). */
+export const STREAK_MIN_MINUTES_PER_DAY = 60
 
 export interface StreakResult {
   /** Jours consécutifs validés, aujourd'hui inclus s'il est déjà validé. */
@@ -30,7 +33,7 @@ function previousDay(day: string): string {
 export function computeStreak(
   records: SessionRecord[],
   now: Date,
-  { minMinutesPerDay = 0 } = {},
+  { minMinutesPerDay = STREAK_MIN_MINUTES_PER_DAY } = {},
 ): StreakResult {
   // Minutes travaillées par jour local
   const minutesByDay = new Map<string, number>()
