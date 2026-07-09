@@ -1,0 +1,182 @@
+[
+  {
+    "id": "wri-01",
+    "type": "writing",
+    "theme": "Se présenter",
+    "front": "Tu écris un petit texte pour te présenter à ta classe partenaire en Flandre (±60 mots).\n• Dis ton nom et ton âge\n• Dis où tu habites\n• Parle de ta famille\n• Dis ce que tu aimes faire",
+    "checklist": [
+      "J'ai dit mon nom et mon âge",
+      "J'ai dit où j'habite",
+      "J'ai parlé de ma famille",
+      "J'ai dit ce que j'aime faire",
+      "J'ai une formule pour commencer et pour finir (Hallo…, Groetjes…)"
+    ],
+    "back": "Hallo! Ik heet Lucas en ik ben dertien jaar. Ik woon in Namen, in België. Wij zijn met vier thuis: mijn papa, mijn mama, mijn zus en ik. Mijn zus heet Nora en ze is tien. Na school speel ik voetbal met mijn vrienden. Ik hou ook van muziek en games. En jij? Schrijf me snel! Groetjes, Lucas",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "wri-02",
+    "type": "writing",
+    "theme": "Les loisirs",
+    "front": "Ton correspondant te demande ce que tu fais le week-end. Réponds-lui (±60 mots).\n• Dis quels sont tes hobbys\n• Dis quand tu les pratiques\n• Dis avec qui\n• Pose-lui une question",
+    "checklist": [
+      "J'ai dit quels sont mes hobbys",
+      "J'ai dit quand je les pratique",
+      "J'ai dit avec qui",
+      "J'ai posé une question à mon correspondant"
+    ],
+    "back": "Hoi Emma! In het weekend heb ik veel vrije tijd. Op zaterdag speel ik tennis met mijn broer. Daarna kijk ik een film of lees ik een strip. Op zondag ga ik zwemmen met mijn vrienden. Dat vind ik super leuk! En jij, wat doe je in het weekend? Doe je ook aan sport? Groetjes, Thomas",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "wri-03",
+    "type": "writing",
+    "theme": "Les vacances",
+    "front": "Tu es en vacances. Écris une carte postale à ton correspondant (±60 mots).\n• Dis où tu es et avec qui\n• Décris le temps qu'il fait\n• Raconte ce que tu fais\n• Dis ce que tu en penses",
+    "checklist": [
+      "J'ai dit où je suis et avec qui",
+      "J'ai décrit le temps qu'il fait",
+      "J'ai raconté ce que je fais",
+      "J'ai donné mon avis"
+    ],
+    "back": "Dag Sofie! Ik ben op vakantie aan zee, in Oostende. Ik ben hier met mijn ouders en mijn broer. Het weer is mooi: de zon schijnt en het is warm. Elke dag zwem ik in de zee en we eten een ijsje op het strand. Gisteren heb ik een zandkasteel gemaakt. Het is hier echt super! Tot volgende week. Groetjes, Léa",
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "wri-04",
+    "type": "writing",
+    "theme": "La météo",
+    "front": "Ton correspondant veut savoir quel temps il fait chez toi. Écris-lui un petit message (±60 mots).\n• Décris le temps aujourd'hui\n• Dis ce que tu portes\n• Dis ce que tu vas faire à cause de ce temps\n• Pose-lui une question sur le temps chez lui",
+    "checklist": [
+      "J'ai décrit le temps qu'il fait aujourd'hui",
+      "J'ai dit ce que je porte",
+      "J'ai dit ce que je vais faire",
+      "J'ai posé une question sur le temps chez lui"
+    ],
+    "back": "Hallo Daan! Vandaag is het slecht weer in België. Het regent en het waait hard. Het is maar tien graden! Ik draag een dikke trui, een jas en laarzen. Vanmiddag blijf ik binnen: ik ga een film kijken en een spel spelen met mijn zus. En bij jou? Is het ook koud in Nederland? Groetjes, Noah",
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "wri-05",
+    "type": "writing",
+    "theme": "Le week-end",
+    "front": "Raconte ton week-end dernier à ton correspondant (±60 mots, au passé composé).\n• Dis ce que tu as fait samedi\n• Dis ce que tu as fait dimanche\n• Dis avec qui\n• Donne ton avis sur ce week-end",
+    "checklist": [
+      "J'ai raconté samedi ET dimanche",
+      "J'ai dit avec qui",
+      "J'ai donné mon avis",
+      "J'ai utilisé le passé composé (ik heb… / ik ben…)"
+    ],
+    "back": "Hoi Lien! Ik heb een leuk weekend gehad. Zaterdag heb ik met mijn team gevoetbald. We hebben gewonnen! Daarna heb ik bij mijn oma gegeten. Zondag ben ik met mijn vader naar de cinema geweest. We hebben een grappige film gezien. Het was een super weekend. En jij? Wat heb je gedaan? Groetjes, Arthur",
+    "difficulty": 3,
+    "curriculum_unit": null
+  },
+  {
+    "id": "wri-06",
+    "type": "writing",
+    "theme": "La santé",
+    "front": "Tu es malade et tu ne peux pas aller à l'école. Écris un message à ton professeur (±60 mots).\n• Explique ce que tu as\n• Dis depuis quand tu es malade\n• Dis ce que dit le docteur\n• Dis quand tu reviens à l'école",
+    "checklist": [
+      "J'ai expliqué ce que j'ai (symptômes)",
+      "J'ai dit depuis quand je suis malade",
+      "J'ai dit ce que dit le docteur",
+      "J'ai dit quand je reviens",
+      "Mon message est poli (Dag meneer/mevrouw…, Dank u wel)"
+    ],
+    "back": "Dag meneer Peeters, Ik kan vandaag niet naar school komen, want ik ben ziek. Ik heb koorts en veel hoofdpijn. Ik ben al ziek sinds zondag. De dokter zegt dat ik drie dagen in bed moet blijven en veel water moet drinken. Ik kom donderdag terug naar school. Kan u mij de taken sturen? Dank u wel. Lotte",
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "wri-07",
+    "type": "writing",
+    "theme": "La nourriture",
+    "front": "Ton correspondant te demande ce que tu manges en Belgique. Réponds-lui (±60 mots).\n• Dis ce que tu manges le matin et le soir\n• Dis ce que tu aimes et ce que tu n'aimes pas\n• Parle de ton plat préféré",
+    "checklist": [
+      "J'ai dit ce que je mange le matin",
+      "J'ai dit ce que je mange le soir",
+      "J'ai dit ce que j'aime et ce que je n'aime pas",
+      "J'ai parlé de mon plat préféré"
+    ],
+    "back": "Hallo Finn! 's Morgens eet ik boterhammen met choco en ik drink melk. 's Avonds eten we warm: vaak soep, vlees met groenten en aardappelen. Ik hou van pizza en van frietjes, maar ik lust geen spruitjes. Mijn lievelingseten is spaghetti. Mijn mama maakt die elke woensdag. Wat eet jij graag? Groetjes, Emma",
+    "difficulty": 1,
+    "curriculum_unit": null
+  },
+  {
+    "id": "wri-08",
+    "type": "writing",
+    "theme": "Les achats",
+    "front": "Tu as fait du shopping samedi. Raconte à ton correspondant (±60 mots).\n• Dis où tu es allé et avec qui\n• Dis ce que tu as acheté (couleurs, prix)\n• Donne ton avis",
+    "checklist": [
+      "J'ai dit où je suis allé et avec qui",
+      "J'ai dit ce que j'ai acheté",
+      "J'ai donné au moins une couleur et un prix",
+      "J'ai donné mon avis"
+    ],
+    "back": "Hoi Milan! Zaterdag ben ik met mijn mama naar het winkelcentrum geweest. Ik heb nieuwe kleren gekocht voor school: een blauwe broek, een wit T-shirt en zwarte schoenen. De broek was in solden en kostte maar twintig euro! De schoenen vind ik echt cool. En jij, koop je graag kleren? Groetjes, Nina",
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "wri-09",
+    "type": "writing",
+    "theme": "Les achats",
+    "front": "C'est bientôt l'anniversaire de ton meilleur ami. Écris un message à ton correspondant (±60 mots).\n• Dis pour qui tu cherches un cadeau et pourquoi\n• Dis ce que tu penses acheter et où\n• Dis combien tu peux payer\n• Demande-lui une idée",
+    "checklist": [
+      "J'ai dit pour qui je cherche un cadeau et pourquoi",
+      "J'ai dit ce que je pense acheter et où",
+      "J'ai dit combien je peux payer",
+      "J'ai demandé une idée"
+    ],
+    "back": "Dag Jules! Zaterdag is mijn vriend Nathan jarig. Hij wordt veertien. Ik zoek een cadeau voor hem, maar het is moeilijk! Hij houdt van muziek en van basketbal. Misschien koop ik een pet of een game in het winkelcentrum. Ik heb vijftien euro. Heb jij een idee? Wat koop jij voor je vrienden? Groetjes, Chloé",
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "wri-10",
+    "type": "writing",
+    "theme": "L'itinéraire",
+    "front": "Ton correspondant vient chez toi en train samedi. Explique-lui le chemin de la gare à ta maison (±60 mots).\n• Dis quand tu l'attends\n• Explique le chemin (au moins 3 indications : tout droit, à gauche, à droite…)\n• Dis combien de temps ça prend",
+    "checklist": [
+      "J'ai dit quand je l'attends",
+      "J'ai donné au moins 3 indications de chemin",
+      "J'ai dit combien de temps ça prend"
+    ],
+    "back": "Hoi Stan! Super dat je zaterdag komt! Ik wacht op je om tien uur. Van het station is het makkelijk: ga rechtdoor tot aan het plein. Sla dan links af, de Schoolstraat in. Neem daarna de tweede straat rechts. Ik woon op nummer acht, naast de bakkerij. Het is maar tien minuten te voet. Tot zaterdag! Victor",
+    "difficulty": 3,
+    "curriculum_unit": null
+  },
+  {
+    "id": "wri-11",
+    "type": "writing",
+    "theme": "Les sorties",
+    "front": "Tu as fait une excursion avec ta classe. Raconte à ton correspondant (±60 mots, au passé).\n• Dis où vous êtes allés et comment\n• Raconte ce que vous avez vu ou fait\n• Donne ton avis sur la journée",
+    "checklist": [
+      "J'ai dit où nous sommes allés et comment",
+      "J'ai raconté ce que nous avons vu ou fait",
+      "J'ai donné mon avis",
+      "J'ai utilisé le passé composé (we hebben… / we zijn…)"
+    ],
+    "back": "Dag Fleur! Vrijdag ben ik met mijn klas naar Brugge geweest. We zijn met de bus gegaan. 's Morgens hebben we het museum bezocht en daarna hebben we een boottocht gemaakt. Ik heb veel foto's genomen. Het was een toffe dag, maar ik was 's avonds heel moe! Ben jij al in Brugge geweest? Groetjes, Maxime",
+    "difficulty": 2,
+    "curriculum_unit": null
+  },
+  {
+    "id": "wri-12",
+    "type": "writing",
+    "theme": "L'école",
+    "front": "Décris ta journée d'école à ton correspondant (±60 mots).\n• Dis à quelle heure l'école commence et finit\n• Parle de tes cours préférés\n• Dis ce que tu fais à midi",
+    "checklist": [
+      "J'ai dit quand l'école commence et finit",
+      "J'ai parlé de mes cours préférés",
+      "J'ai dit ce que je fais à midi"
+    ],
+    "back": "Hallo Roos! Mijn school begint om half negen en stopt om vier uur. Mijn lievelingsvakken zijn sport en wiskunde. Nederlands is moeilijk, maar interessant! Om twaalf uur eet ik boterhammen met mijn vrienden in de refter. Daarna spelen we voetbal op de speelplaats. En jij? Hoe is jouw school? Groetjes, Hugo",
+    "difficulty": 1,
+    "curriculum_unit": null
+  }
+]

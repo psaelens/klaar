@@ -67,6 +67,7 @@ export type Database = {
         Row: {
           audio_url: string | null
           back: string
+          checklist: Json | null
           choices: Json | null
           created_at: string
           curriculum_unit: string | null
@@ -82,6 +83,7 @@ export type Database = {
         Insert: {
           audio_url?: string | null
           back: string
+          checklist?: Json | null
           choices?: Json | null
           created_at?: string
           curriculum_unit?: string | null
@@ -97,6 +99,7 @@ export type Database = {
         Update: {
           audio_url?: string | null
           back?: string
+          checklist?: Json | null
           choices?: Json | null
           created_at?: string
           curriculum_unit?: string | null
