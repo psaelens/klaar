@@ -140,6 +140,50 @@ export type Database = {
         }
         Relationships: []
       }
+      mock_exams: {
+        Row: {
+          details: Json | null
+          duration_seconds: number | null
+          exam_id: string
+          exam_type: string
+          id: string
+          max_score: number
+          score: number
+          taken_at: string
+          user_id: string
+        }
+        Insert: {
+          details?: Json | null
+          duration_seconds?: number | null
+          exam_id: string
+          exam_type: string
+          id?: string
+          max_score: number
+          score: number
+          taken_at?: string
+          user_id: string
+        }
+        Update: {
+          details?: Json | null
+          duration_seconds?: number | null
+          exam_id?: string
+          exam_type?: string
+          id?: string
+          max_score?: number
+          score?: number
+          taken_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mock_exams_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string

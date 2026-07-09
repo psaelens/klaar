@@ -1,16 +1,19 @@
-import type { ContentItem, EarnedBadge, SessionRecord, SrsState, XpEntry } from '../types'
+import type { ContentItem, EarnedBadge, MockExamResult, SessionRecord, SrsState, XpEntry } from '../types'
 import { seedItems } from '../data'
 import { supabase } from './supabase'
 import { isExpired, recordingPath } from './speaking'
 import {
   appendEarnedBadges,
+  appendMockExam,
   appendSessionRecord,
   appendXpEntry,
   loadEarnedBadges,
+  loadMockExams,
   loadSessionRecords,
   loadSrsStates,
   loadXpLedger,
   replaceEarnedBadges,
+  replaceMockExams,
   replaceSessionRecords,
   replaceSrsStates,
   replaceXpLedger,
@@ -34,6 +37,7 @@ type PushOp =
   | { type: 'session'; record: SessionRecord }
   | { type: 'xp'; entry: XpEntry }
   | { type: 'badge'; badge: EarnedBadge }
+  | { type: 'exam'; result: MockExamResult }
 
 function loadQueue(): PushOp[] {
   try {
@@ -89,12 +93,27 @@ async function pushOp(userId: string, op: PushOp): Promise<boolean> {
     })
     return error === null
   }
+  if (op.type === 'exam') {
+    const { error } = await supabase.from('mock_exams').insert({
+      user_id: userId,
+      exam_type: op.result.examType,
+      exam_id: op.result.examId,
+      score: op.result.score,
+      max_score: op.result.maxScore,
+      taken_at: op.result.takenAt,
+      duration_seconds: op.result.durationSeconds ?? null,
+      details: op.result.details ?? null,
+    })
+    return error === null
+  }
   if (op.type === 'badge') {
     // ignoreDuplicates : un badge déjà gagné (autre appareil) n'est pas une erreur.
-    const { error } = await supabase.from('badges').upsert(
-      { user_id: userId, badge_code: op.badge.code, earned_at: op.badge.earnedAt },
-      { onConflict: 'user_id,badge_code', ignoreDuplicates: true },
-    )
+    const { error } = await supabase
+      .from('badges')
+      .upsert(
+        { user_id: userId, badge_code: op.badge.code, earned_at: op.badge.earnedAt },
+        { onConflict: 'user_id,badge_code', ignoreDuplicates: true },
+      )
     return error === null
   }
   const { error } = await supabase.from('xp_ledger').insert({
@@ -138,6 +157,9 @@ async function migrateLocalData(userId: string): Promise<void> {
     }
     for (const badge of loadEarnedBadges()) {
       enqueue({ type: 'badge', badge })
+    }
+    for (const result of loadMockExams()) {
+      enqueue({ type: 'exam', result })
     }
   } else {
     // Changement d'utilisateur : la file d'attente de l'ancien n'est plus valable.
@@ -220,6 +242,25 @@ async function pullFromCloud(userId: string): Promise<void> {
     .order('earned_at', { ascending: true })
   if (badgeRows !== null) {
     replaceEarnedBadges(badgeRows.map((row) => ({ code: row.badge_code, earnedAt: row.earned_at })))
+  }
+
+  const { data: examRows } = await supabase
+    .from('mock_exams')
+    .select('*')
+    .eq('user_id', userId)
+    .order('taken_at', { ascending: true })
+  if (examRows !== null) {
+    replaceMockExams(
+      examRows.map((row) => ({
+        examId: row.exam_id,
+        examType: row.exam_type as MockExamResult['examType'],
+        score: row.score,
+        maxScore: row.max_score,
+        takenAt: row.taken_at,
+        durationSeconds: row.duration_seconds ?? undefined,
+        details: (row.details as Record<string, number> | null) ?? undefined,
+      })),
+    )
   }
 }
 
@@ -308,6 +349,21 @@ export function awardBadges(codes: string[], now: Date): EarnedBadge[] {
     }
   }
   return badges
+}
+
+/**
+ * Enregistre un examen blanc terminé : résultat + session (les minutes de
+ * l'épreuve comptent pour le streak) + XP boss battle.
+ */
+export function recordMockExam(result: MockExamResult, record: SessionRecord, xpEntry: XpEntry): void {
+  appendMockExam(result)
+  if (cache.userId !== null) {
+    const userId = cache.userId
+    void pushOp(userId, { type: 'exam', result }).then((ok) => {
+      if (!ok) enqueue({ type: 'exam', result })
+    })
+  }
+  recordSession(record, xpEntry)
 }
 
 export function recordSession(record: SessionRecord, xpEntry: XpEntry): void {

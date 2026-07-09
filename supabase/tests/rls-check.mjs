@@ -212,6 +212,32 @@ try {
     badgeUpdErr !== null || badgeUpd?.length === 0,
   )
 
+  // --- Examens blancs (append-only)
+  const { error: examErr } = await child.from('mock_exams').insert({
+    user_id: users.child.id,
+    exam_type: 'ecrit',
+    exam_id: 'blanc-ecrit-01',
+    score: 42,
+    max_score: 70,
+  })
+  check('enfant enregistre son examen blanc', !examErr, examErr?.message)
+
+  const { data: examParent } = await parent.from('mock_exams').select('*').eq('user_id', users.child.id)
+  check("parent lit les examens blancs de l'enfant", examParent?.length === 1)
+
+  const { data: examStranger } = await stranger.from('mock_exams').select('*').eq('user_id', users.child.id)
+  check("l'autre foyer ne lit PAS les examens blancs", examStranger?.length === 0)
+
+  const { data: examUpd, error: examUpdErr } = await child
+    .from('mock_exams')
+    .update({ score: 70 })
+    .eq('user_id', users.child.id)
+    .select()
+  check(
+    'enfant ne peut PAS réécrire un examen passé (append-only)',
+    examUpdErr !== null || examUpd?.length === 0,
+  )
+
   // --- Enregistrements oraux (Storage, bucket privé `recordings`)
   const audio = new Blob([new Uint8Array(64)], { type: 'audio/webm' })
   const recPath = `${users.child.id}/rls-check-${suffix}.webm`

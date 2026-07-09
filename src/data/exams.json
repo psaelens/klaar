@@ -1,0 +1,203 @@
+[
+  {
+    "id": "blanc-ecrit-01",
+    "type": "ecrit",
+    "title": "Examen blanc écrit n°1",
+    "sections": [
+      {
+        "kind": "ca",
+        "label": "Compréhension à l'audition",
+        "minutes": 25,
+        "tasks": [
+          {
+            "id": "e1-ca1",
+            "title": "Een dagje aan zee",
+            "context": "Ta classe prépare une excursion à la mer. Tu écoutes le message vocal de ton professeur avec les informations pratiques.",
+            "instruction": "Écoute le message (3 écoutes maximum). Note, en français, 8 informations pratiques sur l'excursion.",
+            "source": "Dag allemaal! Volgende vrijdag gaan we met de klas naar Oostende. We vertrekken om acht uur met de trein, dus wees op tijd aan het station. De reis duurt ongeveer een uur. Neem je boterhammen mee, want we eten 's middags op het strand. Vergeet ook je zwemkleren niet: als het mooi weer is, gaan we zwemmen in de zee. Het bezoek aan het aquarium kost vijf euro. Neem dus een beetje geld mee. Na het aquarium hebben jullie een uur vrije tijd om een ijsje te kopen of souvenirs te zoeken. We zijn om zes uur 's avonds terug aan de school. Tot vrijdag!",
+            "expected": [
+              "L'excursion a lieu vendredi prochain",
+              "La destination est Ostende",
+              "Le départ est à 8 h",
+              "On voyage en train",
+              "Le voyage dure environ une heure",
+              "Il faut apporter des tartines (on mange sur la plage)",
+              "Il faut prendre son maillot (baignade s'il fait beau)",
+              "L'aquarium coûte 5 euros",
+              "Il y a une heure de temps libre (glace, souvenirs)",
+              "Le retour à l'école est à 18 h"
+            ],
+            "answersToCount": 8,
+            "points": 15
+          },
+          {
+            "id": "e1-ca2",
+            "title": "Het nieuwe sportcentrum",
+            "context": "Un nouveau centre sportif ouvre dans ta commune. Tu écoutes une publicité à la radio pour convaincre tes parents de t'y inscrire.",
+            "instruction": "Écoute la publicité (3 écoutes maximum). Note, en français, 8 arguments pour convaincre tes parents.",
+            "source": "Kom naar Sportpark De Regenboog, het nieuwe sportcentrum in het centrum van de stad! Bij ons kun je meer dan tien sporten doen: voetbal, tennis, zwemmen, dans en nog veel meer. Onze trainers zijn vriendelijk en professioneel. Het zwembad is elke dag open van zeven uur 's morgens tot tien uur 's avonds. Jongeren onder de veertien jaar betalen maar twintig euro per maand. Het eerste proefweekend is helemaal gratis! Er is ook een gezellige cafetaria met gezonde snacks en verse fruitsappen. Je kunt gemakkelijk met de bus komen: lijn drie stopt voor de deur. En elke zaterdag organiseren we een toernooi voor de hele familie. Tot snel in De Regenboog!",
+            "expected": [
+              "On peut y pratiquer plus de dix sports (foot, tennis, natation, danse…)",
+              "Les entraîneurs sont gentils et professionnels",
+              "La piscine est ouverte tous les jours (de 7 h à 22 h)",
+              "Les moins de 14 ans paient seulement 20 euros par mois",
+              "Le premier week-end d'essai est gratuit",
+              "Il y a une cafétéria avec des snacks sains et des jus frais",
+              "C'est facile d'accès en bus (la ligne 3 s'arrête devant)",
+              "Il y a un tournoi familial chaque samedi",
+              "Le centre est situé au centre de la ville"
+            ],
+            "answersToCount": 8,
+            "points": 15
+          }
+        ]
+      },
+      {
+        "kind": "cl",
+        "label": "Compréhension à la lecture",
+        "minutes": 40,
+        "tasks": [
+          {
+            "id": "e1-cl1",
+            "title": "Jeugdkamp De Zonnebloem",
+            "context": "Tu cherches un stage pour les vacances. Tu lis la brochure d'un camp de jeunes.",
+            "instruction": "Lis la brochure. Note, en français, 8 informations utiles pour décider si ce camp te convient.",
+            "source": "JEUGDKAMP DE ZONNEBLOEM — Een week vol avontuur!\n\nWanneer? Van maandag 3 tot vrijdag 7 augustus.\nVoor wie? Voor jongens en meisjes van 12 tot 15 jaar.\nWaar? In de Ardennen, midden in het bos, aan een klein meer.\n\nProgramma: elke ochtend sport (kajak, mountainbike of klimmen), elke middag een creatieve activiteit (muziek, theater of koken). Woensdag maken we een grote wandeling van vijftien kilometer met een picknick. Donderdagavond is er een groot kampvuur met verhalen en liedjes.\n\nWe slapen in grote tenten met zes personen. Het eten is vers en de kok houdt rekening met vegetariërs.\n\nPrijs: 180 euro per persoon. Broers en zussen krijgen tien euro korting.\nInschrijven vóór 15 juli op www.dezonnebloem.be. Let op: er zijn maar veertig plaatsen!",
+            "expected": [
+              "Le camp a lieu du lundi 3 au vendredi 7 août (une semaine)",
+              "Il est ouvert aux jeunes de 12 à 15 ans",
+              "Il se passe dans les Ardennes (dans les bois, près d'un lac)",
+              "Chaque matin : du sport (kayak, VTT ou escalade)",
+              "Chaque après-midi : une activité créative (musique, théâtre ou cuisine)",
+              "Mercredi : grande marche de 15 km avec pique-nique",
+              "Jeudi soir : grand feu de camp (histoires et chansons)",
+              "On dort dans de grandes tentes de six personnes",
+              "La nourriture est fraîche et convient aux végétariens",
+              "Le prix est de 180 euros (réduction de 10 euros pour frères et sœurs)",
+              "Il faut s'inscrire avant le 15 juillet (seulement 40 places)"
+            ],
+            "answersToCount": 8,
+            "points": 10
+          },
+          {
+            "id": "e1-cl2",
+            "title": "Mijn huisdier en ik",
+            "context": "Tu aimerais un animal de compagnie. Tu lis les témoignages de trois jeunes sur leur animal.",
+            "instruction": "Lis les témoignages. Note, en français, 6 avantages et 3 inconvénients d'avoir un animal.",
+            "source": "Lotte (13): Mijn hond Max is mijn beste vriend. Ik wandel elke dag met hem, dus ik beweeg veel. Als ik verdrietig ben, komt hij altijd bij me zitten. Maar een hond kost veel geld: het eten en de dierenarts zijn duur.\n\nSam (14): Ik heb twee katten. Ze zijn heel zelfstandig, dus je moet niet altijd thuis zijn. Ze spelen graag en dat is super grappig. Het probleem? Er liggen overal haren in huis, en mijn mama is er allergisch voor.\n\nNoor (12): Mijn konijn Fluffy woont in de tuin. Voor een konijn zorgen is niet moeilijk, dus het is perfect als eerste huisdier. Ik leer zo verantwoordelijkheid. Maar in de vakantie is het lastig: iemand moet elke dag komen om eten te geven.",
+            "expected": [
+              "On bouge beaucoup (promenade quotidienne du chien)",
+              "L'animal console quand on est triste (il vient près de toi)",
+              "C'est un meilleur ami / de la compagnie",
+              "Les chats sont autonomes (pas besoin d'être toujours à la maison)",
+              "Les jeux de l'animal sont drôles",
+              "S'occuper d'un lapin est facile (parfait comme premier animal)",
+              "On apprend la responsabilité",
+              "Inconvénient : ça coûte cher (nourriture, vétérinaire)",
+              "Inconvénient : des poils partout (et allergies possibles)",
+              "Inconvénient : il faut trouver quelqu'un pendant les vacances"
+            ],
+            "answersToCount": 9,
+            "points": 10
+          }
+        ]
+      },
+      {
+        "kind": "ee",
+        "label": "Expression écrite",
+        "minutes": 50,
+        "tasks": [
+          {
+            "id": "e1-ee1",
+            "title": "Een onvergetelijke dag",
+            "context": "Tu participes à un forum en ligne où chacun raconte une journée inoubliable.",
+            "instruction": "Écris un commentaire de minimum 60 mots en néerlandais à propos d'une journée inoubliable :\n• donne des informations sur cette journée (quand, où, avec qui) ;\n• raconte ce que tu as fait ;\n• explique pourquoi cette journée était inoubliable.",
+            "minWords": 60,
+            "checklist": [
+              { "label": "J'ai traité les 3 éléments demandés (infos, récit, pourquoi)", "points": 3 },
+              {
+                "label": "Mon texte est organisé (ordre logique, connecteurs : en, maar, want, dan…)",
+                "points": 2
+              },
+              { "label": "Mon vocabulaire est varié et adapté", "points": 2 },
+              { "label": "Mes phrases sont correctes (conjugaison, ordre des mots)", "points": 2 },
+              { "label": "Majuscules et points respectés", "points": 1 }
+            ],
+            "example": "Vorige zomer ben ik met mijn familie naar een pretpark geweest. We zijn heel vroeg vertrokken, want het park is ver van ons huis. Ik heb alle grote attracties gedaan met mijn zus. De achtbaan was fantastisch! 's Middags hebben we frietjes gegeten en een ijsje. Het was een onvergetelijke dag, want ik heb de hele dag gelachen. Ik wil er zeker nog eens naartoe!",
+            "points": 10
+          },
+          {
+            "id": "e1-ee2",
+            "title": "Sorry, ik kan niet komen!",
+            "context": "Tu es invité à la fête d'anniversaire de ton ami samedi, mais tu ne peux pas y aller. Tu lui envoies un message.",
+            "instruction": "Écris à ton ami un message de minimum 60 mots en néerlandais :\n• présente tes excuses et explique pourquoi tu ne peux pas venir ;\n• propose une autre activité ensemble (quoi, où, quand).",
+            "minWords": 60,
+            "checklist": [
+              {
+                "label": "J'ai traité les 2 éléments demandés (excuses + explication, proposition complète)",
+                "points": 3
+              },
+              {
+                "label": "Mon message est organisé et ressemble à un vrai message (salutation, fin)",
+                "points": 2
+              },
+              { "label": "Mon vocabulaire est varié et adapté", "points": 2 },
+              { "label": "Mes phrases sont correctes (conjugaison, ordre des mots)", "points": 2 },
+              { "label": "Majuscules et points respectés", "points": 1 }
+            ],
+            "example": "Hoi Nathan! Het spijt me heel erg, maar ik kan zaterdag niet naar je verjaardagsfeest komen. We gaan dat weekend naar mijn oma, want ze is tachtig jaar geworden. Ik vind het echt jammer! Zullen we volgende week woensdag samen naar de cinema gaan? Er is een nieuwe film om twee uur. Daarna trakteer ik je op een ijsje voor je verjaardag. Zeg me snel of dat oké is! Groetjes, Lucas",
+            "points": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "blanc-oral-01",
+    "type": "oral",
+    "title": "Examen blanc oral n°1",
+    "sections": [
+      {
+        "kind": "eo",
+        "label": "Expression orale",
+        "minutes": 15,
+        "tasks": [
+          {
+            "id": "o1-eo1",
+            "title": "Tâche 1 — sans interaction : ton séjour chez ton correspondant",
+            "context": "Tu rentres d'un séjour d'une semaine chez ton correspondant néerlandophone. Tu appelles ton meilleur ami en vidéo pour lui raconter.",
+            "instruction": "Après avoir salué ton ami :\n• raconte ce que tu as fait pendant le séjour ;\n• décris la famille de ton correspondant.\nDonne au moins 5 informations différentes. Parle 1 à 2 minutes.",
+            "checklist": [
+              { "label": "J'ai commencé par une salutation", "points": 2 },
+              { "label": "J'ai donné au moins 5 informations différentes", "points": 5 },
+              { "label": "J'ai parlé en phrases complètes (pas des mots isolés)", "points": 4 },
+              { "label": "J'ai parlé sans lire, avec un débit régulier", "points": 2 },
+              { "label": "Ma prononciation est compréhensible", "points": 2 }
+            ],
+            "example": "Hoi Emma! Ik ben terug van mijn week bij Daan in Antwerpen. Het was super! We zijn naar de zoo geweest en we hebben gefietst langs de haven. Zaterdag hebben we pannenkoeken gebakken. De familie van Daan is heel vriendelijk. Zijn mama is lerares en zijn papa werkt in het ziekenhuis. Zijn zus Lien is elf jaar en ze speelt heel goed piano. Ik wil volgend jaar terug!",
+            "points": 15
+          },
+          {
+            "id": "o1-eo2",
+            "title": "Tâche 2 — en interaction : les questions de ton ami",
+            "context": "Ton ami veut en savoir plus sur ton séjour. Réponds à ses trois questions (l'app les pose en néerlandais), puis pose-lui à ton tour au moins 2 questions sur ses vacances.",
+            "instruction": "• Écoute chaque question et réponds en néerlandais par une phrase complète.\n• Ensuite, pose au moins 2 questions à ton ami sur ses vacances.",
+            "questions": [
+              "Wat heb je gegeten bij je correspondent?",
+              "Hoe ben je naar Antwerpen gereisd?",
+              "Wat was het leukste moment van de week?"
+            ],
+            "checklist": [
+              { "label": "J'ai répondu aux 3 questions par des phrases complètes", "points": 6 },
+              { "label": "J'ai posé au moins 2 questions correctes sur ses vacances", "points": 5 },
+              { "label": "Mes phrases sont correctes (conjugaison, ordre des mots)", "points": 2 },
+              { "label": "Ma prononciation est compréhensible", "points": 2 }
+            ],
+            "example": "Ik heb veel frietjes en stoofvlees gegeten, en één keer hebben we pizza besteld. Ik ben met de trein naar Antwerpen gereisd, dat duurde twee uur. Het leukste moment was het bezoek aan de zoo, want ik hou van dieren. En jij? Waar ben je op vakantie geweest? Wat heb je daar gedaan?",
+            "points": 15
+          }
+        ]
+      }
+    ]
+  }
+]

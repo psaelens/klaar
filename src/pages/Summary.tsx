@@ -35,7 +35,9 @@ export default function Summary() {
       <div>
         <h1 className="text-2xl font-extrabold text-teal-700 dark:text-teal-400">Sessie klaar ! 🎉</h1>
         <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-          Session {MODULE_LABELS[last.module ?? 'vocab'].toLowerCase()} terminée
+          Session{' '}
+          {last.module === 'exam' ? 'examen blanc' : MODULE_LABELS[last.module ?? 'vocab'].toLowerCase()}{' '}
+          terminée
         </p>
       </div>
 
@@ -72,9 +74,7 @@ export default function Summary() {
                 <span className="block font-bold text-amber-800 dark:text-amber-200">
                   Nouveau badge : {def.label} !
                 </span>
-                <span className="block text-sm text-amber-700 dark:text-amber-300">
-                  {def.description}
-                </span>
+                <span className="block text-sm text-amber-700 dark:text-amber-300">{def.description}</span>
               </span>
             </div>
           ))}

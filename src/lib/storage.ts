@@ -1,4 +1,4 @@
-import type { EarnedBadge, SrsState, SessionRecord, XpEntry } from '../types'
+import type { EarnedBadge, MockExamResult, SrsState, SessionRecord, XpEntry } from '../types'
 
 /**
  * Persistance localStorage (M0). Les clés sont versionnées pour permettre
@@ -10,6 +10,7 @@ const SESSIONS_KEY = 'klaar.sessions.v1'
 const THEME_KEY = 'klaar.theme.v1'
 const XP_KEY = 'klaar.xp.v1'
 const BADGES_KEY = 'klaar.badges.v1'
+const EXAMS_KEY = 'klaar.exams.v1'
 
 function readJson<T>(key: string, fallback: T): T {
   try {
@@ -78,6 +79,18 @@ export function appendEarnedBadges(badges: EarnedBadge[]): void {
 
 export function replaceEarnedBadges(badges: EarnedBadge[]): void {
   localStorage.setItem(BADGES_KEY, JSON.stringify(badges))
+}
+
+export function loadMockExams(): MockExamResult[] {
+  return readJson<MockExamResult[]>(EXAMS_KEY, [])
+}
+
+export function appendMockExam(result: MockExamResult): void {
+  localStorage.setItem(EXAMS_KEY, JSON.stringify([...loadMockExams(), result]))
+}
+
+export function replaceMockExams(results: MockExamResult[]): void {
+  localStorage.setItem(EXAMS_KEY, JSON.stringify(results))
 }
 
 export type Theme = 'light' | 'dark'

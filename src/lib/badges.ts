@@ -68,10 +68,10 @@ export function deservedBadges({ records, xpTotal, streakDays }: BadgeInput): st
   if (records.some((record) => record.cardsReviewed >= 5 && record.lapsed === 0))
     deserved.push('perfect-session')
 
-  const modulesByDay = new Map<string, Set<Module>>()
+  const modulesByDay = new Map<string, Set<Module | 'exam'>>()
   for (const record of records) {
     const day = localDay(new Date(record.finishedAt))
-    const set = modulesByDay.get(day) ?? new Set<Module>()
+    const set = modulesByDay.get(day) ?? new Set<Module | 'exam'>()
     set.add(record.module ?? 'vocab')
     modulesByDay.set(day, set)
   }

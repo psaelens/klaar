@@ -38,8 +38,8 @@ export interface SrsState {
 /** Résumé d'une session de révision terminée. */
 export interface SessionRecord {
   finishedAt: string
-  /** Modalité travaillée (absent sur les sessions d'avant M2 : vocabulaire). */
-  module?: Module
+  /** Modalité travaillée (absent sur les sessions d'avant M2 : vocabulaire ; `exam` = examen blanc, compte pour le streak mais pas dans les taux par modalité). */
+  module?: Module | 'exam'
   /** Nombre de cartes distinctes vues. */
   cardsReviewed: number
   /** Cartes réussies du premier coup. */
@@ -57,6 +57,18 @@ export interface XpEntry {
   amount: number
   reason: string
   createdAt: string
+}
+
+/** Résultat d'un examen blanc (aligné sur la table `mock_exams`, PRD §7). */
+export interface MockExamResult {
+  examId: string
+  examType: 'ecrit' | 'oral'
+  score: number
+  maxScore: number
+  takenAt: string
+  durationSeconds?: number
+  /** Cotation par section, ex. { ca: 22, cl: 14, ee: 12 }. */
+  details?: Record<string, number>
 }
 
 /** Badge gagné (aligné sur la table `badges`) — ne se reprend jamais. */
