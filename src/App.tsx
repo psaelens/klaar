@@ -4,6 +4,7 @@ import { useTheme } from './hooks/useTheme'
 import { initRepo } from './lib/repo'
 import Home from './pages/Home'
 import Session from './pages/Session'
+import Exam from './pages/Exam'
 import Summary from './pages/Summary'
 import Config from './pages/Config'
 import Import from './pages/Import'
@@ -47,6 +48,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/session" element={<Session />} />
+              <Route path="/examen" element={<Exam />} />
               <Route path="/bilan" element={<Summary />} />
               <Route path="/config" element={<Config />} />
               <Route path="/import" element={<Import />} />

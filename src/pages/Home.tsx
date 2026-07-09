@@ -5,7 +5,8 @@ import { MODULE_LABELS, selectForModule } from '../lib/modules'
 import { computeStreak, STREAK_MIN_MINUTES_PER_DAY } from '../lib/streak'
 import { minutesInLastDays } from '../lib/dashboard'
 import { badgeDef } from '../lib/badges'
-import { loadEarnedBadges, loadSessionRecords, totalXp } from '../lib/storage'
+import { loadEarnedBadges, loadMockExams, loadSessionRecords, totalXp } from '../lib/storage'
+import { exams } from '../lib/exams'
 
 const MODULE_ICONS: Record<Module, string> = {
   vocab: '📚',
@@ -36,15 +37,14 @@ function ModuleCard({ module }: { module: Module }) {
             <>
               {reviews > 0 && (
                 <span>
-                  <span className="font-semibold text-teal-700 dark:text-teal-400">{reviews}</span> à
-                  réviser
+                  <span className="font-semibold text-teal-700 dark:text-teal-400">{reviews}</span> à réviser
                 </span>
               )}
               {reviews > 0 && fresh > 0 && ' + '}
               {fresh > 0 && (
                 <span>
-                  <span className="font-semibold text-teal-700 dark:text-teal-400">{fresh}</span>{' '}
-                  nouveau{fresh > 1 ? 'x' : ''}
+                  <span className="font-semibold text-teal-700 dark:text-teal-400">{fresh}</span> nouveau
+                  {fresh > 1 ? 'x' : ''}
                 </span>
               )}
             </>
@@ -117,6 +117,34 @@ export default function Home() {
       {modules.map((module) => (
         <ModuleCard key={module} module={module} />
       ))}
+
+      <div className="flex flex-col gap-3 rounded-3xl border-2 border-amber-400 bg-amber-50 p-5 text-left dark:border-amber-600 dark:bg-amber-950">
+        <p className="font-bold">🏆 Examens blancs</p>
+        <p className="text-sm text-amber-800 dark:text-amber-200">
+          Comme le vrai CE1D, chronométré. Gros bonus d'XP à la clé !
+        </p>
+        {exams.map((exam) => {
+          const attempts = loadMockExams().filter((r) => r.examId === exam.id)
+          const best = attempts.reduce<number | null>(
+            (acc, r) => (acc === null || r.score > acc ? r.score : acc),
+            null,
+          )
+          return (
+            <Link
+              key={exam.id}
+              to={`/examen?id=${exam.id}`}
+              className="flex items-center justify-between rounded-2xl bg-amber-500 px-5 py-3.5 font-bold text-white shadow-lg shadow-amber-500/25 transition hover:bg-amber-600 active:scale-95"
+            >
+              <span>{exam.title}</span>
+              <span className="text-sm font-semibold">
+                {best !== null
+                  ? `Record : ${best}/${exam.type === 'ecrit' ? 70 : 30}`
+                  : `${exam.type === 'ecrit' ? '≈ 2 h' : '≈ 15 min'}`}
+              </span>
+            </Link>
+          )
+        })}
+      </div>
 
       {badges.length > 0 && (
         <div className="flex flex-wrap justify-center gap-2" aria-label="Badges gagnés">
