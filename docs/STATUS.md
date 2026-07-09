@@ -4,6 +4,10 @@
 
 ## Dernière action terminée :
 
+**Invitation co-parent** (demande Pierre, 9 juillet) : lien d'invitation dans /config (id du foyer = code non devinable), flux `/config?invite=` pour que la maman crée son compte parent et voie le même suivi (dashboard, rapport hebdo, enregistrements). Sans migration, RLS 39/39, vérifié E2E local ET production (papa copie le lien → maman rejoint → dashboard « Suivi de TestProd », nettoyage complet). Également ce jour : accueil visiteur + mode démo, pastille de profil, REX coûts (docs/REX-COUT-IA.md).
+
+## Avant (M6) :
+
 M6 complet, **vérifié E2E en local ET en production** (https://klaar-nine.vercel.app) : examen blanc écrit joué de bout en bout (intro au barème officiel, chrono par partie, CA avec écoutes limitées, auto-correction par corrigé à cocher, résultat 40/70 « réussi » + 200 XP boss battle), résultat dans `mock_exams` (details par section vérifiés côté serveur), dashboard parent avec rapport hebdo et score de l'examen ; nettoyage complet. En local en plus : épreuve orale complète (26/30), plafond < 55 mots en EE, 3 écoutes max épuisées, fin de chrono, record affiché à l'accueil.
 
 Récap M6 : calibrage sur les épreuves CE1D officielles 2022-2026 téléchargées par Pierre dans `docs/CE1D/` (ignoré par git) → `docs/CE1D-FORMAT.md` (structure, barème CA /30 + CL /20 + EE /20 + EO /30, grille EE officielle, seuil 50 %) ; migration `20260709150000` (table `mock_exams` append-only + module `exam`) local + hébergé ; 2 épreuves blanches originales (`src/data/exams.json`) ; lecteur `/examen` chronométré avec auto-correction (PRD §13) ; XP boss battle 100/200 hors plafond ; rapport hebdo parent (`src/lib/report.ts`) : jours/minutes/taux vs semaine précédente + point faible. 83 tests ✅, RLS 33/33 ✅. Aussi ce jour : M4 (rédaction), M5 (oral + Storage), streak 1 h.

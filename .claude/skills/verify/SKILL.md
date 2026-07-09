@@ -23,7 +23,12 @@ installé dans le scratchpad `1d7b2eb0-…/scratchpad/verify/` (pas une dépenda
 avec les scripts existants : `verify-grammar.mjs`, `verify-vocab-regression.mjs`,
 `verify-import.mjs`, `verify-parent-dashboard.mjs`, `verify-writing.mjs`,
 `verify-speaking.mjs`, `verify-speaking-sync.mjs`, `verify-exam.mjs`,
-`verify-exam-sync.mjs`, `verify-prod-m6.mjs` (modèle de vérif prod avec nettoyage).
+`verify-exam-sync.mjs`, `verify-coparent.mjs` (invitation co-parent : lien depuis
+/config — contexte avec `permissions: ['clipboard-read','clipboard-write']` pour le
+bouton copier —, adhésion via /config?invite=, dashboard partagé),
+`verify-prod-m6.mjs` et `verify-prod-coparent.mjs` (modèles de vérif prod avec
+nettoyage — filtrer les comptes de test sur le suffix nu : l'email élève est en
+plus-addressing).
 Contexte mobile `{ width: 390, height: 844 }`, collecter
 `pageerror`. Pour l'oral : lancer chromium avec
 `args: ['--use-fake-ui-for-media-stream', '--use-fake-device-for-media-stream']` et

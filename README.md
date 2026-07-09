@@ -30,7 +30,7 @@ Chaque commit sur `main` doit compiler, passer les tests et être déployable. D
 - Examens blancs chronométrés (🏆 boss battles) calibrés sur le format officiel CE1D (`docs/CE1D-FORMAT.md`) : écrit /70 (CA + CL + EE) et oral /30, auto-correction par corrigé et grilles officielles simplifiées, résultats dans `mock_exams`.
 - Gamification : XP (pondéré difficulté, production ×2,5, plafond anti-farming, bonus boss battle 100/200), streak (≥ 1 h/jour), 11 badges célébrés au bilan.
 - 153 items de départ dans `src/data/*.json` (64 mots, 41 drills, 24 écoutes, 12 rédactions, 12 sujets d'oral), seedés aussi dans Supabase — enrichis ensuite par l'import (écran parent `/import`).
-- Espace parent : dashboard (calendrier 4 semaines, minutes, taux de réussite par modalité, badges, écoute des derniers enregistrements oraux — conservés 14 jours), réservé au rôle parent.
+- Espace parent : dashboard (calendrier 4 semaines, minutes, taux de réussite par modalité, badges, écoute des derniers enregistrements oraux — conservés 14 jours), réservé au rôle parent. Invitation d'un co-parent par lien depuis `/config` (les deux parents partagent le même suivi).
 - Sync Supabase multi-appareils (facultative) : sans variables d'env l'app reste 100 % locale ; connecté, chaque écriture part au localStorage puis au serveur (file de retry hors ligne), pull au démarrage.
 - Mode sombre, mobile-first.
 
@@ -39,7 +39,7 @@ Chaque commit sur `main` doit compiler, passer les tests et être déployable. D
 ```bash
 npx supabase start                    # stack local (Docker) : applique migrations + seed
 npx supabase db reset                 # ré-applique migrations + seed
-node supabase/tests/rls-check.mjs     # 33 vérifications d'isolation RLS (stack local requis)
+node supabase/tests/rls-check.mjs     # 39 vérifications d'isolation RLS (stack local requis)
 npx supabase gen types typescript --local > src/lib/database.types.ts
 ```
 
