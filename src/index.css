@@ -1,4 +1,66 @@
+/* Polices auto-hébergées (Fontsource) — aucune requête externe, compatible PWA. */
+@import '@fontsource-variable/instrument-sans';
+@import '@fontsource-variable/bricolage-grotesque';
+@import '@fontsource/atkinson-hyperlegible/400.css';
+@import '@fontsource/atkinson-hyperlegible/700.css';
+
 @import 'tailwindcss';
 
 /* Mode sombre piloté par la classe .dark sur <html> (voir useTheme) */
 @custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Charte « Oranje Trainer » (docs/IDENTITE.md) :
+ *  - action  (oranje) : SEULE couleur d'action — boutons, liens, progression.
+ *  - reward  (geel)   : récompense uniquement — badges, XP, boss battles.
+ *  - ink     (encre)  : neutres teintés marine, jamais de gris pur.
+ *    ink-50 = papier (clair) · ink-900 = fond de page (sombre) · ink-800 = carte (sombre).
+ */
+@theme {
+  --font-sans: 'Instrument Sans Variable', 'Segoe UI', system-ui, sans-serif;
+  --font-display: 'Bricolage Grotesque Variable', 'Arial Black', system-ui, sans-serif;
+
+  --color-action-50: #fdf0e9;
+  --color-action-100: #fce3d4;
+  --color-action-200: #f8c4a6;
+  --color-action-300: #f39d6f;
+  --color-action-400: #ee7538;
+  --color-action-500: #e65f1e;
+  --color-action-600: #e04e12;
+  --color-action-700: #bc3f0c;
+  --color-action-800: #96330c;
+  --color-action-900: #7a2b0d;
+  --color-action-950: #421505;
+
+  --color-reward-50: #fff8e1;
+  --color-reward-100: #ffefc0;
+  --color-reward-200: #ffe08a;
+  --color-reward-300: #ffd054;
+  --color-reward-400: #ffc72c;
+  --color-reward-500: #f0b400;
+  --color-reward-600: #d99e00;
+  --color-reward-700: #b37f00;
+  --color-reward-800: #8f6500;
+  --color-reward-900: #6b4d00;
+  --color-reward-950: #3d2b00;
+
+  --color-ink-50: #f2f4f0;
+  --color-ink-100: #e9edf4;
+  --color-ink-200: #d9dee0;
+  --color-ink-300: #aeb9cb;
+  --color-ink-400: #8391a7;
+  --color-ink-500: #57677e;
+  --color-ink-600: #44546c;
+  --color-ink-700: #33415a;
+  --color-ink-800: #182338;
+  --color-ink-900: #0e1626;
+  --color-ink-950: #0a101c;
+
+  --color-zee-600: #1d4ed8;
+  --color-zee-300: #7ba3ff;
+}
+
+/* Option lisibilité (dyslexie) : bascule la police de texte sur tout l'arbre. */
+html.hyperlegible {
+  --font-sans: 'Atkinson Hyperlegible', 'Segoe UI', system-ui, sans-serif;
+}

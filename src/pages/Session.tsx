@@ -82,7 +82,7 @@ export default function Session() {
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-4 text-center">
         <p>Rien à réviser pour le moment.</p>
-        <Link to="/" className="font-semibold text-teal-700 underline dark:text-teal-400">
+        <Link to="/" className="font-semibold text-action-700 underline dark:text-action-400">
           Retour à l'accueil
         </Link>
       </div>
@@ -178,12 +178,12 @@ export default function Session() {
 
   const optionClass = (option: string): string => {
     if (picked === null)
-      return 'border-slate-200 bg-white hover:border-teal-400 dark:border-slate-600 dark:bg-slate-800'
+      return 'border-ink-200 bg-white hover:border-action-400 dark:border-ink-600 dark:bg-ink-800'
     if (option === current.back)
-      return 'border-teal-600 bg-teal-50 font-bold text-teal-800 dark:bg-teal-900 dark:text-teal-100'
+      return 'border-action-600 bg-action-50 font-bold text-action-800 dark:bg-action-900 dark:text-action-100'
     if (option === picked)
-      return 'border-amber-500 bg-amber-50 text-amber-800 dark:bg-amber-900 dark:text-amber-100'
-    return 'border-slate-200 bg-white opacity-50 dark:border-slate-600 dark:bg-slate-800'
+      return 'border-reward-500 bg-reward-50 text-reward-800 dark:bg-reward-900 dark:text-reward-100'
+    return 'border-ink-200 bg-white opacity-50 dark:border-ink-600 dark:bg-ink-800'
   }
 
   // Auto-évaluation par les 3 boutons SM-2 (vocabulaire et rédaction).
@@ -192,21 +192,21 @@ export default function Session() {
       <button
         type="button"
         onClick={() => handleGrade('again')}
-        className="rounded-2xl bg-slate-200 py-4 font-semibold text-slate-700 transition hover:bg-slate-300 active:scale-95 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
+        className="rounded-2xl bg-ink-200 py-4 font-semibold text-ink-700 transition hover:bg-ink-300 active:scale-95 dark:bg-ink-700 dark:text-ink-200 dark:hover:bg-ink-600"
       >
         À revoir
       </button>
       <button
         type="button"
         onClick={() => handleGrade('hard')}
-        className="rounded-2xl bg-amber-100 py-4 font-semibold text-amber-800 transition hover:bg-amber-200 active:scale-95 dark:bg-amber-900 dark:text-amber-100 dark:hover:bg-amber-800"
+        className="rounded-2xl bg-reward-100 py-4 font-semibold text-reward-800 transition hover:bg-reward-200 active:scale-95 dark:bg-reward-900 dark:text-reward-100 dark:hover:bg-reward-800"
       >
         Difficile
       </button>
       <button
         type="button"
         onClick={() => handleGrade('good')}
-        className="rounded-2xl bg-teal-600 py-4 font-semibold text-white transition hover:bg-teal-700 active:scale-95"
+        className="rounded-2xl bg-action-600 py-4 font-semibold text-white transition hover:bg-action-700 active:scale-95"
       >
         Réussi
       </button>
@@ -225,7 +225,7 @@ export default function Session() {
 
   // Auto-évaluation guidée, partagée entre rédaction et oral (PRD §13 : pas de juge automatique).
   const checklistPanel = (
-    <div className="flex flex-col gap-2 rounded-2xl border-2 border-teal-600 bg-white p-4 text-left dark:bg-slate-800">
+    <div className="flex flex-col gap-2 rounded-2xl border-2 border-action-600 bg-white p-4 text-left dark:bg-ink-800">
       <p className="font-bold">{isSpeaking ? 'Vérifie ta présentation :' : 'Vérifie ton texte :'}</p>
       {checklist.map((point, index) => (
         <label key={point} className="flex items-start gap-3">
@@ -233,7 +233,7 @@ export default function Session() {
             type="checkbox"
             checked={checkedPoints.has(index)}
             onChange={() => togglePoint(index)}
-            className="mt-0.5 size-5 shrink-0 accent-teal-600"
+            className="mt-0.5 size-5 shrink-0 accent-action-600"
           />
           <span>{point}</span>
         </label>
@@ -242,18 +242,18 @@ export default function Session() {
   )
 
   const examplePanel = (
-    <details className="rounded-2xl border border-slate-200 bg-white p-4 text-left dark:border-slate-700 dark:bg-slate-800">
-      <summary className="cursor-pointer font-semibold text-teal-700 dark:text-teal-400">
+    <details className="rounded-2xl border border-ink-200 bg-white p-4 text-left dark:border-ink-700 dark:bg-ink-800">
+      <summary className="cursor-pointer font-semibold text-action-700 dark:text-action-400">
         Voir un exemple de réponse
       </summary>
-      <p lang="nl" className="mt-2 text-slate-700 dark:text-slate-200">
+      <p lang="nl" className="mt-2 text-ink-700 dark:text-ink-200">
         {current.back}
       </p>
       {isSpeaking && canSpeak && (
         <button
           type="button"
           onClick={() => speakDutch(current.back)}
-          className="mt-3 rounded-full bg-teal-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-teal-700 active:scale-95"
+          className="mt-3 rounded-full bg-action-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-action-700 active:scale-95"
         >
           🔊 Écouter l'exemple
         </button>
@@ -265,43 +265,39 @@ export default function Session() {
     <div className="flex flex-1 flex-col gap-6">
       <div className="flex items-center gap-3">
         <ProgressBar done={doneIds.size} total={totalUnique} />
-        <span className="text-sm tabular-nums text-slate-500 dark:text-slate-400">
+        <span className="text-sm tabular-nums text-ink-500 dark:text-ink-400">
           {doneIds.size}/{totalUnique}
         </span>
       </div>
 
-      <div className="flex flex-1 flex-col items-center justify-center gap-2 rounded-3xl border border-slate-200 bg-white p-8 text-center shadow-sm dark:border-slate-700 dark:bg-slate-800">
-        <p className="text-xs font-semibold tracking-wide text-slate-400 uppercase dark:text-slate-500">
+      <div className="flex flex-1 flex-col items-center justify-center gap-2 rounded-3xl border border-ink-200 bg-white p-8 text-center shadow-sm dark:border-ink-700 dark:bg-ink-800">
+        <p className="text-xs font-semibold tracking-wide text-ink-400 uppercase dark:text-ink-500">
           {current.theme}
           {session.newIds.has(current.id) && (
-            <span className="ml-2 rounded-full bg-amber-100 px-2 py-0.5 text-amber-800 dark:bg-amber-900 dark:text-amber-200">
+            <span className="ml-2 rounded-full bg-reward-100 px-2 py-0.5 text-reward-800 dark:bg-reward-900 dark:text-reward-200">
               Nouveau
             </span>
           )}
         </p>
         {isWriting || isSpeaking ? (
-          <p className="w-full text-left text-lg font-semibold whitespace-pre-line">
-            {current.front}
-          </p>
+          <p className="w-full text-left text-lg font-semibold whitespace-pre-line">{current.front}</p>
         ) : isListening ? (
           <>
             {canSpeak && (
               <button
                 type="button"
                 onClick={() => speakDutch(current.front)}
-                className="rounded-full bg-teal-600 px-8 py-4 text-2xl text-white shadow-lg shadow-teal-600/25 transition hover:bg-teal-700 active:scale-95"
+                className="rounded-full bg-action-600 px-8 py-4 text-2xl text-white shadow-lg shadow-action-600/25 transition hover:bg-action-700 active:scale-95"
               >
                 🔊 Écouter
               </button>
             )}
             {(!canSpeak || picked !== null) && (
-              <p lang="nl" className="mt-2 text-lg font-semibold text-slate-500 dark:text-slate-400">
+              <p lang="nl" className="mt-2 text-lg font-semibold text-ink-500 dark:text-ink-400">
                 « {current.front} »
               </p>
             )}
-            {current.question != null && (
-              <p className="mt-3 text-xl font-bold">{current.question}</p>
-            )}
+            {current.question != null && <p className="mt-3 text-xl font-bold">{current.question}</p>}
           </>
         ) : (
           <>
@@ -309,7 +305,7 @@ export default function Session() {
               {current.front}
             </p>
             {!isDrill && revealed && (
-              <p className="mt-4 text-xl text-teal-700 dark:text-teal-400">{current.back}</p>
+              <p className="mt-4 text-xl text-action-700 dark:text-action-400">{current.back}</p>
             )}
           </>
         )}
@@ -319,8 +315,8 @@ export default function Session() {
         revealed ? (
           <div className="flex flex-col gap-4">
             {recorder.url !== null && (
-              <div className="rounded-2xl border border-slate-200 bg-white p-4 text-left dark:border-slate-700 dark:bg-slate-800">
-                <p className="text-xs font-semibold tracking-wide text-slate-400 uppercase dark:text-slate-500">
+              <div className="rounded-2xl border border-ink-200 bg-white p-4 text-left dark:border-ink-700 dark:bg-ink-800">
+                <p className="text-xs font-semibold tracking-wide text-ink-400 uppercase dark:text-ink-500">
                   Ta prise ({formatSeconds(recorder.seconds)})
                 </p>
                 <audio controls src={recorder.url} className="mt-2 w-full" />
@@ -328,7 +324,7 @@ export default function Session() {
             )}
             {checklistPanel}
             {examplePanel}
-            <p className="text-center text-sm text-slate-500 dark:text-slate-400">{selfCheckHint}</p>
+            <p className="text-center text-sm text-ink-500 dark:text-ink-400">{selfCheckHint}</p>
             {gradeButtons}
           </div>
         ) : (
@@ -337,20 +333,20 @@ export default function Session() {
               <button
                 type="button"
                 onClick={() => speakDutch(current.back)}
-                className="rounded-2xl border-2 border-teal-600 bg-white py-3 font-semibold text-teal-700 transition hover:bg-teal-50 active:scale-95 dark:bg-slate-800 dark:text-teal-400 dark:hover:bg-slate-700"
+                className="rounded-2xl border-2 border-action-600 bg-white py-3 font-semibold text-action-700 transition hover:bg-action-50 active:scale-95 dark:bg-ink-800 dark:text-action-400 dark:hover:bg-ink-700"
               >
                 🔊 Écouter un exemple d'abord
               </button>
             )}
             {recorder.status === 'unavailable' ? (
               <>
-                <p className="text-center text-sm text-slate-500 dark:text-slate-400">
+                <p className="text-center text-sm text-ink-500 dark:text-ink-400">
                   Pas de micro disponible — entraîne-toi à voix haute, puis évalue-toi.
                 </p>
                 <button
                   type="button"
                   onClick={() => setRevealed(true)}
-                  className="rounded-2xl bg-teal-600 py-5 text-lg font-bold text-white shadow-lg shadow-teal-600/25 transition hover:bg-teal-700 active:scale-95"
+                  className="rounded-2xl bg-action-600 py-5 text-lg font-bold text-white shadow-lg shadow-action-600/25 transition hover:bg-action-700 active:scale-95"
                 >
                   Je me suis entraîné →
                 </button>
@@ -363,7 +359,7 @@ export default function Session() {
                 <button
                   type="button"
                   onClick={recorder.stop}
-                  className="rounded-2xl bg-teal-600 py-5 text-lg font-bold text-white shadow-lg shadow-teal-600/25 transition hover:bg-teal-700 active:scale-95"
+                  className="rounded-2xl bg-action-600 py-5 text-lg font-bold text-white shadow-lg shadow-action-600/25 transition hover:bg-action-700 active:scale-95"
                 >
                   ⏹️ Terminer la prise
                 </button>
@@ -374,8 +370,8 @@ export default function Session() {
                 <p
                   className={`text-center text-sm font-semibold tabular-nums ${
                     recorder.seconds >= SPEAKING_MIN_SECONDS
-                      ? 'text-teal-700 dark:text-teal-400'
-                      : 'text-slate-400 dark:text-slate-500'
+                      ? 'text-action-700 dark:text-action-400'
+                      : 'text-ink-400 dark:text-ink-500'
                   }`}
                 >
                   {formatSeconds(recorder.seconds)}
@@ -385,7 +381,7 @@ export default function Session() {
                   <button
                     type="button"
                     onClick={recorder.reset}
-                    className="rounded-2xl bg-slate-200 py-4 font-semibold text-slate-700 transition hover:bg-slate-300 active:scale-95 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
+                    className="rounded-2xl bg-ink-200 py-4 font-semibold text-ink-700 transition hover:bg-ink-300 active:scale-95 dark:bg-ink-700 dark:text-ink-200 dark:hover:bg-ink-600"
                   >
                     🔄 Refaire
                   </button>
@@ -393,7 +389,7 @@ export default function Session() {
                     type="button"
                     disabled={recorder.seconds < SPEAKING_MIN_SECONDS}
                     onClick={() => setRevealed(true)}
-                    className="rounded-2xl bg-teal-600 py-4 font-bold text-white shadow-lg shadow-teal-600/25 transition hover:bg-teal-700 active:scale-95 disabled:opacity-40 disabled:hover:bg-teal-600 disabled:active:scale-100"
+                    className="rounded-2xl bg-action-600 py-4 font-bold text-white shadow-lg shadow-action-600/25 transition hover:bg-action-700 active:scale-95 disabled:opacity-40 disabled:hover:bg-action-600 disabled:active:scale-100"
                   >
                     J'ai terminé →
                   </button>
@@ -403,7 +399,7 @@ export default function Session() {
               <button
                 type="button"
                 onClick={recorder.start}
-                className="rounded-2xl bg-teal-600 py-5 text-lg font-bold text-white shadow-lg shadow-teal-600/25 transition hover:bg-teal-700 active:scale-95"
+                className="rounded-2xl bg-action-600 py-5 text-lg font-bold text-white shadow-lg shadow-action-600/25 transition hover:bg-action-700 active:scale-95"
               >
                 🎙️ M'enregistrer (1 à 2 min)
               </button>
@@ -413,17 +409,17 @@ export default function Session() {
       ) : isWriting ? (
         revealed ? (
           <div className="flex flex-col gap-4">
-            <div className="rounded-2xl border border-slate-200 bg-white p-4 text-left dark:border-slate-700 dark:bg-slate-800">
-              <p className="text-xs font-semibold tracking-wide text-slate-400 uppercase dark:text-slate-500">
+            <div className="rounded-2xl border border-ink-200 bg-white p-4 text-left dark:border-ink-700 dark:bg-ink-800">
+              <p className="text-xs font-semibold tracking-wide text-ink-400 uppercase dark:text-ink-500">
                 Ton texte
               </p>
-              <p lang="nl" className="mt-1 whitespace-pre-line text-slate-700 dark:text-slate-200">
+              <p lang="nl" className="mt-1 whitespace-pre-line text-ink-700 dark:text-ink-200">
                 {draft}
               </p>
             </div>
             {checklistPanel}
             {examplePanel}
-            <p className="text-center text-sm text-slate-500 dark:text-slate-400">{selfCheckHint}</p>
+            <p className="text-center text-sm text-ink-500 dark:text-ink-400">{selfCheckHint}</p>
             {gradeButtons}
           </div>
         ) : (
@@ -434,13 +430,13 @@ export default function Session() {
               onChange={(event) => setDraft(event.target.value)}
               rows={7}
               placeholder="Schrijf hier je tekst in het Nederlands…"
-              className="rounded-2xl border-2 border-slate-200 bg-white p-4 text-lg dark:border-slate-600 dark:bg-slate-800"
+              className="rounded-2xl border-2 border-ink-200 bg-white p-4 text-lg dark:border-ink-600 dark:bg-ink-800"
             />
             <p
               className={`text-center text-sm font-semibold tabular-nums ${
                 draftWords >= WRITING_MIN_WORDS
-                  ? 'text-teal-700 dark:text-teal-400'
-                  : 'text-slate-400 dark:text-slate-500'
+                  ? 'text-action-700 dark:text-action-400'
+                  : 'text-ink-400 dark:text-ink-500'
               }`}
             >
               {draftWords} mot{draftWords > 1 ? 's' : ''} — objectif ≈ {WRITING_TARGET_WORDS}
@@ -449,7 +445,7 @@ export default function Session() {
               type="button"
               disabled={draftWords < WRITING_MIN_WORDS}
               onClick={() => setRevealed(true)}
-              className="rounded-2xl bg-teal-600 py-5 text-lg font-bold text-white shadow-lg shadow-teal-600/25 transition hover:bg-teal-700 active:scale-95 disabled:opacity-40 disabled:hover:bg-teal-600 disabled:active:scale-100"
+              className="rounded-2xl bg-action-600 py-5 text-lg font-bold text-white shadow-lg shadow-action-600/25 transition hover:bg-action-700 active:scale-95 disabled:opacity-40 disabled:hover:bg-action-600 disabled:active:scale-100"
             >
               J'ai terminé →
             </button>
@@ -473,7 +469,7 @@ export default function Session() {
             <button
               type="button"
               onClick={() => handleGrade('again')}
-              className="rounded-2xl bg-teal-600 py-4 font-bold text-white transition hover:bg-teal-700 active:scale-95"
+              className="rounded-2xl bg-action-600 py-4 font-bold text-white transition hover:bg-action-700 active:scale-95"
             >
               Compris, on la retravaillera →
             </button>
@@ -485,7 +481,7 @@ export default function Session() {
         <button
           type="button"
           onClick={() => setRevealed(true)}
-          className="rounded-2xl bg-teal-600 py-5 text-lg font-bold text-white shadow-lg shadow-teal-600/25 transition hover:bg-teal-700 active:scale-95"
+          className="rounded-2xl bg-action-600 py-5 text-lg font-bold text-white shadow-lg shadow-action-600/25 transition hover:bg-action-700 active:scale-95"
         >
           Voir la réponse
         </button>
@@ -493,7 +489,7 @@ export default function Session() {
 
       <Link
         to="/"
-        className="text-center text-sm text-slate-400 underline hover:text-slate-600 dark:hover:text-slate-300"
+        className="text-center text-sm text-ink-400 underline hover:text-ink-600 dark:hover:text-ink-300"
       >
         Quitter la session
       </Link>

@@ -12,10 +12,10 @@ export default function ProgressBar({ done, total }: ProgressBarProps) {
       aria-valuemin={0}
       aria-valuemax={total}
       aria-label="Progression de la session"
-      className="h-3 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700"
+      className="h-3 w-full overflow-hidden rounded-full bg-ink-200 dark:bg-ink-700"
     >
       <div
-        className="h-full rounded-full bg-teal-600 transition-all duration-300 dark:bg-teal-500"
+        className="h-full rounded-full bg-action-600 transition-all duration-300 dark:bg-action-500"
         style={{ width: `${percent}%` }}
       />
     </div>

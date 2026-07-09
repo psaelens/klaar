@@ -75,12 +75,17 @@ describe('shuffle', () => {
       calls += 1
       return (calls % 10) / 10
     }
-    expect(shuffle(['a', 'b', 'c'], rng)).toEqual(shuffle(['a', 'b', 'c'], (() => {
-      let c = 0
-      return () => {
-        c += 1
-        return (c % 10) / 10
-      }
-    })()))
+    expect(shuffle(['a', 'b', 'c'], rng)).toEqual(
+      shuffle(
+        ['a', 'b', 'c'],
+        (() => {
+          let c = 0
+          return () => {
+            c += 1
+            return (c % 10) / 10
+          }
+        })(),
+      ),
+    )
   })
 })

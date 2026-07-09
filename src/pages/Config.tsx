@@ -13,9 +13,9 @@ import { saveProfile } from '../lib/storage'
  */
 
 const inputClass =
-  'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100'
+  'w-full rounded-xl border border-ink-300 bg-white px-4 py-3 text-ink-900 dark:border-ink-600 dark:bg-ink-800 dark:text-ink-100'
 const buttonClass =
-  'w-full rounded-2xl bg-teal-600 px-6 py-3 font-bold text-white transition hover:bg-teal-700 active:scale-95 disabled:opacity-50'
+  'w-full rounded-2xl bg-action-600 px-6 py-3 font-bold text-white transition hover:bg-action-700 active:scale-95 disabled:opacity-50'
 
 /** Email élève suggéré par plus-addressing depuis l'email parent (x@y → x+klaar@y). */
 function suggestChildEmail(parentEmail: string): string {
@@ -87,11 +87,11 @@ export default function Config() {
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-4 text-center">
         <h1 className="text-xl font-bold">Synchronisation</h1>
-        <p className="text-slate-600 dark:text-slate-400">
+        <p className="text-ink-600 dark:text-ink-400">
           Ce déploiement n'a pas de synchronisation configurée : tes révisions sont enregistrées sur cet
           appareil uniquement (mode local).
         </p>
-        <Link to="/" className="font-semibold text-teal-700 underline dark:text-teal-400">
+        <Link to="/" className="font-semibold text-action-700 underline dark:text-action-400">
           Retour à l'accueil
         </Link>
       </div>
@@ -241,13 +241,13 @@ export default function Config() {
       <h1 className="text-xl font-bold">Synchronisation</h1>
 
       {userEmail !== null ? (
-        <div className="flex flex-col gap-4 rounded-3xl border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-800">
+        <div className="flex flex-col gap-4 rounded-3xl border border-ink-200 bg-white p-6 dark:border-ink-700 dark:bg-ink-800">
           <p className="flex flex-wrap items-center gap-2">
             <span>
               Connecté : <span className="font-semibold">{profile?.display_name ?? userEmail}</span>
             </span>
             {profile !== null && (
-              <span className="rounded-full bg-teal-100 px-3 py-0.5 text-sm text-teal-800 dark:bg-teal-900 dark:text-teal-200">
+              <span className="rounded-full bg-action-100 px-3 py-0.5 text-sm text-action-800 dark:bg-action-900 dark:text-action-200">
                 {profile.role === 'parent' ? 'Parent' : 'Élève'}
               </span>
             )}
@@ -260,7 +260,7 @@ export default function Config() {
                 }}
                 aria-label="Modifier mon nom"
                 title="Modifier mon nom"
-                className="rounded-full p-1 text-sm hover:bg-slate-200 dark:hover:bg-slate-700"
+                className="rounded-full p-1 text-sm hover:bg-ink-200 dark:hover:bg-ink-700"
               >
                 ✏️
               </button>
@@ -287,33 +287,33 @@ export default function Config() {
               <button
                 type="submit"
                 disabled={busy || nameDraft.trim() === ''}
-                className="rounded-xl bg-teal-600 px-4 font-bold text-white transition hover:bg-teal-700 disabled:opacity-50"
+                className="rounded-xl bg-action-600 px-4 font-bold text-white transition hover:bg-action-700 disabled:opacity-50"
               >
                 OK
               </button>
               <button
                 type="button"
                 onClick={() => setEditingName(false)}
-                className="rounded-xl bg-slate-200 px-3 text-slate-700 dark:bg-slate-700 dark:text-slate-200"
+                className="rounded-xl bg-ink-200 px-3 text-ink-700 dark:bg-ink-700 dark:text-ink-200"
               >
                 ✕
               </button>
             </form>
           )}
-          <p className="text-sm text-slate-500 dark:text-slate-400">
+          <p className="text-sm text-ink-500 dark:text-ink-400">
             Les révisions se synchronisent automatiquement entre les appareils.
           </p>
           {profile?.role === 'parent' && (
             <>
               <Link
                 to="/parent"
-                className="w-full rounded-2xl border-2 border-teal-600 px-6 py-3 text-center font-bold text-teal-700 transition hover:bg-teal-50 active:scale-95 dark:text-teal-400 dark:hover:bg-slate-800"
+                className="w-full rounded-2xl border-2 border-action-600 px-6 py-3 text-center font-bold text-action-700 transition hover:bg-action-50 active:scale-95 dark:text-action-400 dark:hover:bg-ink-800"
               >
                 Suivi de l'élève
               </Link>
               <Link
                 to="/import"
-                className="w-full rounded-2xl border-2 border-teal-600 px-6 py-3 text-center font-bold text-teal-700 transition hover:bg-teal-50 active:scale-95 dark:text-teal-400 dark:hover:bg-slate-800"
+                className="w-full rounded-2xl border-2 border-action-600 px-6 py-3 text-center font-bold text-action-700 transition hover:bg-action-50 active:scale-95 dark:text-action-400 dark:hover:bg-ink-800"
               >
                 Importer du vocabulaire
               </Link>
@@ -326,9 +326,9 @@ export default function Config() {
       ) : null}
 
       {userEmail !== null && profile?.role === 'parent' && inviteLink !== null && (
-        <div className="flex flex-col gap-3 rounded-3xl border border-slate-200 bg-white p-6 dark:border-slate-700 dark:bg-slate-800">
+        <div className="flex flex-col gap-3 rounded-3xl border border-ink-200 bg-white p-6 dark:border-ink-700 dark:bg-ink-800">
           <h2 className="font-bold">👥 Inviter un co-parent</h2>
-          <p className="text-sm text-slate-500 dark:text-slate-400">
+          <p className="text-sm text-ink-500 dark:text-ink-400">
             Envoie ce lien à l'autre parent : il crée son compte et voit le même suivi de l'élève (dashboard,
             rapport hebdo, enregistrements). Ne partage ce lien qu'avec lui.
           </p>
@@ -347,7 +347,7 @@ export default function Config() {
       )}
 
       {userEmail !== null && invite !== null && (
-        <p className="rounded-xl bg-amber-100 p-3 text-sm text-amber-900 dark:bg-amber-900 dark:text-amber-100">
+        <p className="rounded-xl bg-reward-100 p-3 text-sm text-reward-900 dark:bg-reward-900 dark:text-reward-100">
           Ce lien d'invitation doit être ouvert par le co-parent sur son propre appareil (ou déconnecte-toi
           d'abord pour créer son compte ici).
         </p>
@@ -355,7 +355,7 @@ export default function Config() {
 
       {userEmail !== null ? null : mode === 'status' ? (
         <div className="flex flex-col gap-3">
-          <p className="text-slate-600 dark:text-slate-400">
+          <p className="text-ink-600 dark:text-ink-400">
             Pas encore connecté : les révisions restent sur cet appareil. Connecte-toi pour les retrouver
             partout.
           </p>
@@ -365,7 +365,7 @@ export default function Config() {
           <button
             type="button"
             onClick={() => setMode('setup')}
-            className="w-full rounded-2xl border-2 border-teal-600 px-6 py-3 font-bold text-teal-700 transition hover:bg-teal-50 active:scale-95 dark:text-teal-400 dark:hover:bg-slate-800"
+            className="w-full rounded-2xl border-2 border-action-600 px-6 py-3 font-bold text-action-700 transition hover:bg-action-50 active:scale-95 dark:text-action-400 dark:hover:bg-ink-800"
           >
             Première fois : créer le foyer
           </button>
@@ -408,7 +408,7 @@ export default function Config() {
             void handleJoin()
           }}
         >
-          <p className="text-slate-600 dark:text-slate-400">
+          <p className="text-ink-600 dark:text-ink-400">
             👥 Tu as été invité·e à rejoindre le foyer pour suivre les progrès de l'élève. Crée ton compte
             parent :
           </p>
@@ -442,7 +442,7 @@ export default function Config() {
           <button type="submit" disabled={busy} className={buttonClass}>
             {busy ? 'Création…' : 'Rejoindre le foyer'}
           </button>
-          <p className="text-xs text-slate-400 dark:text-slate-500">
+          <p className="text-xs text-ink-400 dark:text-ink-500">
             Déjà un compte ?{' '}
             <button type="button" onClick={() => setMode('login')} className="underline">
               Se connecter
@@ -457,7 +457,7 @@ export default function Config() {
             void handleSetup()
           }}
         >
-          <p className="text-sm text-slate-500 dark:text-slate-400">
+          <p className="text-sm text-ink-500 dark:text-ink-400">
             Crée en une fois le compte parent et le compte de l'élève. Cet appareil restera connecté en tant
             qu'élève.
           </p>
@@ -511,14 +511,14 @@ export default function Config() {
           <button type="submit" disabled={busy} className={buttonClass}>
             {busy ? 'Création…' : 'Créer le foyer'}
           </button>
-          <p className="text-xs text-slate-400 dark:text-slate-500">
+          <p className="text-xs text-ink-400 dark:text-ink-500">
             Note l'email et le code de l'élève : ils servent à le connecter sur ses autres appareils.
           </p>
         </form>
       )}
 
       {message !== null && (
-        <p className="rounded-xl bg-amber-100 p-3 text-sm text-amber-900 dark:bg-amber-900 dark:text-amber-100">
+        <p className="rounded-xl bg-reward-100 p-3 text-sm text-reward-900 dark:bg-reward-900 dark:text-reward-100">
           {message}
         </p>
       )}
@@ -530,13 +530,13 @@ export default function Config() {
             setMode('status')
             setMessage(null)
           }}
-          className="text-sm text-slate-400 underline"
+          className="text-sm text-ink-400 underline"
         >
           Retour
         </button>
       )}
 
-      <Link to="/" className="text-center text-sm text-slate-400 underline">
+      <Link to="/" className="text-center text-sm text-ink-400 underline">
         Retour à l'accueil
       </Link>
     </div>

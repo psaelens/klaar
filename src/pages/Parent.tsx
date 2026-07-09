@@ -47,10 +47,10 @@ function dayLabel(day: string): string {
 
 function cellClass(cell: DayActivity): string {
   // Jour travaillé = au moins une session, même très courte (les minutes arrondissent à 0).
-  if (cell.sessions === 0) return 'bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-600'
-  if (cell.minutes < 10) return 'bg-teal-200 text-teal-900 dark:bg-teal-900 dark:text-teal-100'
-  if (cell.minutes < 20) return 'bg-teal-400 text-teal-950 dark:bg-teal-700 dark:text-white'
-  return 'bg-teal-600 text-white dark:bg-teal-500'
+  if (cell.sessions === 0) return 'bg-ink-100 text-ink-400 dark:bg-ink-800 dark:text-ink-600'
+  if (cell.minutes < 10) return 'bg-action-200 text-action-900 dark:bg-action-900 dark:text-action-100'
+  if (cell.minutes < 20) return 'bg-action-400 text-action-950 dark:bg-action-700 dark:text-white'
+  return 'bg-action-600 text-white dark:bg-action-500'
 }
 
 function Calendar({ days }: { days: DayActivity[] }) {
@@ -60,7 +60,7 @@ function Calendar({ days }: { days: DayActivity[] }) {
 
   return (
     <div className="flex flex-col gap-1.5">
-      <div className="grid grid-cols-7 gap-1.5 text-center text-xs text-slate-400 dark:text-slate-500">
+      <div className="grid grid-cols-7 gap-1.5 text-center text-xs text-ink-400 dark:text-ink-500">
         {firstWeek.map((cell) => {
           const [y, m, d] = cell.day.split('-').map(Number) as [number, number, number]
           return (
@@ -83,7 +83,7 @@ function Calendar({ days }: { days: DayActivity[] }) {
           ))}
         </div>
       ))}
-      <p className="mt-1 text-right text-xs text-slate-400 dark:text-slate-500">
+      <p className="mt-1 text-right text-xs text-ink-400 dark:text-ink-500">
         Intensité = minutes travaillées par jour (survoler une case pour le détail)
       </p>
     </div>
@@ -92,9 +92,9 @@ function Calendar({ days }: { days: DayActivity[] }) {
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-800">
-      <dt className="text-xs text-slate-500 dark:text-slate-400">{label}</dt>
-      <dd className="mt-1 text-2xl font-bold">{value}</dd>
+    <div className="rounded-2xl border border-ink-200 bg-white p-4 dark:border-ink-700 dark:bg-ink-800">
+      <dt className="text-xs text-ink-500 dark:text-ink-400">{label}</dt>
+      <dd className="mt-1 font-display text-2xl font-extrabold tabular-nums">{value}</dd>
     </div>
   )
 }
@@ -197,19 +197,19 @@ export default function Parent() {
   }, [childId])
 
   if (gate === 'loading') {
-    return <p className="animate-pulse text-center text-slate-400">Chargement…</p>
+    return <p className="animate-pulse text-center text-ink-400">Chargement…</p>
   }
 
   if (gate === 'not-configured' || gate === 'not-parent') {
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-4 text-center">
         <h1 className="text-xl font-bold">Suivi parent</h1>
-        <p className="text-slate-600 dark:text-slate-400">
+        <p className="text-ink-600 dark:text-ink-400">
           {gate === 'not-configured'
             ? "La synchronisation n'est pas configurée sur ce déploiement."
             : 'Le suivi est réservé au compte parent (connecte-toi via ⚙️).'}
         </p>
-        <Link to="/" className="font-semibold text-teal-700 underline dark:text-teal-400">
+        <Link to="/" className="font-semibold text-action-700 underline dark:text-action-400">
           Retour à l'accueil
         </Link>
       </div>
@@ -228,12 +228,12 @@ export default function Parent() {
   return (
     <div className="flex flex-1 flex-col gap-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold">Suivi de {child?.display_name ?? 'l’élève'}</h1>
+        <h1 className="font-display text-xl font-extrabold">Suivi de {child?.display_name ?? 'l’élève'}</h1>
         {children.length > 1 && (
           <select
             value={childId ?? ''}
             onChange={(e) => setChildId(e.target.value)}
-            className="rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-800"
+            className="rounded-xl border border-ink-300 bg-white px-3 py-2 text-sm dark:border-ink-600 dark:bg-ink-800"
           >
             {children.map((c) => (
               <option key={c.id} value={c.id}>
@@ -245,7 +245,7 @@ export default function Parent() {
       </div>
 
       {records.length === 0 ? (
-        <p className="rounded-2xl border border-slate-200 bg-white p-6 text-center text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400">
+        <p className="rounded-2xl border border-ink-200 bg-white p-6 text-center text-ink-500 dark:border-ink-700 dark:bg-ink-800 dark:text-ink-400">
           Pas encore de session synchronisée. Dès que {child?.display_name ?? 'l’élève'} termine une session
           (connecté), elle apparaîtra ici.
         </p>
@@ -262,7 +262,7 @@ export default function Parent() {
             {(Object.keys(MODULE_LABELS) as Module[]).map((module) => (
               <span
                 key={module}
-                className="rounded-full bg-slate-200 px-3 py-1 font-semibold text-slate-700 dark:bg-slate-800 dark:text-slate-300"
+                className="rounded-full bg-ink-200 px-3 py-1 font-semibold text-ink-700 dark:bg-ink-800 dark:text-ink-300"
               >
                 {MODULE_LABELS[module]} : {pct(byModule[module])}
               </span>
@@ -278,7 +278,7 @@ export default function Parent() {
                   <span
                     key={code}
                     title={def.description}
-                    className="rounded-full bg-amber-100 px-3 py-1 font-semibold text-amber-800 dark:bg-amber-900 dark:text-amber-200"
+                    className="rounded-full bg-reward-100 px-3 py-1 font-semibold text-reward-800 dark:bg-reward-900 dark:text-reward-200"
                   >
                     {def.emoji} {def.label}
                   </span>
@@ -287,9 +287,9 @@ export default function Parent() {
             </div>
           )}
 
-          <div className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-800">
+          <div className="rounded-2xl border border-ink-200 bg-white p-4 dark:border-ink-700 dark:bg-ink-800">
             <h2 className="mb-2 font-bold">📋 Rapport de la semaine</h2>
-            <ul className="flex list-none flex-col gap-1.5 text-sm text-slate-700 dark:text-slate-300">
+            <ul className="flex list-none flex-col gap-1.5 text-sm text-ink-700 dark:text-ink-300">
               <li>
                 {report.daysWorked} jour{report.daysWorked > 1 ? 's' : ''} travaillé
                 {report.daysWorked > 1 ? 's' : ''} sur 7, dont {report.daysValidated} avec l'heure complète.
@@ -329,11 +329,11 @@ export default function Parent() {
                   return (
                     <div
                       key={exam.takenAt}
-                      className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-4 text-sm dark:border-slate-700 dark:bg-slate-800"
+                      className="flex items-center justify-between rounded-2xl border border-ink-200 bg-white p-4 text-sm dark:border-ink-700 dark:bg-ink-800"
                     >
                       <span>
                         <span className="font-semibold">{examById(exam.examId)?.title ?? exam.examId}</span>
-                        <span className="block text-xs text-slate-500 dark:text-slate-400">
+                        <span className="block text-xs text-ink-500 dark:text-ink-400">
                           {new Date(exam.takenAt).toLocaleDateString('fr-BE', {
                             day: 'numeric',
                             month: 'short',
@@ -343,8 +343,8 @@ export default function Parent() {
                       <span
                         className={`rounded-full px-3 py-1 font-bold ${
                           passed
-                            ? 'bg-teal-100 text-teal-800 dark:bg-teal-900 dark:text-teal-200'
-                            : 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200'
+                            ? 'bg-action-100 text-action-800 dark:bg-action-900 dark:text-action-200'
+                            : 'bg-reward-100 text-reward-800 dark:bg-reward-900 dark:text-reward-200'
                         }`}
                       >
                         {exam.score}/{exam.maxScore}
@@ -364,7 +364,7 @@ export default function Parent() {
           {recordings.length > 0 && (
             <div>
               <h2 className="mb-2 font-bold">🎤 Derniers enregistrements</h2>
-              <p className="mb-3 text-sm text-slate-500 dark:text-slate-400">
+              <p className="mb-3 text-sm text-ink-500 dark:text-ink-400">
                 Écoute la fluidité et l'aisance, même sans comprendre le fond (PRD). Conservés{' '}
                 {RECORDINGS_RETENTION_DAYS} jours.
               </p>
@@ -372,9 +372,9 @@ export default function Parent() {
                 {recordings.map((recording) => (
                   <div
                     key={recording.name}
-                    className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-800"
+                    className="rounded-2xl border border-ink-200 bg-white p-4 dark:border-ink-700 dark:bg-ink-800"
                   >
-                    <p className="mb-2 text-xs text-slate-500 dark:text-slate-400">
+                    <p className="mb-2 text-xs text-ink-500 dark:text-ink-400">
                       {recording.createdAt !== null
                         ? new Date(recording.createdAt).toLocaleString('fr-BE', {
                             day: 'numeric',
@@ -393,7 +393,7 @@ export default function Parent() {
         </>
       )}
 
-      <Link to="/" className="text-center text-sm text-slate-400 underline">
+      <Link to="/" className="text-center text-sm text-ink-400 underline">
         Retour à l'accueil
       </Link>
     </div>

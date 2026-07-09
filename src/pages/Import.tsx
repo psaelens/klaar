@@ -10,7 +10,7 @@ import { parseVocabLines } from '../lib/importParse'
  */
 
 const inputClass =
-  'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100'
+  'w-full rounded-xl border border-ink-300 bg-white px-4 py-3 text-ink-900 dark:border-ink-600 dark:bg-ink-800 dark:text-ink-100'
 
 type Gate = 'loading' | 'not-configured' | 'not-parent' | 'ready'
 
@@ -79,19 +79,19 @@ export default function Import() {
   }
 
   if (gate === 'loading') {
-    return <p className="animate-pulse text-center text-slate-400">Chargement…</p>
+    return <p className="animate-pulse text-center text-ink-400">Chargement…</p>
   }
 
   if (gate === 'not-configured' || gate === 'not-parent') {
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-4 text-center">
         <h1 className="text-xl font-bold">Importer du contenu</h1>
-        <p className="text-slate-600 dark:text-slate-400">
+        <p className="text-ink-600 dark:text-ink-400">
           {gate === 'not-configured'
             ? "La synchronisation n'est pas configurée sur ce déploiement."
             : "L'import de contenu est réservé au compte parent (connecte-toi via ⚙️)."}
         </p>
-        <Link to="/" className="font-semibold text-teal-700 underline dark:text-teal-400">
+        <Link to="/" className="font-semibold text-action-700 underline dark:text-action-400">
           Retour à l'accueil
         </Link>
       </div>
@@ -101,7 +101,7 @@ export default function Import() {
   return (
     <div className="flex flex-1 flex-col gap-4">
       <h1 className="text-xl font-bold">Importer du vocabulaire</h1>
-      <p className="text-sm text-slate-500 dark:text-slate-400">
+      <p className="text-sm text-ink-500 dark:text-ink-400">
         Une ligne par mot : <code className="font-mono">mot néerlandais ; traduction française</code>
       </p>
 
@@ -134,12 +134,12 @@ export default function Import() {
         />
       </div>
 
-      <label className="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
+      <label className="flex items-center gap-3 text-sm text-ink-600 dark:text-ink-400">
         Difficulté
         <select
           value={difficulty}
           onChange={(e) => setDifficulty(Number(e.target.value) as 1 | 2 | 3)}
-          className="rounded-xl border border-slate-300 bg-white px-3 py-2 dark:border-slate-600 dark:bg-slate-800"
+          className="rounded-xl border border-ink-300 bg-white px-3 py-2 dark:border-ink-600 dark:bg-ink-800"
         >
           <option value={1}>1 — facile</option>
           <option value={2}>2 — moyen</option>
@@ -148,7 +148,7 @@ export default function Import() {
       </label>
 
       {errors.length > 0 && (
-        <ul className="rounded-xl bg-amber-100 p-3 text-sm text-amber-900 dark:bg-amber-900 dark:text-amber-100">
+        <ul className="rounded-xl bg-reward-100 p-3 text-sm text-reward-900 dark:bg-reward-900 dark:text-reward-100">
           {errors.map((err) => (
             <li key={err}>{err}</li>
           ))}
@@ -156,18 +156,18 @@ export default function Import() {
       )}
 
       {items.length > 0 && (
-        <div className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-800">
+        <div className="rounded-2xl border border-ink-200 bg-white p-4 dark:border-ink-700 dark:bg-ink-800">
           <p className="mb-2 text-sm font-semibold">{items.length} mot(s) prêt(s) à importer :</p>
           <ul className="max-h-48 overflow-y-auto text-sm">
             {items.map((item) => (
               <li
                 key={item.front}
-                className="flex justify-between gap-2 border-b border-slate-100 py-1 last:border-0 dark:border-slate-700"
+                className="flex justify-between gap-2 border-b border-ink-100 py-1 last:border-0 dark:border-ink-700"
               >
                 <span lang="nl" className="font-semibold">
                   {item.front}
                 </span>
-                <span className="text-slate-500 dark:text-slate-400">{item.back}</span>
+                <span className="text-ink-500 dark:text-ink-400">{item.back}</span>
               </li>
             ))}
           </ul>
@@ -178,7 +178,7 @@ export default function Import() {
         type="button"
         disabled={busy || items.length === 0 || theme.trim() === ''}
         onClick={() => void handleImport()}
-        className="rounded-2xl bg-teal-600 px-6 py-3 font-bold text-white transition hover:bg-teal-700 active:scale-95 disabled:opacity-50"
+        className="rounded-2xl bg-action-600 px-6 py-3 font-bold text-white transition hover:bg-action-700 active:scale-95 disabled:opacity-50"
       >
         {busy
           ? 'Import…'
@@ -188,17 +188,17 @@ export default function Import() {
       </button>
 
       {done !== null && (
-        <p className="rounded-xl bg-teal-100 p-3 text-sm text-teal-900 dark:bg-teal-900 dark:text-teal-100">
+        <p className="rounded-xl bg-action-100 p-3 text-sm text-action-900 dark:bg-action-900 dark:text-action-100">
           {done} mot(s) importé(s) ! L'élève les verra à sa prochaine ouverture de l'app.
         </p>
       )}
       {importError !== null && (
-        <p className="rounded-xl bg-amber-100 p-3 text-sm text-amber-900 dark:bg-amber-900 dark:text-amber-100">
+        <p className="rounded-xl bg-reward-100 p-3 text-sm text-reward-900 dark:bg-reward-900 dark:text-reward-100">
           {importError}
         </p>
       )}
 
-      <Link to="/" className="text-center text-sm text-slate-400 underline">
+      <Link to="/" className="text-center text-sm text-ink-400 underline">
         Retour à l'accueil
       </Link>
     </div>

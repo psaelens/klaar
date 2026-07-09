@@ -14,7 +14,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource-variable/bricolage-grotesque": "^5.2.10",
+    "@fontsource-variable/instrument-sans": "^5.2.8",
+    "@fontsource/atkinson-hyperlegible": "^5.2.8",
     "@supabase/supabase-js": "^2.110.0",
+    "lucide-react": "^1.24.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "react-router": "^7.18.1"

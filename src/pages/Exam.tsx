@@ -79,7 +79,7 @@ export default function Exam() {
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-4 text-center">
         <p>Examen introuvable.</p>
-        <Link to="/" className="font-semibold text-teal-700 underline dark:text-teal-400">
+        <Link to="/" className="font-semibold text-action-700 underline dark:text-action-400">
           Retour à l'accueil
         </Link>
       </div>
@@ -205,8 +205,8 @@ export default function Exam() {
   if (phase === 'intro') {
     return (
       <div className="flex flex-1 flex-col justify-center gap-6">
-        <h1 className="text-center text-2xl font-extrabold">🏆 {exam.title}</h1>
-        <p className="text-center text-slate-600 dark:text-slate-400">
+        <h1 className="font-display text-center text-2xl font-extrabold">🏆 {exam.title}</h1>
+        <p className="text-center text-ink-600 dark:text-ink-400">
           Conditions d'examen : chaque partie est chronométrée, tu corriges toi-même à la fin de chaque
           partie. Bonus d'XP si tu atteins 50 % !
         </p>
@@ -214,10 +214,10 @@ export default function Exam() {
           {exam.sections.map((s) => (
             <div
               key={s.kind}
-              className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-800"
+              className="flex items-center justify-between rounded-2xl border border-ink-200 bg-white p-4 dark:border-ink-700 dark:bg-ink-800"
             >
               <span className="font-semibold">{s.label}</span>
-              <span className="text-sm text-slate-500 dark:text-slate-400">
+              <span className="text-sm text-ink-500 dark:text-ink-400">
                 {s.tasks.reduce((sum, t) => sum + t.points, 0)} pts · {s.minutes} min
               </span>
             </div>
@@ -226,11 +226,11 @@ export default function Exam() {
         <button
           type="button"
           onClick={() => startAnswer(0)}
-          className="rounded-2xl bg-teal-600 py-5 text-lg font-bold text-white shadow-lg shadow-teal-600/25 transition hover:bg-teal-700 active:scale-95"
+          className="rounded-2xl bg-action-600 py-5 text-lg font-bold text-white shadow-lg shadow-action-600/25 transition hover:bg-action-700 active:scale-95"
         >
           Commencer l'épreuve
         </button>
-        <Link to="/" className="text-center text-sm text-slate-400 underline">
+        <Link to="/" className="text-center text-sm text-ink-400 underline">
           Retour à l'accueil
         </Link>
       </div>
@@ -242,14 +242,14 @@ export default function Exam() {
     const passed = result.score / result.max >= EXAM_PASS_RATIO
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-6 text-center">
-        <h1 className="text-2xl font-extrabold text-teal-700 dark:text-teal-400">
+        <h1 className="font-display text-2xl font-extrabold text-action-700 dark:text-action-400">
           {passed ? 'Examen réussi ! 🏆' : 'Examen terminé 💪'}
         </h1>
-        <p className="text-5xl font-extrabold tabular-nums">
+        <p className="font-display text-5xl font-extrabold tabular-nums">
           {result.score}
-          <span className="text-2xl text-slate-400"> / {result.max}</span>
+          <span className="text-2xl text-ink-400"> / {result.max}</span>
         </p>
-        <p className="text-slate-600 dark:text-slate-400">
+        <p className="text-ink-600 dark:text-ink-400">
           {passed
             ? 'Tu as atteint le seuil de réussite du CE1D (50 %). Bravo !'
             : 'Le seuil de réussite est à 50 % — analyse tes points faibles et retente bientôt.'}
@@ -258,19 +258,19 @@ export default function Exam() {
           {exam.sections.map((s) => (
             <span
               key={s.kind}
-              className="rounded-full bg-slate-200 px-3 py-1 font-semibold text-slate-700 dark:bg-slate-800 dark:text-slate-300"
+              className="rounded-full bg-ink-200 px-3 py-1 font-semibold text-ink-700 dark:bg-ink-800 dark:text-ink-300"
             >
               {s.label} : {s.tasks.reduce((sum, t) => sum + (scores[t.id] ?? 0), 0)} /{' '}
               {s.tasks.reduce((sum, t) => sum + t.points, 0)}
             </span>
           ))}
         </div>
-        <p className="rounded-full bg-amber-100 px-6 py-2 text-lg font-bold text-amber-800 dark:bg-amber-900 dark:text-amber-200">
+        <p className="rounded-full bg-reward-100 px-6 py-2 text-lg font-bold text-reward-800 dark:bg-reward-900 dark:text-reward-200">
           +{result.xp} XP ⭐ {passed && '(bonus boss battle inclus)'}
         </p>
         <Link
           to="/"
-          className="w-full rounded-2xl bg-teal-600 px-8 py-5 text-lg font-bold text-white shadow-lg shadow-teal-600/25 transition hover:bg-teal-700 active:scale-95"
+          className="w-full rounded-2xl bg-action-600 px-8 py-5 text-lg font-bold text-white shadow-lg shadow-action-600/25 transition hover:bg-action-700 active:scale-95"
         >
           Retour à l'accueil
         </Link>
@@ -285,7 +285,7 @@ export default function Exam() {
     <div className="flex flex-1 flex-col gap-4">
       {/* Bandeau : section, progression, chrono */}
       <div className="flex items-center justify-between text-sm font-semibold">
-        <span className="text-slate-500 dark:text-slate-400">
+        <span className="text-ink-500 dark:text-ink-400">
           {section.label} — {isReview ? 'correction' : `tâche ${taskIndex + 1}/${section.tasks.length}`}
         </span>
         {!isReview && deadline !== null && (
@@ -293,7 +293,7 @@ export default function Exam() {
             className={`rounded-full px-3 py-1 tabular-nums ${
               remaining < 300
                 ? 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200'
-                : 'bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-300'
+                : 'bg-ink-200 text-ink-700 dark:bg-ink-800 dark:text-ink-300'
             }`}
           >
             ⏱️ {formatSeconds(remaining)}
@@ -301,9 +301,9 @@ export default function Exam() {
         )}
       </div>
 
-      <div className="rounded-3xl border border-slate-200 bg-white p-5 text-left dark:border-slate-700 dark:bg-slate-800">
+      <div className="rounded-3xl border border-ink-200 bg-white p-5 text-left dark:border-ink-700 dark:bg-ink-800">
         <h2 className="font-bold">{task.title}</h2>
-        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{task.context}</p>
+        <p className="mt-1 text-sm text-ink-500 dark:text-ink-400">{task.context}</p>
         <p className="mt-2 text-sm whitespace-pre-line">{task.instruction}</p>
       </div>
 
@@ -315,7 +315,7 @@ export default function Exam() {
               type="button"
               disabled={!canSpeak || (listens[task.id] ?? 0) >= MAX_LISTENS}
               onClick={() => listen(task)}
-              className="rounded-2xl bg-teal-600 py-4 text-lg font-bold text-white shadow-lg shadow-teal-600/25 transition hover:bg-teal-700 active:scale-95 disabled:opacity-40"
+              className="rounded-2xl bg-action-600 py-4 text-lg font-bold text-white shadow-lg shadow-action-600/25 transition hover:bg-action-700 active:scale-95 disabled:opacity-40"
             >
               🔊 Écouter ({listens[task.id] ?? 0}/{MAX_LISTENS})
             </button>
@@ -323,7 +323,7 @@ export default function Exam() {
           {section.kind === 'cl' && task.source !== undefined && (
             <div
               lang="nl"
-              className="max-h-72 overflow-y-auto rounded-2xl border border-slate-200 bg-white p-4 text-left text-sm whitespace-pre-line dark:border-slate-600 dark:bg-slate-800"
+              className="max-h-72 overflow-y-auto rounded-2xl border border-ink-200 bg-white p-4 text-left text-sm whitespace-pre-line dark:border-ink-600 dark:bg-ink-800"
             >
               {task.source}
             </div>
@@ -338,7 +338,7 @@ export default function Exam() {
                       type="button"
                       disabled={!canSpeak}
                       onClick={() => speakDutch(question)}
-                      className="rounded-2xl border-2 border-teal-600 bg-white py-2.5 text-sm font-semibold text-teal-700 transition hover:bg-teal-50 active:scale-95 disabled:opacity-40 dark:bg-slate-800 dark:text-teal-400 dark:hover:bg-slate-700"
+                      className="rounded-2xl border-2 border-action-600 bg-white py-2.5 text-sm font-semibold text-action-700 transition hover:bg-action-50 active:scale-95 disabled:opacity-40 dark:bg-ink-800 dark:text-action-400 dark:hover:bg-ink-700"
                     >
                       🔊 Question {index + 1}
                     </button>
@@ -353,7 +353,7 @@ export default function Exam() {
                   <button
                     type="button"
                     onClick={recorder.stop}
-                    className="rounded-2xl bg-teal-600 py-4 font-bold text-white transition hover:bg-teal-700 active:scale-95"
+                    className="rounded-2xl bg-action-600 py-4 font-bold text-white transition hover:bg-action-700 active:scale-95"
                   >
                     ⏹️ Terminer la prise
                   </button>
@@ -365,7 +365,7 @@ export default function Exam() {
                     <button
                       type="button"
                       onClick={recorder.reset}
-                      className="rounded-2xl bg-slate-200 py-4 font-semibold text-slate-700 transition hover:bg-slate-300 active:scale-95 dark:bg-slate-700 dark:text-slate-200"
+                      className="rounded-2xl bg-ink-200 py-4 font-semibold text-ink-700 transition hover:bg-ink-300 active:scale-95 dark:bg-ink-700 dark:text-ink-200"
                     >
                       🔄 Refaire
                     </button>
@@ -373,7 +373,7 @@ export default function Exam() {
                       type="button"
                       disabled={recorder.seconds < SPEAKING_MIN_SECONDS}
                       onClick={nextAnswerTask}
-                      className="rounded-2xl bg-teal-600 py-4 font-bold text-white transition hover:bg-teal-700 active:scale-95 disabled:opacity-40"
+                      className="rounded-2xl bg-action-600 py-4 font-bold text-white transition hover:bg-action-700 active:scale-95 disabled:opacity-40"
                     >
                       Tâche suivante →
                     </button>
@@ -383,7 +383,7 @@ export default function Exam() {
                 <button
                   type="button"
                   onClick={recorder.start}
-                  className="rounded-2xl bg-teal-600 py-5 text-lg font-bold text-white shadow-lg shadow-teal-600/25 transition hover:bg-teal-700 active:scale-95"
+                  className="rounded-2xl bg-action-600 py-5 text-lg font-bold text-white shadow-lg shadow-action-600/25 transition hover:bg-action-700 active:scale-95"
                 >
                   🎙️ M'enregistrer
                 </button>
@@ -392,7 +392,7 @@ export default function Exam() {
                 <button
                   type="button"
                   onClick={nextAnswerTask}
-                  className="rounded-2xl bg-teal-600 py-4 font-bold text-white transition hover:bg-teal-700 active:scale-95"
+                  className="rounded-2xl bg-action-600 py-4 font-bold text-white transition hover:bg-action-700 active:scale-95"
                 >
                   Pas de micro — je me suis entraîné à voix haute →
                 </button>
@@ -410,17 +410,17 @@ export default function Exam() {
                     ? 'Schrijf hier je tekst in het Nederlands…'
                     : 'Note ici tes réponses en français (une par ligne)…'
                 }
-                className="rounded-2xl border-2 border-slate-200 bg-white p-4 dark:border-slate-600 dark:bg-slate-800"
+                className="rounded-2xl border-2 border-ink-200 bg-white p-4 dark:border-ink-600 dark:bg-ink-800"
               />
               {words !== null && (
-                <p className="text-center text-sm font-semibold tabular-nums text-slate-500 dark:text-slate-400">
+                <p className="text-center text-sm font-semibold tabular-nums text-ink-500 dark:text-ink-400">
                   {words} mot{words > 1 ? 's' : ''} — minimum {task.minWords}
                 </p>
               )}
               <button
                 type="button"
                 onClick={nextAnswerTask}
-                className="rounded-2xl bg-teal-600 py-4 font-bold text-white transition hover:bg-teal-700 active:scale-95"
+                className="rounded-2xl bg-action-600 py-4 font-bold text-white transition hover:bg-action-700 active:scale-95"
               >
                 {taskIndex + 1 < section.tasks.length ? 'Tâche suivante →' : 'Corriger cette partie →'}
               </button>
@@ -433,14 +433,12 @@ export default function Exam() {
           {!isProduction ? (
             <>
               {(answers[task.id] ?? '') !== '' && (
-                <div className="rounded-2xl border border-slate-200 bg-white p-4 text-left text-sm whitespace-pre-line dark:border-slate-700 dark:bg-slate-800">
-                  <p className="mb-1 text-xs font-semibold tracking-wide text-slate-400 uppercase">
-                    Tes notes
-                  </p>
+                <div className="rounded-2xl border border-ink-200 bg-white p-4 text-left text-sm whitespace-pre-line dark:border-ink-700 dark:bg-ink-800">
+                  <p className="mb-1 text-xs font-semibold tracking-wide text-ink-400 uppercase">Tes notes</p>
                   {answers[task.id]}
                 </div>
               )}
-              <div className="flex flex-col gap-2 rounded-2xl border-2 border-teal-600 bg-white p-4 text-left dark:bg-slate-800">
+              <div className="flex flex-col gap-2 rounded-2xl border-2 border-action-600 bg-white p-4 text-left dark:bg-ink-800">
                 <p className="font-bold">Corrigé — coche les informations que tu as notées :</p>
                 {(task.expected ?? []).map((info, index) => (
                   <label key={info} className="flex items-start gap-3 text-sm">
@@ -448,13 +446,13 @@ export default function Exam() {
                       type="checkbox"
                       checked={(found[task.id] ?? []).includes(index)}
                       onChange={() => toggleFound(task.id, index)}
-                      className="mt-0.5 size-5 shrink-0 accent-teal-600"
+                      className="mt-0.5 size-5 shrink-0 accent-action-600"
                     />
                     <span>{info}</span>
                   </label>
                 ))}
               </div>
-              <p className="text-center text-sm font-semibold text-slate-500 dark:text-slate-400">
+              <p className="text-center text-sm font-semibold text-ink-500 dark:text-ink-400">
                 {scores[task.id] ?? 0} / {task.points} pts
               </p>
             </>
@@ -463,16 +461,16 @@ export default function Exam() {
               {section.kind === 'ee' && (answers[task.id] ?? '') !== '' && (
                 <div
                   lang="nl"
-                  className="rounded-2xl border border-slate-200 bg-white p-4 text-left text-sm whitespace-pre-line dark:border-slate-700 dark:bg-slate-800"
+                  className="rounded-2xl border border-ink-200 bg-white p-4 text-left text-sm whitespace-pre-line dark:border-ink-700 dark:bg-ink-800"
                 >
-                  <p className="mb-1 text-xs font-semibold tracking-wide text-slate-400 uppercase">
+                  <p className="mb-1 text-xs font-semibold tracking-wide text-ink-400 uppercase">
                     Ton texte ({words} mots
                     {words !== null && words < 55 ? ' — sous 55 mots, note plafonnée' : ''})
                   </p>
                   {answers[task.id]}
                 </div>
               )}
-              <div className="flex flex-col gap-2 rounded-2xl border-2 border-teal-600 bg-white p-4 text-left dark:bg-slate-800">
+              <div className="flex flex-col gap-2 rounded-2xl border-2 border-action-600 bg-white p-4 text-left dark:bg-ink-800">
                 <p className="font-bold">Grille d'évaluation — coche ce qui est vrai :</p>
                 {(task.checklist ?? []).map((point, index) => (
                   <label key={point.label} className="flex items-start gap-3 text-sm">
@@ -480,11 +478,11 @@ export default function Exam() {
                       type="checkbox"
                       checked={(found[task.id] ?? []).includes(index)}
                       onChange={() => toggleFound(task.id, index)}
-                      className="mt-0.5 size-5 shrink-0 accent-teal-600"
+                      className="mt-0.5 size-5 shrink-0 accent-action-600"
                     />
                     <span>
                       {point.label}{' '}
-                      <span className="text-slate-400 dark:text-slate-500">
+                      <span className="text-ink-400 dark:text-ink-500">
                         ({point.points} pt{point.points > 1 ? 's' : ''})
                       </span>
                     </span>
@@ -492,8 +490,8 @@ export default function Exam() {
                 ))}
               </div>
               {task.example !== undefined && (
-                <details className="rounded-2xl border border-slate-200 bg-white p-4 text-left dark:border-slate-700 dark:bg-slate-800">
-                  <summary className="cursor-pointer text-sm font-semibold text-teal-700 dark:text-teal-400">
+                <details className="rounded-2xl border border-ink-200 bg-white p-4 text-left dark:border-ink-700 dark:bg-ink-800">
+                  <summary className="cursor-pointer text-sm font-semibold text-action-700 dark:text-action-400">
                     Voir un exemple de réponse
                   </summary>
                   <p lang="nl" className="mt-2 text-sm">
@@ -503,21 +501,21 @@ export default function Exam() {
                     <button
                       type="button"
                       onClick={() => speakDutch(task.example ?? '')}
-                      className="mt-2 rounded-full bg-teal-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-teal-700 active:scale-95"
+                      className="mt-2 rounded-full bg-action-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-action-700 active:scale-95"
                     >
                       🔊 Écouter l'exemple
                     </button>
                   )}
                 </details>
               )}
-              <p className="text-center text-sm font-semibold text-slate-500 dark:text-slate-400">
+              <p className="text-center text-sm font-semibold text-ink-500 dark:text-ink-400">
                 {scores[task.id] ?? 0} / {task.points} pts
               </p>
             </>
           )}
           {section.kind === 'ca' && task.source !== undefined && (
-            <details className="rounded-2xl border border-slate-200 bg-white p-4 text-left dark:border-slate-700 dark:bg-slate-800">
-              <summary className="cursor-pointer text-sm font-semibold text-teal-700 dark:text-teal-400">
+            <details className="rounded-2xl border border-ink-200 bg-white p-4 text-left dark:border-ink-700 dark:bg-ink-800">
+              <summary className="cursor-pointer text-sm font-semibold text-action-700 dark:text-action-400">
                 Voir le transcript
               </summary>
               <p lang="nl" className="mt-2 text-sm whitespace-pre-line">
@@ -528,7 +526,7 @@ export default function Exam() {
           <button
             type="button"
             onClick={nextReviewTask}
-            className="rounded-2xl bg-teal-600 py-4 font-bold text-white transition hover:bg-teal-700 active:scale-95"
+            className="rounded-2xl bg-action-600 py-4 font-bold text-white transition hover:bg-action-700 active:scale-95"
           >
             {taskIndex + 1 < section.tasks.length
               ? 'Corriger la tâche suivante →'
@@ -539,7 +537,7 @@ export default function Exam() {
         </div>
       )}
 
-      <Link to="/" className="text-center text-sm text-slate-400 underline">
+      <Link to="/" className="text-center text-sm text-ink-400 underline">
         Abandonner l'examen
       </Link>
     </div>

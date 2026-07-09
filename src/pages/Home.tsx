@@ -33,25 +33,26 @@ function ModuleCard({ module }: { module: Module }) {
   const { reviews, fresh, total } = moduleCounts(module)
 
   return (
-    <div className="flex flex-col gap-3 rounded-3xl border border-slate-200 bg-white p-5 text-left dark:border-slate-700 dark:bg-slate-800">
+    <div className="flex flex-col gap-3 rounded-3xl border border-ink-200 bg-white p-5 text-left dark:border-ink-700 dark:bg-ink-800">
       <div className="flex items-center justify-between">
         <p className="font-bold">
           {MODULE_ICONS[module]} {MODULE_LABELS[module]}
         </p>
-        <p className="text-sm text-slate-500 dark:text-slate-400">
+        <p className="text-sm text-ink-500 dark:text-ink-400">
           {total === 0 ? (
             'Tout est révisé 🎉'
           ) : (
             <>
               {reviews > 0 && (
                 <span>
-                  <span className="font-semibold text-teal-700 dark:text-teal-400">{reviews}</span> à réviser
+                  <span className="font-semibold text-action-700 dark:text-action-400">{reviews}</span> à
+                  réviser
                 </span>
               )}
               {reviews > 0 && fresh > 0 && ' + '}
               {fresh > 0 && (
                 <span>
-                  <span className="font-semibold text-teal-700 dark:text-teal-400">{fresh}</span> nouveau
+                  <span className="font-semibold text-action-700 dark:text-action-400">{fresh}</span> nouveau
                   {fresh > 1 ? 'x' : ''}
                 </span>
               )}
@@ -62,7 +63,7 @@ function ModuleCard({ module }: { module: Module }) {
       {total > 0 && (
         <Link
           to={`/session?m=${module}`}
-          className="rounded-2xl bg-teal-600 px-6 py-3.5 text-center font-bold text-white shadow-lg shadow-teal-600/25 transition hover:bg-teal-700 active:scale-95"
+          className="rounded-2xl bg-action-600 px-6 py-3.5 text-center font-bold text-white shadow-lg shadow-action-600/25 transition hover:bg-action-700 active:scale-95"
         >
           Commencer
         </Link>
@@ -78,7 +79,7 @@ function StatusChip() {
     return (
       <Link
         to="/config"
-        className="mx-auto rounded-full bg-teal-100 px-4 py-1.5 text-sm font-semibold text-teal-800 hover:bg-teal-200 dark:bg-teal-900 dark:text-teal-200 dark:hover:bg-teal-800"
+        className="mx-auto rounded-full bg-action-100 px-4 py-1.5 text-sm font-semibold text-action-800 hover:bg-action-200 dark:bg-action-900 dark:text-action-200 dark:hover:bg-action-800"
       >
         👤 {profile?.displayName ?? 'Connecté'}
         {profile !== null && ` · ${profile.role === 'parent' ? 'Parent' : 'Élève'}`}
@@ -89,7 +90,7 @@ function StatusChip() {
     <Link
       to="/config"
       title="Tes données restent sur cet appareil — connecte-toi pour les retrouver partout"
-      className="mx-auto rounded-full bg-slate-200 px-4 py-1.5 text-sm font-semibold text-slate-600 hover:bg-slate-300 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700"
+      className="mx-auto rounded-full bg-ink-200 px-4 py-1.5 text-sm font-semibold text-ink-600 hover:bg-ink-300 dark:bg-ink-800 dark:text-ink-400 dark:hover:bg-ink-700"
     >
       {syncConfigured() ? '🧪 Mode démo — se connecter' : '📱 Mode local'}
     </Link>
@@ -100,25 +101,25 @@ function StatusChip() {
 function Welcome({ onDemo }: { onDemo: () => void }) {
   return (
     <div className="flex flex-1 flex-col justify-center gap-6 text-center">
-      <h1 className="text-3xl font-extrabold text-teal-700 dark:text-teal-400">Klaar&nbsp;!</h1>
-      <p className="text-slate-600 dark:text-slate-400">
+      <h1 className="text-3xl font-extrabold text-action-700 dark:text-action-400">Klaar&nbsp;!</h1>
+      <p className="text-ink-600 dark:text-ink-400">
         Révision du néerlandais pour le CE1D : vocabulaire, grammaire, écoute, rédaction, oral et examens
         blancs — avec suivi pour le parent.
       </p>
       <Link
         to="/config"
-        className="rounded-2xl bg-teal-600 px-6 py-4 text-lg font-bold text-white shadow-lg shadow-teal-600/25 transition hover:bg-teal-700 active:scale-95"
+        className="rounded-2xl bg-action-600 px-6 py-4 text-lg font-bold text-white shadow-lg shadow-action-600/25 transition hover:bg-action-700 active:scale-95"
       >
         Se connecter
       </Link>
       <button
         type="button"
         onClick={onDemo}
-        className="rounded-2xl border-2 border-teal-600 px-6 py-4 text-lg font-bold text-teal-700 transition hover:bg-teal-50 active:scale-95 dark:text-teal-400 dark:hover:bg-slate-800"
+        className="rounded-2xl border-2 border-action-600 px-6 py-4 text-lg font-bold text-action-700 transition hover:bg-action-50 active:scale-95 dark:text-action-400 dark:hover:bg-ink-800"
       >
         Essayer en mode démo
       </button>
-      <p className="text-sm text-slate-500 dark:text-slate-400">
+      <p className="text-sm text-ink-500 dark:text-ink-400">
         En mode démo, tout reste sur cet appareil. Si tu te connectes plus tard, tes révisions sont reprises
         dans ton compte.
       </p>
@@ -164,8 +165,8 @@ export default function Home() {
           <span
             className={`rounded-full px-4 py-1.5 text-sm font-semibold ${
               streak.todayDone
-                ? 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200'
-                : 'bg-slate-200 text-slate-600 dark:bg-slate-800 dark:text-slate-400'
+                ? 'bg-reward-100 text-reward-800 dark:bg-reward-900 dark:text-reward-200'
+                : 'bg-ink-200 text-ink-600 dark:bg-ink-800 dark:text-ink-400'
             }`}
             title={
               streak.todayDone
@@ -175,19 +176,19 @@ export default function Home() {
           >
             🔥 {streak.current} jour{streak.current > 1 ? 's' : ''}
           </span>
-          <span className="rounded-full bg-teal-100 px-4 py-1.5 text-sm font-semibold text-teal-800 dark:bg-teal-900 dark:text-teal-200">
+          <span className="rounded-full bg-action-100 px-4 py-1.5 text-sm font-semibold text-action-800 dark:bg-action-900 dark:text-action-200">
             ⭐ {xp} XP
           </span>
         </div>
       )}
 
-      <h1 className="text-xl font-bold">Klaar aujourd'hui ?</h1>
+      <h1 className="font-display text-2xl font-extrabold tracking-tight">Klaar aujourd'hui ?</h1>
 
       {nothingDue && (
-        <p className="text-slate-600 dark:text-slate-400">
+        <p className="text-ink-600 dark:text-ink-400">
           Tout est révisé pour le moment. Klaar ! 🎉
           <br />
-          <span className="text-sm text-slate-500 dark:text-slate-400">
+          <span className="text-sm text-ink-500 dark:text-ink-400">
             Reviens plus tard pour la prochaine révision.
           </span>
         </p>
@@ -197,9 +198,9 @@ export default function Home() {
         <ModuleCard key={module} module={module} />
       ))}
 
-      <div className="flex flex-col gap-3 rounded-3xl border-2 border-amber-400 bg-amber-50 p-5 text-left dark:border-amber-600 dark:bg-amber-950">
+      <div className="flex flex-col gap-3 rounded-3xl border-2 border-reward-400 bg-reward-50 p-5 text-left dark:border-reward-600 dark:bg-reward-950">
         <p className="font-bold">🏆 Examens blancs</p>
-        <p className="text-sm text-amber-800 dark:text-amber-200">
+        <p className="text-sm text-reward-800 dark:text-reward-200">
           Comme le vrai CE1D, chronométré. Gros bonus d'XP à la clé !
         </p>
         {exams.map((exam) => {
@@ -212,7 +213,7 @@ export default function Home() {
             <Link
               key={exam.id}
               to={`/examen?id=${exam.id}`}
-              className="flex items-center justify-between rounded-2xl bg-amber-500 px-5 py-3.5 font-bold text-white shadow-lg shadow-amber-500/25 transition hover:bg-amber-600 active:scale-95"
+              className="flex items-center justify-between rounded-2xl bg-reward-400 px-5 py-3.5 font-bold text-ink-900 shadow-lg shadow-reward-400/30 transition hover:bg-reward-300 active:scale-95"
             >
               <span>{exam.title}</span>
               <span className="text-sm font-semibold">
@@ -231,7 +232,7 @@ export default function Home() {
             <span
               key={def.code}
               title={`${def.label} — ${def.description}`}
-              className="rounded-full bg-amber-100 px-3 py-1 text-lg dark:bg-amber-900"
+              className="rounded-full bg-reward-100 px-3 py-1 text-lg dark:bg-reward-900"
             >
               {def.emoji}
             </span>
@@ -240,7 +241,7 @@ export default function Home() {
       )}
 
       {learnedCount > 0 && (
-        <p className="text-sm text-slate-500 dark:text-slate-400">
+        <p className="text-sm text-ink-500 dark:text-ink-400">
           {learnedCount} carte{learnedCount > 1 ? 's' : ''} en cours d'apprentissage sur {itemCount}
         </p>
       )}

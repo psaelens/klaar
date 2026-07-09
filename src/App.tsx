@@ -19,17 +19,20 @@ export default function App() {
   }, [])
 
   return (
-    <div className="min-h-dvh bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100">
+    <div className="min-h-dvh bg-ink-50 text-ink-900 dark:bg-ink-900 dark:text-ink-100">
       <div className="mx-auto flex min-h-dvh max-w-md flex-col px-4 py-4">
         <header className="mb-6 flex items-center justify-between">
-          <Link to="/" className="text-2xl font-extrabold tracking-tight text-teal-700 dark:text-teal-400">
+          <Link
+            to="/"
+            className="font-display text-2xl font-extrabold tracking-tight text-action-700 dark:text-action-400"
+          >
             Klaar!
           </Link>
           <div className="flex items-center gap-1">
             <Link
               to="/config"
               aria-label="Synchronisation et compte"
-              className="rounded-full p-2 text-xl hover:bg-slate-200 dark:hover:bg-slate-800"
+              className="rounded-full p-2 text-xl hover:bg-ink-200 dark:hover:bg-ink-800"
             >
               ⚙️
             </Link>
@@ -37,7 +40,7 @@ export default function App() {
               type="button"
               onClick={toggle}
               aria-label={theme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'}
-              className="rounded-full p-2 text-xl hover:bg-slate-200 dark:hover:bg-slate-800"
+              className="rounded-full p-2 text-xl hover:bg-ink-200 dark:hover:bg-ink-800"
             >
               {theme === 'dark' ? '☀️' : '🌙'}
             </button>
@@ -57,7 +60,9 @@ export default function App() {
             </Routes>
           ) : (
             <div className="flex flex-1 items-center justify-center">
-              <p className="animate-pulse text-2xl font-extrabold text-teal-700 dark:text-teal-400">Klaar!</p>
+              <p className="animate-pulse font-display text-2xl font-extrabold text-action-700 dark:text-action-400">
+                Klaar!
+              </p>
             </div>
           )}
         </main>

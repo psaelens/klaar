@@ -21,12 +21,12 @@ describe('deservedBadges', () => {
   })
 
   it('sans faute : ≥ 5 cartes et 0 erreur', () => {
-    expect(
-      deservedBadges({ ...base, records: [record({ cardsReviewed: 4, lapsed: 0 })] }),
-    ).not.toContain('perfect-session')
-    expect(
-      deservedBadges({ ...base, records: [record({ cardsReviewed: 5, lapsed: 0 })] }),
-    ).toContain('perfect-session')
+    expect(deservedBadges({ ...base, records: [record({ cardsReviewed: 4, lapsed: 0 })] })).not.toContain(
+      'perfect-session',
+    )
+    expect(deservedBadges({ ...base, records: [record({ cardsReviewed: 5, lapsed: 0 })] })).toContain(
+      'perfect-session',
+    )
   })
 
   it('menu complet : les 3 modalités le même jour local', () => {
@@ -56,16 +56,12 @@ describe('deservedBadges', () => {
 
   it('première rédaction : dès une session d’écriture terminée', () => {
     expect(deservedBadges(base)).not.toContain('first-writing')
-    expect(
-      deservedBadges({ ...base, records: [record({ module: 'writing' })] }),
-    ).toContain('first-writing')
+    expect(deservedBadges({ ...base, records: [record({ module: 'writing' })] })).toContain('first-writing')
   })
 
   it('première prise de parole : dès une session d’oral terminée', () => {
     expect(deservedBadges(base)).not.toContain('first-speaking')
-    expect(
-      deservedBadges({ ...base, records: [record({ module: 'speaking' })] }),
-    ).toContain('first-speaking')
+    expect(deservedBadges({ ...base, records: [record({ module: 'speaking' })] })).toContain('first-speaking')
   })
 
   it('marathonien à 25 sessions', () => {
@@ -82,9 +78,7 @@ describe('deservedBadges', () => {
     )
     expect(deservedBadges({ ...base, xpTotal: 500 })).toContain('xp-500')
     expect(deservedBadges({ ...base, xpTotal: 499 })).not.toContain('xp-500')
-    expect(deservedBadges({ ...base, xpTotal: 1200 })).toEqual(
-      expect.arrayContaining(['xp-500', 'xp-1000']),
-    )
+    expect(deservedBadges({ ...base, xpTotal: 1200 })).toEqual(expect.arrayContaining(['xp-500', 'xp-1000']))
   })
 })
 
